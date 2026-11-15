@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #fafafa;
+    --bg-card: #ffffff;
+    --bg-hover: #f5f5f5;
+    --bg-active: #ebebeb;
+    --bg-muted: #f3f4f6;
+
+    --text-primary: #111111;
+    --text-secondary: #555555;
+    --text-muted: #777777;
+
+    --border-color: #e5e5e5;
+    --border-subtle: #eeeeee;
+    --border-strong: #111111;
+
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-focus: #111111;
+
+    --sidebar-bg: #fafafa;
+    --header-bg: #ffffff;
+
+    --table-header-bg: #fafafa;
+    --table-row-hover: #f8fafc;
+    --table-border: #e5e5e5;
+
+    --modal-bg: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.6);
+
+    --badge-bg: #fafafa;
+    --badge-border: #cccccc;
+    --badge-text: #111111;
+
+    --primary-btn-bg: #111111;
+    --primary-btn-text: #ffffff;
+    --primary-btn-hover: #333333;
+
+    --secondary-btn-bg: #ffffff;
+    --secondary-btn-text: #111111;
+    --secondary-btn-border: #cccccc;
+    --secondary-btn-hover: #f5f5f5;
+
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #cccccc;
+    --scrollbar-thumb-hover: #999999;
+  }
+
+  [data-theme="dark"],
+  .dark {
+    --bg-primary: #0b0f17;
+    --bg-secondary: #111827;
+    --bg-card: #141c2b;
+    --bg-hover: #1e293b;
+    --bg-active: #283548;
+    --bg-muted: #1e293b;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --border-color: #243042;
+    --border-subtle: #1e293b;
+    --border-strong: #475569;
+
+    --input-bg: #0f172a;
+    --input-border: #334155;
+    --input-focus: #60a5fa;
+
+    --sidebar-bg: #0d131f;
+    --header-bg: #0f172a;
+
+    --table-header-bg: #0f172a;
+    --table-row-hover: #162032;
+    --table-border: #243042;
+
+    --modal-bg: #141c2b;
+    --modal-overlay: rgba(0, 0, 0, 0.85);
+
+    --badge-bg: #1e293b;
+    --badge-border: #334155;
+    --badge-text: #f8fafc;
+
+    --primary-btn-bg: #f8fafc;
+    --primary-btn-text: #0b0f17;
+    --primary-btn-hover: #e2e8f0;
+
+    --secondary-btn-bg: #1e293b;
+    --secondary-btn-text: #f8fafc;
+    --secondary-btn-border: #334155;
+    --secondary-btn-hover: #334155;
+
+    --scrollbar-track: #0b0f17;
+    --scrollbar-thumb: #334155;
+    --scrollbar-thumb-hover: #475569;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Custom scrollbars for clean Siemens DOConCD look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Responsive Table utilities */
+.table-responsive-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
