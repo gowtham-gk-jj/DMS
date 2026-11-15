@@ -1,0 +1,363 @@
+{
+  "timestamp": "2026-11-15T18:34:09.206Z",
+  "checks": {
+    "check1_mongoRecords": {
+      "totalRecords": 186,
+      "validRecords": 186,
+      "passed": true
+    },
+    "check2_folderPaths": {
+      "rootFound": true,
+      "totalHierarchyFolders": 25,
+      "distinctDocumentCategories": 19,
+      "passed": true
+    },
+    "check3_catalogueOrdering": {
+      "totalExpected": 186,
+      "exactMatches": 186,
+      "passed": true
+    },
+    "check5_cloudinary": {
+      "totalDbDocs": 159,
+      "sampleTested": 8,
+      "sampleSuccess": 8,
+      "passed": true
+    },
+    "check6_localAssets": {
+      "totalDbDocs": 27,
+      "foundOnDisk": 27,
+      "missingOnDisk": 0,
+      "passed": true
+    },
+    "check7_8_reconciliation": {
+      "catalogueRecords": 186,
+      "uniquePhysicalSourcePdfs": 184,
+      "uniqueCloudinaryAssets": 158,
+      "uniqueLocalAssets": 26,
+      "totalUniqueStorageAssets": 184,
+      "sharedManual1_1PH813_BE_Identical": true,
+      "sharedManual2_PH8S_Identical": true,
+      "passed": true
+    },
+    "check9_checksums": {
+      "totalChecked": 27,
+      "checksumMatches": 27,
+      "passed": true
+    },
+    "check13_cadInventory": {
+      "cadModelCount": 1407,
+      "cadFormatBreakdown": {
+        "dxf": 1012,
+        "stp": 198,
+        "dwg": 1,
+        "igs": 196
+      },
+      "cadZipPackages": 879,
+      "totalCadArtifacts": 2286,
+      "downloadableFormats": [
+        "DXF (AutoCAD Drawing)",
+        "STP/STEP (3D solid model)",
+        "IGS/IGES (3D surface geometry)",
+        "DWG",
+        "ZIP archives"
+      ],
+      "passed": true
+    },
+    "check12_accessControl": {
+      "unauthenticatedStream": 401,
+      "unauthenticatedDownload": 401,
+      "forgedTokenStatus": 401,
+      "noDownloadPermStatus": 403,
+      "passed": true
+    },
+    "check14_categoryStreams": {
+      "totalCategoriesTested": 19,
+      "passedCategories": 19,
+      "evidence": [
+        {
+          "category": "802D sl / Manufacturer/Service",
+          "documentId": "6af9f584600e90616dc6ce6f",
+          "fileName": "802Dsl_FB",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"802Dsl_FB.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"802Dsl_FB.pdf\"; filename*=UTF-8''802Dsl_FB.pdf",
+          "passed": true
+        },
+        {
+          "category": "802D sl / User",
+          "documentId": "6af9f571600e90616dc6ce4f",
+          "fileName": "802Dsl_BPD",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"802Dsl_BPD.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"802Dsl_BPD.pdf\"; filename*=UTF-8''802Dsl_BPD.pdf",
+          "passed": true
+        },
+        {
+          "category": "828D Manufacturer/Service / Version 2.6",
+          "documentId": "6af9f551600e90616dc6ce42",
+          "fileName": "828D_DA_V26",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"828D_DA_V26.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"828D_DA_V26.pdf\"; filename*=UTF-8''828D_DA_V26.pdf",
+          "passed": true
+        },
+        {
+          "category": "828D Manufacturer/Service / Version 4.3",
+          "documentId": "6af9f53b600e90616dc6ce24",
+          "fileName": "828D_DA",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"828D_DA.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"828D_DA.pdf\"; filename*=UTF-8''828D_DA.pdf",
+          "passed": true
+        },
+        {
+          "category": "840D sl/840Di sl Manufacturer/Service / Commissioning",
+          "documentId": "6af9f4eb600e90616dc6cdec",
+          "fileName": "IDsl",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"IDsl.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"IDsl.pdf\"; filename*=UTF-8''IDsl.pdf",
+          "passed": true
+        },
+        {
+          "category": "840D sl/840Di sl Manufacturer/Service / Configuring",
+          "documentId": "6af9f4b3600e90616dc6cdbe",
+          "fileName": "GDsl",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"GDsl.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"GDsl.pdf\"; filename*=UTF-8''GDsl.pdf",
+          "passed": true
+        },
+        {
+          "category": "840D sl/840Di sl/828D User / Operation",
+          "documentId": "6af9f3fd600e90616dc6cd4c",
+          "fileName": "BHUsl",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"BHUsl.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"BHUsl.pdf\"; filename*=UTF-8''BHUsl.pdf",
+          "passed": true
+        },
+        {
+          "category": "840D sl/840Di sl/828D User / Programming",
+          "documentId": "6af9f468600e90616dc6cd92",
+          "fileName": "PGsl",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"PGsl.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"PGsl.pdf\"; filename*=UTF-8''PGsl.pdf",
+          "passed": true
+        },
+        {
+          "category": "Asynchronous motors",
+          "documentId": "6af9f5fb600e90616dc6ced6",
+          "fileName": "APH4S",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"APH4S.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"APH4S.pdf\"; filename*=UTF-8''APH4S.pdf",
+          "passed": true
+        },
+        {
+          "category": "Control system overview",
+          "documentId": "6af9f74d600e90616dc6d073",
+          "fileName": "BUsl",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"BUsl.PDF\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"BUsl.PDF\"; filename*=UTF-8''BUsl.PDF",
+          "passed": true
+        },
+        {
+          "category": "Functions",
+          "documentId": "6af9f513600e90616dc6ce1b",
+          "fileName": "FB1sl",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"FB1sl.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"FB1sl.pdf\"; filename*=UTF-8''FB1sl.pdf",
+          "passed": true
+        },
+        {
+          "category": "Info/Training",
+          "documentId": "6af9f72e600e90616dc6d05b",
+          "fileName": "TUSM",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"TUSM.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"TUSM.pdf\"; filename*=UTF-8''TUSM.pdf",
+          "passed": true
+        },
+        {
+          "category": "Linear/Torque Motors",
+          "documentId": "6af9f642600e90616dc6cf2d",
+          "fileName": "PFN3LMS",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"PFN3LMS.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"PFN3LMS.pdf\"; filename*=UTF-8''PFN3LMS.pdf",
+          "passed": true
+        },
+        {
+          "category": "Measuring Systems",
+          "documentId": "6af9f5a9600e90616dc6ce84",
+          "fileName": "BHA",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"BHA.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"BHA.pdf\"; filename*=UTF-8''BHA.pdf",
+          "passed": true
+        },
+        {
+          "category": "Motion Control Information System",
+          "documentId": "6af9f689600e90616dc6cfd3",
+          "fileName": "FBR",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"FBR.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"FBR.pdf\"; filename*=UTF-8''FBR.pdf",
+          "passed": true
+        },
+        {
+          "category": "SIMATIC",
+          "documentId": "6af9f6e0600e90616dc6d019",
+          "fileName": "S7_GS",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"S7_GS.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"S7_GS.pdf\"; filename*=UTF-8''S7_GS.pdf",
+          "passed": true
+        },
+        {
+          "category": "SINAMICS S120",
+          "documentId": "6af9f58e600e90616dc6ce75",
+          "fileName": "GH1",
+          "storageProvider": "LOCAL_PERSISTED",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"GH1.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"GH1.pdf\"; filename*=UTF-8''GH1.pdf",
+          "passed": true
+        },
+        {
+          "category": "Synchronous motors",
+          "documentId": "6af9f5b8600e90616dc6ce97",
+          "fileName": "PFK7S",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"PFK7S.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"PFK7S.pdf\"; filename*=UTF-8''PFK7S.pdf",
+          "passed": true
+        },
+        {
+          "category": "ePS Network Services",
+          "documentId": "6af9f6cf600e90616dc6d00e",
+          "fileName": "EPS_PH",
+          "storageProvider": "CLOUDINARY",
+          "streamStatus": 200,
+          "streamDisposition": "inline; filename=\"EPS_PH.pdf\"",
+          "downloadStatus": 200,
+          "downloadDisposition": "attachment; filename=\"EPS_PH.pdf\"; filename*=UTF-8''EPS_PH.pdf",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "check15_search": {
+      "queriesTested": 8,
+      "passedQueries": 8,
+      "results": [
+        {
+          "query": "BHUsl",
+          "type": "Document Code",
+          "count": 2,
+          "passed": true
+        },
+        {
+          "query": "840D sl",
+          "type": "System Name",
+          "count": 26,
+          "passed": true
+        },
+        {
+          "query": "6FC5398",
+          "type": "Siemens Order No. Prefix",
+          "count": 20,
+          "passed": true
+        },
+        {
+          "query": "A5E0",
+          "type": "Siemens A5E Order No.",
+          "count": 20,
+          "passed": true
+        },
+        {
+          "query": "Universal",
+          "type": "Title Keyword",
+          "count": 3,
+          "passed": true
+        },
+        {
+          "query": "Commissioning",
+          "type": "Workflow Keyword",
+          "count": 22,
+          "passed": true
+        },
+        {
+          "query": "1FK7",
+          "type": "Motor Series Code",
+          "count": 6,
+          "passed": true
+        },
+        {
+          "query": "S7-300",
+          "type": "SIMATIC Keyword",
+          "count": 10,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "check16_adminControls": {
+      "adminStatus": 200,
+      "nonAdminStatus": 403,
+      "dryRunStatus": 200,
+      "passed": true
+    }
+  },
+  "summary": {
+    "catalogueRecordCount": 186,
+    "uniquePhysicalDocumentCount": 184,
+    "uniqueStorageAssetCount": 184,
+    "cloudinaryAssetCount": 159,
+    "uniqueCloudinaryAssets": 158,
+    "persistentLocalAssetCount": 27,
+    "uniquePersistentLocalAssets": 26,
+    "duplicateReferenceCount": 2,
+    "missingOrCorruptedFiles": 0,
+    "allChecksPassed": true
+  }
+}
