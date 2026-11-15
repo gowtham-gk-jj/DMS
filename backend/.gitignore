@@ -1,0 +1,50 @@
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Build output
+dist/
+build/
+coverage/
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Local uploads and generated files
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Python-generated cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.old
