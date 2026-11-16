@@ -1,0 +1,5302 @@
+[
+  {
+    "catEntry": {
+      "catalogueIndex": 1,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D/810D",
+      "title": "Operator's Guide HMI Embedded",
+      "softwareVersion": "6.5",
+      "edition": "03/04",
+      "orderNumber": "6FC5298-6AC00-0BP3",
+      "fileName": "BEM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7865d8496612d7ceb7bb",
+      "title": "BEM",
+      "originalFileName": "BEM.pdf",
+      "fileName": "BEM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799717/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799714649_BEM",
+      "fileSize": 3371040,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 2,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D sl/840Di sl/840D",
+      "title": "Operating Manual HMI Advanced",
+      "softwareVersion": "7.5",
+      "edition": "01/08",
+      "orderNumber": "6FC5398-2AP10-3BA0",
+      "fileName": "BAD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f448600e90616dc6cd78",
+      "title": "Operating Manual HMI Advanced",
+      "originalFileName": "BAD.pdf",
+      "fileName": "BAD",
+      "orderNumber": "6FC5398-2AP10-3BA0",
+      "secureUrl": "http://localhost:5000/uploads/1794765896341_BAD_BAD.pdf",
+      "fileSize": 15103794,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f28ef959aeeb3d00e1cb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 3,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D/840Di/810D",
+      "title": "Operation/Programming ShopMill",
+      "softwareVersion": "6.4",
+      "edition": "10/04",
+      "orderNumber": "6FC5298-6AD10-0BP3",
+      "fileName": "BAS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7859d8496612d7ceb787",
+      "title": "BAS",
+      "originalFileName": "BAS.pdf",
+      "fileName": "BAS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799705/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799701778_BAS",
+      "fileSize": 7357861,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 4,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D/840Di/810D",
+      "title": "Operation/Programming ShopTurn",
+      "softwareVersion": "6.4",
+      "edition": "06/03",
+      "orderNumber": "6FC5298-6AD50-0BP2",
+      "fileName": "BAT"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa785ed8496612d7ceb799",
+      "title": "BAT",
+      "originalFileName": "BAT.pdf",
+      "fileName": "BAT",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799710/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799706744_BAT",
+      "fileSize": 6212171,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 5,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "810D/840D",
+      "title": "Operation/Programming ManualTurn",
+      "softwareVersion": "6",
+      "edition": "08/02",
+      "orderNumber": "6FC5298-6AD00-0BP0",
+      "fileName": "BAM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7855d8496612d7ceb775",
+      "title": "BAM",
+      "originalFileName": "BAM.pdf",
+      "fileName": "BAM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799700/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799697926_BAM",
+      "fileSize": 4467879,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 6,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D/840Di/810D",
+      "title": "Operator's Guide Handheld Terminal HT 6",
+      "softwareVersion": "6.4",
+      "edition": "03/04",
+      "orderNumber": "6FC5298-0BD60-0BP3",
+      "fileName": "BAH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7851d8496612d7ceb763",
+      "title": "BAH",
+      "originalFileName": "BAH.pdf",
+      "fileName": "BAH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799696/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799694154_BAH",
+      "fileSize": 3287975,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 7,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "840D/810D",
+      "title": "Description of Functions Configuring the OP 030 Operator Interface",
+      "softwareVersion": "6",
+      "edition": "09/01",
+      "orderNumber": "6FC5297-6AC40-0BP0",
+      "fileName": "FBO"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78a1d8496612d7ceb8d3",
+      "title": "FBO",
+      "originalFileName": "FBO.pdf",
+      "fileName": "FBO",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799777/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799776172_FBO",
+      "fileSize": 1273542,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 8,
+      "page": 1,
+      "category": "840D/840Di/810D User Operation",
+      "system": "SINUMERIK/SIMODRIVE",
+      "title": "Diagnostics Manual",
+      "softwareVersion": "7.4",
+      "edition": "11/06",
+      "orderNumber": "6FC5298-7AA20-0BP3",
+      "fileName": "DA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7871d8496612d7ceb7f7",
+      "title": "DA",
+      "originalFileName": "DA.pdf",
+      "fileName": "DA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799729/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799727565_DA",
+      "fileSize": 2390181,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 9,
+      "page": 1,
+      "category": "Programming",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Programming Manual Fundamentals",
+      "softwareVersion": "7.4",
+      "edition": "11/06",
+      "orderNumber": "6FC5398-1BP10-2BA0",
+      "fileName": "PG"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa796bd8496612d7cebc70",
+      "title": "PG",
+      "originalFileName": "PG.pdf",
+      "fileName": "PG",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799979/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799956195_PG",
+      "fileSize": 8507655,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 10,
+      "page": 1,
+      "category": "Programming",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Programming Manual Job planning",
+      "softwareVersion": "7.4",
+      "edition": "11/06",
+      "orderNumber": "6FC5298-2BP10-1BA0",
+      "fileName": "PGA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7970d8496612d7cebc72",
+      "title": "PGA",
+      "originalFileName": "PGA.pdf",
+      "fileName": "PGA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799984/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799980189_PGA",
+      "fileSize": 6710691,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 11,
+      "page": 1,
+      "category": "Programming",
+      "system": "840D sl/840Di sl/840D",
+      "title": "Programming Manual Cycles",
+      "softwareVersion": "7.5",
+      "edition": "01/08",
+      "orderNumber": "6FC5398-3BP10-1BA0",
+      "fileName": "PGZ"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa79cbd8496612d7cebc7a",
+      "title": "PGZ",
+      "originalFileName": "PGZ.pdf",
+      "fileName": "PGZ",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794800074/dms/DOConCD_SINUMERIK_SIMODRIVE/1794800024001_PGZ",
+      "fileSize": 8889371,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 12,
+      "page": 1,
+      "category": "Programming",
+      "system": "840D sl/840Di sl/840D",
+      "title": "Programming Manual Measuring cycles",
+      "softwareVersion": "7.5",
+      "edition": "01/08",
+      "orderNumber": "6FC5398-4BP10-1BA0",
+      "fileName": "BNM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7868d8496612d7ceb7bf",
+      "title": "BNM",
+      "originalFileName": "BNM.pdf",
+      "fileName": "BNM",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794799719972_BNM_BNM.pdf",
+      "fileSize": 14123453,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 13,
+      "page": 1,
+      "category": "Programming",
+      "system": "",
+      "title": "Programming Guide ISO Turning",
+      "softwareVersion": "7.4",
+      "edition": "04/07",
+      "orderNumber": "6FC5398-5BP10-0BA0",
+      "fileName": "PGT"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa798fd8496612d7cebc78",
+      "title": "PGT",
+      "originalFileName": "PGT.pdf",
+      "fileName": "PGT",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794800013/dms/DOConCD_SINUMERIK_SIMODRIVE/1794800001647_PGT",
+      "fileSize": 1563175,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 14,
+      "page": 1,
+      "category": "Programming",
+      "system": "",
+      "title": "Programming Guide ISO Milling",
+      "softwareVersion": "7.4",
+      "edition": "04/07",
+      "orderNumber": "6FC5398-7BP10-0BA0",
+      "fileName": "PGM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa797ed8496612d7cebc76",
+      "title": "PGM",
+      "originalFileName": "PGM.pdf",
+      "fileName": "PGM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799995/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799989384_PGM",
+      "fileSize": 1593492,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 15,
+      "page": 1,
+      "category": "Programming",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "List of System Variables",
+      "softwareVersion": "7.4",
+      "edition": "11/06",
+      "orderNumber": "6FC5397-6AP10-2BA0",
+      "fileName": "PGA1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7974d8496612d7cebc74",
+      "title": "PGA1",
+      "originalFileName": "PGA1.pdf",
+      "fileName": "PGA1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799987/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799985596_PGA1",
+      "fileSize": 2810440,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 16,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840D",
+      "title": "Manual Configuring the NCU",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "6FC5297-7AC10-0BP1",
+      "fileName": "PHD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd3c480f676f52aca39b",
+      "title": "PHD",
+      "originalFileName": "PHD.pdf",
+      "fileName": "PHD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825531/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825531340_PHD",
+      "fileSize": 903167,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 17,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "810D",
+      "title": "Equipment Manual Configuration CCU",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "6FC5297-7AD10-0BP0",
+      "fileName": "PHC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd3b480f676f52aca399",
+      "title": "PHC",
+      "originalFileName": "PHC.pdf",
+      "fileName": "PHC",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825530/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825528446_PHC",
+      "fileSize": 1332564,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 18,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840Di",
+      "title": "Manual",
+      "softwareVersion": "",
+      "edition": "01/05",
+      "orderNumber": "6FC5297-7AE60-0BP2",
+      "fileName": "HBI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78e1d8496612d7ceba0a",
+      "title": "HBI",
+      "originalFileName": "HBI.pdf",
+      "fileName": "HBI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799841/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799839091_HBI",
+      "fileSize": 3775987,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 19,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840D/810Di/810D",
+      "title": "Manual Operator Components",
+      "softwareVersion": "",
+      "edition": "07/07",
+      "orderNumber": "6FC5297-7AA50-0BP2",
+      "fileName": "BH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7866d8496612d7ceb7bd",
+      "title": "BH",
+      "originalFileName": "BH.pdf",
+      "fileName": "BH",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794799718561_BH_BH.pdf",
+      "fileSize": 52489692,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 20,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Operating Manual SinuCom Installation/Service Tools",
+      "softwareVersion": "",
+      "edition": "07/08",
+      "orderNumber": "Online Help",
+      "fileName": "INC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4d2600e90616dc6cdde",
+      "title": "Operating Manual SinuCom Installation/Service Tools",
+      "originalFileName": "INC.pdf",
+      "fileName": "INC",
+      "orderNumber": "Online Help",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766034/dms/DOConCD_0911/1794766032160_INC",
+      "fileSize": 947569,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 21,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840D/810D",
+      "title": "Description of Functions Configuring the OP 030 Operator Interface",
+      "softwareVersion": "",
+      "edition": "09/01",
+      "orderNumber": "6FC5297-6AC40-0BP0",
+      "fileName": "FBO"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78a1d8496612d7ceb8d3",
+      "title": "FBO",
+      "originalFileName": "FBO.pdf",
+      "fileName": "FBO",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799777/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799776172_FBO",
+      "fileSize": 1273542,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 22,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "840D/810D",
+      "title": "Planning Guide Configuring Syntax",
+      "softwareVersion": "",
+      "edition": "09/03",
+      "orderNumber": "Online Help",
+      "fileName": "PS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd57480f676f52aca4b7",
+      "title": "PS",
+      "originalFileName": "PS.pdf",
+      "fileName": "PS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825558/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825556380_PS",
+      "fileSize": 2446039,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 23,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "",
+      "title": "Planning Guide EMC Installation Guideline",
+      "softwareVersion": "",
+      "edition": "03/04",
+      "orderNumber": "6FC5297-0AD30-0BP2",
+      "fileName": "EMV"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4d6600e90616dc6cde0",
+      "title": "Planning Guide EMC Installation Guideline",
+      "originalFileName": "EMV.pdf",
+      "fileName": "EMV",
+      "orderNumber": "6FC5297-0AD30-0BP2",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766038/dms/DOConCD_0911/1794766036164_EMV",
+      "fileSize": 1108731,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 24,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "",
+      "title": "Device Manual ADI4 - Analog Drive Interface for 4 Axes",
+      "softwareVersion": "",
+      "edition": "05/05",
+      "orderNumber": "6FC5297-0BA01-0BP4",
+      "fileName": "ADI4"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4d7600e90616dc6cde1",
+      "title": "Manual ADI4 - Analog drive interface for 4 axes",
+      "originalFileName": "ADI4.pdf",
+      "fileName": "ADI4",
+      "orderNumber": "6FC5297-0BA01-0BP5",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766039/dms/DOConCD_0911/1794766038571_ADI4",
+      "fileSize": 498913,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 25,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "",
+      "title": "Manual @Event",
+      "softwareVersion": "",
+      "edition": "03/02",
+      "orderNumber": "6AU1900-0CL20-0AA0",
+      "fileName": "HBA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78ded8496612d7ceb9f8",
+      "title": "HBA",
+      "originalFileName": "HBA.pdf",
+      "fileName": "HBA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799837/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799836332_HBA",
+      "fileSize": 1398034,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 26,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "PROFIBUS",
+      "title": "Description SINEC DP Programming Interface",
+      "softwareVersion": "Release 3",
+      "edition": "",
+      "orderNumber": "C79000-G8976-C071",
+      "fileName": "sinec_dp"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4d8600e90616dc6cde3",
+      "title": "Description SINEC DP Programming Interface",
+      "originalFileName": "sinec_dp.pdf",
+      "fileName": "sinec_dp",
+      "orderNumber": "C79000-G8976-C071",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766040/dms/DOConCD_0911/1794766040060_sinec_dp",
+      "fileSize": 345910,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 27,
+      "page": 1,
+      "category": "Manufacturer/Service",
+      "system": "PROFIBUS",
+      "title": "Description SINEC FDL Programming Interface",
+      "softwareVersion": "Release 2",
+      "edition": "",
+      "orderNumber": "C79000-B8976-C072",
+      "fileName": "sinec_fd"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4da600e90616dc6cde7",
+      "title": "Description SINEC FDL Programming Interface",
+      "originalFileName": "sinec_fd.pdf",
+      "fileName": "sinec_fd",
+      "orderNumber": "C79000-B8976-C072",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766042/dms/DOConCD_0911/1794766041355_sinec_fd",
+      "fileSize": 365482,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 28,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "840D/810D/611D",
+      "title": "Start-Up Guide",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "6FC5297-6AB20-0BP0",
+      "fileName": "IADC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78e5d8496612d7ceba1e",
+      "title": "IADC",
+      "originalFileName": "IADC.pdf",
+      "fileName": "IADC",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799845/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799843701_IADC",
+      "fileSize": 1739236,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 29,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "840D sl/840Di sl/840D",
+      "title": "Commissioning Base software and HMI-Advanced",
+      "softwareVersion": "",
+      "edition": "03/09",
+      "orderNumber": "6FC5397-0DP10-3BA0",
+      "fileName": "IHA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4f7600e90616dc6cdf2",
+      "title": "Commissioning Base software and HMI-Advanced",
+      "originalFileName": "IHA.pdf",
+      "fileName": "IHA",
+      "orderNumber": "6FC5397-0DP10-3BA0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766069/dms/DOConCD_0911/1794766059246_IHA",
+      "fileSize": 7302018,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7ddb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 30,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Commissioning CNC Part 2 (HMI)",
+      "softwareVersion": "",
+      "edition": "01/06",
+      "orderNumber": "6FC5397-3AP10-1BA0",
+      "fileName": "IAM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78e8d8496612d7ceba30",
+      "title": "IAM",
+      "originalFileName": "IAM.pdf",
+      "fileName": "IAM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799848/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799845923_IAM",
+      "fileSize": 3353759,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 31,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "840D/840Di/810D",
+      "title": "Installation and Start-Up HMI",
+      "softwareVersion": "",
+      "edition": "03/04",
+      "orderNumber": "6FC5297-6AE20-0BP3",
+      "fileName": "IAM04"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78ecd8496612d7ceba42",
+      "title": "IAM04",
+      "originalFileName": "IAM04.pdf",
+      "fileName": "IAM04",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799851/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799849283_IAM04",
+      "fileSize": 5032798,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 32,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "840D sl/840Di sl/840D/810D",
+      "title": "Commissioning CNC Part 5 (Basesoftware)",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "6FC5397-2CP10-2BA0",
+      "fileName": "IAM2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78f0d8496612d7ceba54",
+      "title": "IAM2",
+      "originalFileName": "IAM2.pdf",
+      "fileName": "IAM2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799856/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799852719_IAM2",
+      "fileSize": 4981630,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 33,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "",
+      "title": "Lists (1st Book)",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5297-7AB70-0BP2",
+      "fileName": "LIS1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78f7d8496612d7ceba76",
+      "title": "LIS1",
+      "originalFileName": "LIS1.pdf",
+      "fileName": "LIS1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799862/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799860382_LIS1",
+      "fileSize": 3273986,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 34,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "",
+      "title": "Lists (2nd Book)",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5297-7AB71-0BP0",
+      "fileName": "LIS2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78fad8496612d7ceba88",
+      "title": "LIS2",
+      "originalFileName": "LIS2.pdf",
+      "fileName": "LIS2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799866/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799863581_LIS2",
+      "fileSize": 3710214,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 35,
+      "page": 1,
+      "category": "Commissioning",
+      "system": "",
+      "title": "Detailed Maschine Data Description",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "",
+      "fileName": "AMD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7842d8496612d7ceb717",
+      "title": "AMD",
+      "originalFileName": "AMD.pdf",
+      "fileName": "AMD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799681/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799679010_AMD",
+      "fileSize": 5104953,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 36,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual Basic Functions",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5397-0BP10-2BA0",
+      "fileName": "FB1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7880d8496612d7ceb83d",
+      "title": "FB1",
+      "originalFileName": "FB1.pdf",
+      "fileName": "FB1",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794799744492_FB1_FB1.pdf",
+      "fileSize": 15698866,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 37,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual Extended Functions",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5397-1BP10-2BA0",
+      "fileName": "FB2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa788cd8496612d7ceb86f",
+      "title": "FB2",
+      "originalFileName": "FB2.pdf",
+      "fileName": "FB2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799755/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799745515_FB2",
+      "fileSize": 10377964,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 38,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual Special Functions",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5397-2BP10-2BA0",
+      "fileName": "FB3"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa788dd8496612d7ceb871",
+      "title": "FB3",
+      "originalFileName": "FB3.pdf",
+      "fileName": "FB3",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794799756818_FB3_FB3.pdf",
+      "fileSize": 11844641,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 39,
+      "page": 2,
+      "category": "Functions",
+      "system": "611D/840D/810D",
+      "title": "Function Manual Drive Functions",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "6SN1197-0AA80-2BP1",
+      "fileName": "FBA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa788fd8496612d7ceb883",
+      "title": "FBA",
+      "originalFileName": "FBA.pdf",
+      "fileName": "FBA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799759/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799757557_FBA",
+      "fileSize": 2313092,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 40,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/840Di/810D",
+      "title": "Description of Functions Tool Management",
+      "softwareVersion": "",
+      "edition": "09/05",
+      "orderNumber": "6FC5297-6AC60-0BP1",
+      "fileName": "FBW"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78cbd8496612d7ceb997",
+      "title": "FBW",
+      "originalFileName": "FBW.pdf",
+      "fileName": "FBW",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799819/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799817612_FBW",
+      "fileSize": 3120825,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 41,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/840Di/810D",
+      "title": "Description of Functions ISO Dialects for SINUMERIK",
+      "softwareVersion": "",
+      "edition": "03/07",
+      "orderNumber": "6FC5297-6AE10-0BP4",
+      "fileName": "FBFA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7896d8496612d7ceb899",
+      "title": "FBFA",
+      "originalFileName": "FBFA.pdf",
+      "fileName": "FBFA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799766/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799765609_FBFA",
+      "fileSize": 989943,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 42,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/611D",
+      "title": "Description of Functions HLA module",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "6SN1197-0AB60-0BP4",
+      "fileName": "FBHLA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa789bd8496612d7ceb8bd",
+      "title": "FBHLA",
+      "originalFileName": "FBHLA.pdf",
+      "fileName": "FBHLA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799771/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799769612_FBHLA",
+      "fileSize": 2407961,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 43,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/611D",
+      "title": "Description of Functions ANA Module",
+      "softwareVersion": "",
+      "edition": "02/00",
+      "orderNumber": "6SN1197-0AB80-0BP0",
+      "fileName": "FBAN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7891d8496612d7ceb885",
+      "title": "FBAN",
+      "originalFileName": "FBAN.pdf",
+      "fileName": "FBAN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799761/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799760233_FBAN",
+      "fileSize": 662170,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 44,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/611D",
+      "title": "Description of Functions Safety Integrated",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "6FC5297-7AB80-0BP1",
+      "fileName": "FBSI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78a8d8496612d7ceb8f7",
+      "title": "FBSI",
+      "originalFileName": "FBSI.pdf",
+      "fileName": "FBSI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799784/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799781564_FBSI",
+      "fileSize": 4157354,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 45,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual Synchronized Actions",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "6FC5397-5BP10-2BA0",
+      "fileName": "FBSY"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78aed8496612d7ceb91d",
+      "title": "FBSY",
+      "originalFileName": "FBSY.pdf",
+      "fileName": "FBSY",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799790/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799789233_FBSY",
+      "fileSize": 1319860,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 46,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D",
+      "title": "Description of Functions Digitizing",
+      "softwareVersion": "",
+      "edition": "07/99",
+      "orderNumber": "6FC5297-4AC50-0BP0",
+      "fileName": "FBD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7893d8496612d7ceb897",
+      "title": "FBD",
+      "originalFileName": "FBD.pdf",
+      "fileName": "FBD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799763/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799761734_FBD",
+      "fileSize": 2095169,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 47,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/840Di/810D",
+      "title": "Description of Functions Remote Diagnosis",
+      "softwareVersion": "",
+      "edition": "03/04",
+      "orderNumber": "6FC5297-0AF00-0BP3",
+      "fileName": "FBFE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7899d8496612d7ceb8ab",
+      "title": "FBFE",
+      "originalFileName": "FBFE.pdf",
+      "fileName": "FBFE",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799768/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799767410_FBFE",
+      "fileSize": 1568316,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 48,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D",
+      "title": "Description of Functions C-PLC-Programming",
+      "softwareVersion": "",
+      "edition": "03/96",
+      "orderNumber": "6FC5297-3AB60-0BP0",
+      "fileName": "FBP"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78a3d8496612d7ceb8e5",
+      "title": "FBP",
+      "originalFileName": "FBP.pdf",
+      "fileName": "FBP",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799779/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799778132_FBP",
+      "fileSize": 1893721,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 49,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/840Di/810D",
+      "title": "Description of Functions ShopMill",
+      "softwareVersion": "",
+      "edition": "02/05",
+      "orderNumber": "6FC5297-6AD80-0BP3",
+      "fileName": "FBSP"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78aad8496612d7ceb8f9",
+      "title": "FBSP",
+      "originalFileName": "FBSP.pdf",
+      "fileName": "FBSP",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799786/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799785248_FBSP",
+      "fileSize": 974721,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 50,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/840Di/810D",
+      "title": "Description of Functions ShopTurn",
+      "softwareVersion": "",
+      "edition": "03/04",
+      "orderNumber": "6FC5297-6AD70-0BP2",
+      "fileName": "FBT"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78b1d8496612d7ceb91f",
+      "title": "FBT",
+      "originalFileName": "FBT.pdf",
+      "fileName": "FBT",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799793/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799791458_FBT",
+      "fileSize": 1161032,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 51,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/810D",
+      "title": "Description of Functions ManualTurn",
+      "softwareVersion": "",
+      "edition": "08/02",
+      "orderNumber": "6FC5297-6AD50-0BP0",
+      "fileName": "FBMA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa789dd8496612d7ceb8bf",
+      "title": "FBMA",
+      "originalFileName": "FBMA.pdf",
+      "fileName": "FBMA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799773/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799772488_FBMA",
+      "fileSize": 689730,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 52,
+      "page": 2,
+      "category": "Functions",
+      "system": "840D/810D",
+      "title": "Description of Functions ManualTurn Supplementary information",
+      "softwareVersion": "",
+      "edition": "07/04",
+      "orderNumber": "",
+      "fileName": "FBMAx"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa789fd8496612d7ceb8d1",
+      "title": "FBMAx",
+      "originalFileName": "FBMAx.pdf",
+      "fileName": "FBMAx",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799775/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799774296_FBMAx",
+      "fileSize": 49924,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 53,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D base line",
+      "title": "Operating and Programming Turning",
+      "softwareVersion": "2",
+      "edition": "08/05",
+      "orderNumber": "6FC5698-2AA00-1BP4",
+      "fileName": "802D_BPD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7824d8496612d7ceb67f",
+      "title": "802D_BPD",
+      "originalFileName": "802D_BPD.pdf",
+      "fileName": "802D_BPD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799652/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799650431_802D_BPD",
+      "fileSize": 2642782,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 54,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Brief Instructions Turning",
+      "softwareVersion": "1",
+      "edition": "11/00",
+      "orderNumber": "6FC5698-1AA30-0BP0",
+      "fileName": "802DBNKD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7820d8496612d7ceb66b",
+      "title": "802DBNKD",
+      "originalFileName": "802DBNKD.pdf",
+      "fileName": "802DBNKD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799647/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799646738_802DBNKD",
+      "fileSize": 354280,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 55,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Short Guide Turning ISO Dialect T",
+      "softwareVersion": "1",
+      "edition": "09/01",
+      "orderNumber": "6FC5698-1AA60-0BP0",
+      "fileName": "802D_ISD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7830d8496612d7ceb6b9",
+      "title": "802D_ISD",
+      "originalFileName": "802D_ISD.pdf",
+      "fileName": "802D_ISD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799664/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799663199_802D_ISD",
+      "fileSize": 209737,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 56,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Operating and Programming Milling",
+      "softwareVersion": "2",
+      "edition": "08/05",
+      "orderNumber": "6FC5698-2AA10-1BP5",
+      "fileName": "802D_BPF"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7828d8496612d7ceb691",
+      "title": "802D_BPF",
+      "originalFileName": "802D_BPF.pdf",
+      "fileName": "802D_BPF",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799655/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799653427_802D_BPF",
+      "fileSize": 2957964,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 57,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Brief Instructions Milling",
+      "softwareVersion": "1",
+      "edition": "11/00",
+      "orderNumber": "6FC5298-1AA40-0BP0",
+      "fileName": "802DBNKF"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7821d8496612d7ceb66d",
+      "title": "802DBNKF",
+      "originalFileName": "802DBNKF.pdf",
+      "fileName": "802DBNKF",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799649/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799648796_802DBNKF",
+      "fileSize": 354879,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 58,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Short Guide Milling ISO Dialect M",
+      "softwareVersion": "1",
+      "edition": "09/01",
+      "orderNumber": "6FC5698-1AA50-0BP0",
+      "fileName": "802D_ISF"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7832d8496612d7ceb6bb",
+      "title": "802D_ISF",
+      "originalFileName": "802D_ISF.pdf",
+      "fileName": "802D_ISF",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799665/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799664990_802D_ISF",
+      "fileSize": 255085,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 59,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D",
+      "title": "Diagnostics Guide",
+      "softwareVersion": "1",
+      "edition": "10/02",
+      "orderNumber": "6FC5698-2AA20-0BP1",
+      "fileName": "802D_DIA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7829d8496612d7ceb693",
+      "title": "802D_DIA",
+      "originalFileName": "802D_DIA.pdf",
+      "fileName": "802D_DIA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799657/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799656638_802D_DIA",
+      "fileSize": 646419,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 60,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D base line",
+      "title": "Description of Functions",
+      "softwareVersion": "",
+      "edition": "11/03",
+      "orderNumber": "6FC5697-2AA10-0BP2",
+      "fileName": "802D_FB"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa782cd8496612d7ceb6a5",
+      "title": "802D_FB",
+      "originalFileName": "802D_FB.pdf",
+      "fileName": "802D_FB",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799660/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799658120_802D_FB",
+      "fileSize": 1704407,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 61,
+      "page": 2,
+      "category": "802D base line",
+      "system": "802D base line",
+      "title": "Commissioning Manual",
+      "softwareVersion": "",
+      "edition": "08/05",
+      "orderNumber": "6FC5697-2AA00-1BP5",
+      "fileName": "802D_IBN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa782ed8496612d7ceb6b7",
+      "title": "802D_IBN",
+      "originalFileName": "802D_IBN.pdf",
+      "fileName": "802D_IBN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799662/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799660584_802D_IBN",
+      "fileSize": 1527164,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 62,
+      "page": 2,
+      "category": "802D base line",
+      "system": "",
+      "title": "Device Manual ADI4 - Analog Drive Interface for 4 Axes",
+      "softwareVersion": "",
+      "edition": "05/05",
+      "orderNumber": "6FC5297-0BA01-0BP4",
+      "fileName": "ADI4"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f4d7600e90616dc6cde1",
+      "title": "Manual ADI4 - Analog drive interface for 4 axes",
+      "originalFileName": "ADI4.pdf",
+      "fileName": "ADI4",
+      "orderNumber": "6FC5297-0BA01-0BP5",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766039/dms/DOConCD_0911/1794766038571_ADI4",
+      "fileSize": 498913,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dda"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 63,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802S/ 802C base line",
+      "title": "Operating and Programming Turning",
+      "softwareVersion": "4",
+      "edition": "08/03",
+      "orderNumber": "6FC5598-4AA01-0BP0",
+      "fileName": "802S_BPD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7834d8496612d7ceb6cd",
+      "title": "802S_BPD",
+      "originalFileName": "802S_BPD.pdf",
+      "fileName": "802S_BPD",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799667/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799666651_802S_BPD",
+      "fileSize": 1665665,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 64,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802S/ 802C base line",
+      "title": "Operating and Programming Milling",
+      "softwareVersion": "4",
+      "edition": "08/03",
+      "orderNumber": "6FC5598-4AA11-0BP0",
+      "fileName": "802S_BPF"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7836d8496612d7ceb6df",
+      "title": "802S_BPF",
+      "originalFileName": "802S_BPF.pdf",
+      "fileName": "802S_BPF",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799670/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799668708_802S_BPF",
+      "fileSize": 1727939,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 65,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802S/ 802C base line",
+      "title": "Diagnostics Guide",
+      "softwareVersion": "4",
+      "edition": "08/03",
+      "orderNumber": "6FC5598-4AA21-0BP0",
+      "fileName": "802S_DIA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7838d8496612d7ceb6e1",
+      "title": "802S_DIA",
+      "originalFileName": "802S_DIA.pdf",
+      "fileName": "802S_DIA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799671/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799670824_802S_DIA",
+      "fileSize": 381047,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 66,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802S/802C base line",
+      "title": "Description of Functions",
+      "softwareVersion": "",
+      "edition": "08/03",
+      "orderNumber": "6FC5597-4AA11-0BP0",
+      "fileName": "802S_FB"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa783ad8496612d7ceb6f3",
+      "title": "802S_FB",
+      "originalFileName": "802S_FB.pdf",
+      "fileName": "802S_FB",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799674/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799673164_802S_FB",
+      "fileSize": 2048298,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 67,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802C base line",
+      "title": "Start-Up",
+      "softwareVersion": "",
+      "edition": "08/03",
+      "orderNumber": "6FC5597-4AA21-0BP0",
+      "fileName": "802C_IBN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa781ad8496612d7ceb645",
+      "title": "802C_IBN",
+      "originalFileName": "802C_IBN.pdf",
+      "fileName": "802C_IBN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799642/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799638388_802C_IBN",
+      "fileSize": 1078914,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 68,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "802S base line",
+      "title": "Start-Up",
+      "softwareVersion": "",
+      "edition": "08/03",
+      "orderNumber": "6FC5597-4AA01-0BP0",
+      "fileName": "802S_IBN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa783ed8496612d7ceb6f5",
+      "title": "802S_IBN",
+      "originalFileName": "802S_IBN.pdf",
+      "fileName": "802S_IBN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799678/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799676481_802S_IBN",
+      "fileSize": 1276825,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 69,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "SIMODRIVE base line",
+      "title": "Start-Up",
+      "softwareVersion": "",
+      "edition": "03/03",
+      "orderNumber": "6SN1197-0AB21-0BP0",
+      "fileName": "802C_IBN_SBL"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa781cd8496612d7ceb657",
+      "title": "802C_IBN_SBL",
+      "originalFileName": "802C_IBN_SBL.pdf",
+      "fileName": "802C_IBN_SBL",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799644/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799642920_802C_IBN_SBL",
+      "fileSize": 769265,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 70,
+      "page": 2,
+      "category": "802S/802C base line",
+      "system": "SIMODRIVE base line A",
+      "title": "Start-Up",
+      "softwareVersion": "",
+      "edition": "09/04",
+      "orderNumber": "6SN1197-0AB21-0BP1",
+      "fileName": "802C_IBN_SBLA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa781ed8496612d7ceb659",
+      "title": "802C_IBN_SBLA",
+      "originalFileName": "802C_IBN_SBLA.pdf",
+      "fileName": "802C_IBN_SBLA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799645/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799644784_802C_IBN_SBLA",
+      "fileSize": 1082240,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 71,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 digital",
+      "title": "Configuration Manual Drive Converters",
+      "softwareVersion": "",
+      "edition": "05/08",
+      "orderNumber": "6SN1197-0AA00-1BP1",
+      "fileName": "PJU"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd40480f676f52aca3c0",
+      "title": "PJU",
+      "originalFileName": "PJU.pdf",
+      "fileName": "PJU",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825536/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825534049_PJU",
+      "fileSize": 9912394,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 72,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 universal",
+      "title": "Function Manual",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "6SN1197-0AB20-2BP2",
+      "fileName": "FBU"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78c1d8496612d7ceb941",
+      "title": "FBU",
+      "originalFileName": "FBU.pdf",
+      "fileName": "FBU",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799807/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799794811_FBU",
+      "fileSize": 7088707,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 73,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 universal",
+      "title": "Replacing as spare part",
+      "softwareVersion": "",
+      "edition": "07/05",
+      "orderNumber": "A5E00150834",
+      "fileName": "FBU_TE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78c6d8496612d7ceb969",
+      "title": "FBU_TE",
+      "originalFileName": "FBU_TE.pdf",
+      "fileName": "FBU_TE",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799814/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799812277_FBU_TE",
+      "fileSize": 684217,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 74,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 universal",
+      "title": "HR/HRS Replacing as spare part",
+      "softwareVersion": "",
+      "edition": "12/05",
+      "orderNumber": "A5E00423710",
+      "fileName": "FBU_TEH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78c8d8496612d7ceb98b",
+      "title": "FBU_TEH",
+      "originalFileName": "FBU_TEH.pdf",
+      "fileName": "FBU_TEH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799816/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799814713_FBU_TEH",
+      "fileSize": 786297,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 75,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 analog",
+      "title": "Start–Up Guide",
+      "softwareVersion": "",
+      "edition": "10/00",
+      "orderNumber": "6SN1197-0AA60-0BP6",
+      "fileName": "IAA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78e3d8496612d7ceba0c",
+      "title": "IAA",
+      "originalFileName": "IAA.pdf",
+      "fileName": "IAA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799843/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799841757_IAA",
+      "fileSize": 1584777,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 76,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "611 analog",
+      "title": "Description",
+      "softwareVersion": "",
+      "edition": "10/00",
+      "orderNumber": "6SN1197-0AA30-0BP1",
+      "fileName": "BS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa786ad8496612d7ceb7d1",
+      "title": "BS",
+      "originalFileName": "BS.pdf",
+      "fileName": "BS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799722/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799721220_BS",
+      "fileSize": 177217,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 77,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "",
+      "title": "Functional description FM-STEPDRIVE/SIMOSTEP",
+      "softwareVersion": "",
+      "edition": "02/05",
+      "orderNumber": "6SN1197-0AA70-0YP4",
+      "fileName": "FBST"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78acd8496612d7ceb90b",
+      "title": "FBST",
+      "originalFileName": "FBST.pdf",
+      "fileName": "FBST",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799788/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799787512_FBST",
+      "fileSize": 1020185,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 78,
+      "page": 3,
+      "category": "SIMODRIVE",
+      "system": "SINAMICS S120/SIMODRIVE",
+      "title": "System Manual Cabinet integration",
+      "softwareVersion": "",
+      "edition": "09/07",
+      "orderNumber": "6SL3097-0AT00-0BP0",
+      "fileName": "SH1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5a5600e90616dc6ce83",
+      "title": "System Manual Cabinet integration",
+      "originalFileName": "SH1.pdf",
+      "fileName": "SH1",
+      "orderNumber": "6SL3097-0AT00-0BP0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766245/dms/DOConCD_0911/1794766243937_SH1",
+      "fileSize": 1745310,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de3"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 79,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "User Manual Absolute value encoder with PROFIBUS-DP",
+      "softwareVersion": "",
+      "edition": "07/05",
+      "orderNumber": "6SN1197-0AB10-0YP4",
+      "fileName": "BHA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5a9600e90616dc6ce84",
+      "title": "User Manual Absolute value encoder with PROFIBUS-DP",
+      "originalFileName": "BHA.pdf",
+      "fileName": "BHA",
+      "orderNumber": "6SN1197-0AB10-0YP4",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766248/dms/DOConCD_0911/1794766246061_BHA",
+      "fileSize": 2552242,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 80,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Configuration Manual Hollow-Shaft Measuring System SIMAG H2",
+      "softwareVersion": "",
+      "edition": "01/11",
+      "orderNumber": "6SN1197-0AB31-0BP8",
+      "fileName": "PMH2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ab600e90616dc6ce85",
+      "title": "Configuration Manual Hollow-Shaft Measuring System SIMAG H2",
+      "originalFileName": "PMH2.pdf",
+      "fileName": "PMH2",
+      "orderNumber": "6SN1197-0AB31-0BP8",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766250/dms/DOConCD_0911/1794766249622_PMH2",
+      "fileSize": 895622,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 81,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Mounting Instruction SIMAG H2 on SIMAG H",
+      "softwareVersion": "",
+      "edition": "08/05",
+      "orderNumber": "",
+      "fileName": "SIMAGH2_M1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd61480f676f52aca524",
+      "title": "SIMAGH2_M1",
+      "originalFileName": "SIMAGH2_M1.pdf",
+      "fileName": "SIMAGH2_M1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825569/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825568174_SIMAGH2_M1",
+      "fileSize": 92149,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 82,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Mounting Instruction SIMAG H2 on SIZAG 2",
+      "softwareVersion": "",
+      "edition": "08/05",
+      "orderNumber": "",
+      "fileName": "SIMAGH2_M2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd62480f676f52aca541",
+      "title": "SIMAGH2_M2",
+      "originalFileName": "SIMAGH2_M2.pdf",
+      "fileName": "SIMAGH2_M2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825570/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825569950_SIMAGH2_M2",
+      "fileSize": 78745,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 83,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Mounting Guide Gear Wheel Encoder SIZAG 2",
+      "softwareVersion": "",
+      "edition": "05/08",
+      "orderNumber": "6SN1197-0AB00-0YP3",
+      "fileName": "SIZAG2_M"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd66480f676f52aca564",
+      "title": "SIZAG2_M",
+      "originalFileName": "SIZAG2_M.pdf",
+      "fileName": "SIZAG2_M",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825573/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825572535_SIZAG2_M",
+      "fileSize": 472007,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 84,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Assembly instructions Encoder systems ERN 1381.001",
+      "softwareVersion": "",
+      "edition": "06/03",
+      "orderNumber": "610.41 334.02",
+      "fileName": "ERN1381_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ac600e90616dc6ce86",
+      "title": "Assembly instructions Encoder systems ERN 1381.001",
+      "originalFileName": "ERN1381_BE.pdf",
+      "fileName": "ERN1381_BE",
+      "orderNumber": "610.41 334.02",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766251/dms/DOConCD_0911/1794766251264_ERN1381_BE",
+      "fileSize": 595803,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 85,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Assembly instructions Encoder systems ERN 1387 … / S21 / EQN 1325 …",
+      "softwareVersion": "",
+      "edition": "01/05",
+      "orderNumber": "610.41 304.02",
+      "fileName": "ERN1387_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ad600e90616dc6ce87",
+      "title": "Assembly instructions Encoder systems ERN 1387 … / S21 / EQN 1325 …",
+      "originalFileName": "ERN1387_BE.pdf",
+      "fileName": "ERN1387_BE",
+      "orderNumber": "610.41 304.02",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766253/dms/DOConCD_0911/1794766252396_ERN1387_BE",
+      "fileSize": 1079703,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 86,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Description Connection Cap Hollow Shaft Encoder PROFIBUS DP",
+      "softwareVersion": "",
+      "edition": "06/05",
+      "orderNumber": "",
+      "fileName": "SSB_DPH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ae600e90616dc6ce88",
+      "title": "Description Connection Cap Hollow Shaft Encoder PROFIBUS DP",
+      "originalFileName": "SSB_DPH.pdf",
+      "fileName": "SSB_DPH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766254/dms/DOConCD_0911/1794766253989_SSB_DPH",
+      "fileSize": 391067,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 87,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Description Connection Cap Solid Shaft Encoder PROFIBUS DP",
+      "softwareVersion": "",
+      "edition": "05/04",
+      "orderNumber": "",
+      "fileName": "SSB_DPV"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5b0600e90616dc6ce89",
+      "title": "Description Connection Cap Solid Shaft Encoder PROFIBUS DP",
+      "originalFileName": "SSB_DPV.pdf",
+      "fileName": "SSB_DPV",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766256/dms/DOConCD_0911/1794766255439_SSB_DPV",
+      "fileSize": 649707,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 88,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Description Encoder Connector SSI - EnDat",
+      "softwareVersion": "",
+      "edition": "06/08",
+      "orderNumber": "",
+      "fileName": "SSB_SSI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5b1600e90616dc6ce8a",
+      "title": "Description Encoder Connector SSI - EnDat",
+      "originalFileName": "SSB_SSI.pdf",
+      "fileName": "SSB_SSI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766256/dms/DOConCD_0911/1794766256573_SSB_SSI",
+      "fileSize": 176845,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 89,
+      "page": 3,
+      "category": "SIMODRIVE Sensor",
+      "system": "",
+      "title": "Description Encoder Connector TTL - HTL- 1Vpp",
+      "softwareVersion": "",
+      "edition": "07/04",
+      "orderNumber": "",
+      "fileName": "SSB_TTL"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5b2600e90616dc6ce8b",
+      "title": "Description Encoder Connector TTL - HTL- 1Vpp",
+      "originalFileName": "SSB_TTL.pdf",
+      "fileName": "SSB_TTL",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766257/dms/DOConCD_0911/1794766257412_SSB_TTL",
+      "fileSize": 187718,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de4"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 90,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FK6",
+      "title": "Planning Guide AC Servomotors",
+      "softwareVersion": "",
+      "edition": "05/03",
+      "orderNumber": "6SN1197-0AD05-0BP0",
+      "fileName": "PFK6"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78fdd8496612d7ceba8a",
+      "title": "PFK6",
+      "originalFileName": "PFK6.pdf",
+      "fileName": "PFK6",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799869/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799868776_PFK6",
+      "fileSize": 486331,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 91,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FK7",
+      "title": "Configuration Manual Synchronous Motors",
+      "softwareVersion": "",
+      "edition": "10/05",
+      "orderNumber": "6SN1197-0AD06-0BP0",
+      "fileName": "PFK7"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7904d8496612d7cebaac",
+      "title": "PFK7",
+      "originalFileName": "PFK7.pdf",
+      "fileName": "PFK7",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799875/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799870680_PFK7",
+      "fileSize": 5756358,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 92,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FK7",
+      "title": "Operating Instructions Synchronous Motors",
+      "softwareVersion": "",
+      "edition": "03/11",
+      "orderNumber": "610.40700.40c",
+      "fileName": "1FK7_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ba600e90616dc6ce9b",
+      "title": "Operating Instructions Synchronous Motors",
+      "originalFileName": "1FK7_BE.pdf",
+      "fileName": "1FK7_BE",
+      "orderNumber": "610.40700.40c",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766266/dms/DOConCD_0911/1794766265023_1FK7_BE",
+      "fileSize": 1354870,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 93,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FK7",
+      "title": "Instructions Geared motors",
+      "softwareVersion": "",
+      "edition": "03/05",
+      "orderNumber": "610.40 064.01",
+      "fileName": "1FK7G_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5c0600e90616dc6cea0",
+      "title": "Instructions Geared motors",
+      "originalFileName": "1FK7G_BE.pdf",
+      "fileName": "1FK7G_BE",
+      "orderNumber": "610.40 064.01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766272/dms/DOConCD_0911/1794766266987_1FK7G_BE",
+      "fileSize": 4831101,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 94,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FK7/1FT6",
+      "title": "Instructions Geared motors-Planetary gear",
+      "softwareVersion": "",
+      "edition": "09/05",
+      "orderNumber": "610.40 064.01",
+      "fileName": "1FK7GP_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9d792850fcef6d5f02fe7",
+      "title": "Instructions Geared motors-Planetary gear",
+      "originalFileName": "1FK7GP_BE.pdf",
+      "fileName": "1FK7GP_BE",
+      "orderNumber": "610.40 064.01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794758546/dms/DOConCD_SINUMERIK_SIMODRIVE/1794758542201_1FK7GP_BE",
+      "fileSize": 684180,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 95,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT5",
+      "title": "Planning Guide AC Servomotors",
+      "softwareVersion": "",
+      "edition": "05/03",
+      "orderNumber": "6SN1197-0AD01-0BP0",
+      "fileName": "PFT5"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa791ad8496612d7cebb14",
+      "title": "PFT5",
+      "originalFileName": "PFT5.pdf",
+      "fileName": "PFT5",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799898/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799897636_PFT5",
+      "fileSize": 1230182,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 96,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT5",
+      "title": "Operating Instructions Three-phase servomotors 1FT5 02 - 04",
+      "softwareVersion": "",
+      "edition": "09/93",
+      "orderNumber": "610.42078.21.a",
+      "fileName": "1FT502_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7808d8496612d7ceb5ff",
+      "title": "1FT502_BE",
+      "originalFileName": "1FT502_BE.pdf",
+      "fileName": "1FT502_BE",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799624/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799621759_1FT502_BE",
+      "fileSize": 333036,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 97,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT5",
+      "title": "Operating Instructions Three-phase servomotors 1FT5 06 - 13",
+      "softwareVersion": "",
+      "edition": "04/93",
+      "orderNumber": "610.43 424.21.a",
+      "fileName": "1FT506_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa780ad8496612d7ceb601",
+      "title": "1FT506_BE",
+      "originalFileName": "1FT506_BE.pdf",
+      "fileName": "1FT506_BE",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799626/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799625457_1FT506_BE",
+      "fileSize": 359196,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 98,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT6",
+      "title": "Configuration Manual Synchronous motors",
+      "softwareVersion": "",
+      "edition": "10/05",
+      "orderNumber": "6SN1197-0AD02-0BP0",
+      "fileName": "PFT6"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa792fd8496612d7cebb26",
+      "title": "PFT6",
+      "originalFileName": "PFT6.pdf",
+      "fileName": "PFT6",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799919/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799899675_PFT6",
+      "fileSize": 6312416,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 99,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT6",
+      "title": "Instructions Three-phase servomotors 1FT6 02 - 10",
+      "softwareVersion": "",
+      "edition": "07/03",
+      "orderNumber": "610.43 410.21",
+      "fileName": "1FT602_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5d2600e90616dc6ceac",
+      "title": "Instructions Three-phase servomotors 1FT6 02 - 10",
+      "originalFileName": "1FT602_BE.pdf",
+      "fileName": "1FT602_BE",
+      "orderNumber": "610.43 410.21",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766290/dms/DOConCD_0911/1794766285035_1FT602_BE",
+      "fileSize": 4906010,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 100,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT6",
+      "title": "Instructions Three-phase servomotors 1FT6 13 - 16",
+      "softwareVersion": "",
+      "edition": "03/07",
+      "orderNumber": "610.43 600.21",
+      "fileName": "1FT613_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5d4600e90616dc6cead",
+      "title": "Instructions Three-phase servomotors 1FT6 13 - 16",
+      "originalFileName": "1FT613_BE.pdf",
+      "fileName": "1FT613_BE",
+      "orderNumber": "610.43 600.21",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766292/dms/DOConCD_0911/1794766290938_1FT613_BE",
+      "fileSize": 1822987,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 101,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT6",
+      "title": "Maintenance Three-phase servomotors 1FT6 03 - 04 / 06 - 13",
+      "softwareVersion": "",
+      "edition": "07/96",
+      "orderNumber": "610.43411.02.a",
+      "fileName": "1FT6_IA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5d5600e90616dc6ceae",
+      "title": "Maintenance Three-phase servomotors 1FT6 03 - 04 / 06 - 13",
+      "originalFileName": "1FT6_IA.pdf",
+      "fileName": "1FT6_IA",
+      "orderNumber": "610.43411.02.a",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766293/dms/DOConCD_0911/1794766292913_1FT6_IA",
+      "fileSize": 390364,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 102,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT7",
+      "title": "Configuration Manual Synchronous motors",
+      "softwareVersion": "",
+      "edition": "03/10",
+      "orderNumber": "6SN1197-0AC13-0BP3",
+      "fileName": "PFT7"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa794fd8496612d7cebb54",
+      "title": "PFT7",
+      "originalFileName": "PFT7.pdf",
+      "fileName": "PFT7",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799950/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799921723_PFT7",
+      "fileSize": 8328047,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 103,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FT7",
+      "title": "Betriebsanleitung Synchronmotoren 1FT7 03. - 1FT7 10.",
+      "softwareVersion": "",
+      "edition": "05/11",
+      "orderNumber": "610.40075.40c",
+      "fileName": "1FT7_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5d9600e90616dc6ceb0",
+      "title": "Operating Instructions Synchronous Motors",
+      "originalFileName": "1FT7_BE.pdf",
+      "fileName": "1FT7_BE",
+      "orderNumber": "610.40075.40c",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766296/dms/DOConCD_0911/1794766294342_1FT7_BE",
+      "fileSize": 2700257,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 104,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FE1",
+      "title": "Configuration Manual Synchronous Built-in Motors",
+      "softwareVersion": "",
+      "edition": "09/08",
+      "orderNumber": "6SN1197-0AC00-1BP0",
+      "fileName": "PFE1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5d9600e90616dc6ceb1",
+      "title": "Configuration Manual Synchronous Built-in Motors",
+      "originalFileName": "PFE1.pdf",
+      "fileName": "PFE1",
+      "orderNumber": "6SN1197-0AC01-0BP0",
+      "secureUrl": "http://localhost:5000/uploads/1794766297570_PFE1_PFE1.pdf",
+      "fileSize": 7022085,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 105,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FE1",
+      "title": "Hardware Installation Manual Synchronous Built-in Motors",
+      "softwareVersion": "",
+      "edition": "10/10",
+      "orderNumber": "610.43000.40",
+      "fileName": "1FE1_M"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5dd600e90616dc6ceb3",
+      "title": "Assembly Instructions Synchronous built-in motors",
+      "originalFileName": "1FE1_M.pdf",
+      "fileName": "1FE1_M",
+      "orderNumber": "610.43000.40",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766300/dms/DOConCD_0911/1794766297697_1FE1_M",
+      "fileSize": 3488553,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 106,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FE1",
+      "title": "Operating Instructions Voltage Limiting Module VPM200",
+      "softwareVersion": "",
+      "edition": "08/09",
+      "orderNumber": "A5E00302261B",
+      "fileName": "1FE1VPM200_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5de600e90616dc6ceb4",
+      "title": "Operating Instructions Voltage Limiting Module VPM200",
+      "originalFileName": "1FE1_VPM200_BE.pdf",
+      "fileName": "1FE1_VPM200_BE",
+      "orderNumber": "A5E00302261B",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766302/dms/DOConCD_0911/1794766301500_1FE1_VPM200_BE",
+      "fileSize": 585736,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 107,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FE1",
+      "title": "Operating Instructions Voltage Limiting Module VPM200 DYNAMIK",
+      "softwareVersion": "",
+      "edition": "08/09",
+      "orderNumber": "A5E00777655A",
+      "fileName": "1FE1VPM200D_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5df600e90616dc6ceb5",
+      "title": "Operating Instructions Voltage Limiting Module VPM200 DYNAMIK",
+      "originalFileName": "1FE1_VPM200D_BE.pdf",
+      "fileName": "1FE1_VPM200D_BE",
+      "orderNumber": "A5E00777655A",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766303/dms/DOConCD_0911/1794766302881_1FE1_VPM200D_BE",
+      "fileSize": 600048,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 108,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1FE1",
+      "title": "Operating Instructions Voltage Limiting Module VPM120",
+      "softwareVersion": "",
+      "edition": "08/09",
+      "orderNumber": "A5E00302281B",
+      "fileName": "1FE1VPM120_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5e0600e90616dc6ceb6",
+      "title": "Operating Instructions Voltage Limiting Module VPM120",
+      "originalFileName": "1FE1_VPM120_BE.pdf",
+      "fileName": "1FE1VPM120_BE",
+      "orderNumber": "A5E00302281B",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766304/dms/DOConCD_0911/1794766303936_1FE1_VPM120_BE",
+      "fileSize": 475356,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 109,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions Synchronous/induction motors 1PH813 and 1PH816",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "610.48006.40",
+      "fileName": "1PH813_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5e3600e90616dc6ceb8",
+      "title": "Operating Instructions Synchronous/induction motors 1PH813 and 1PH816",
+      "originalFileName": "1PH813_BE.pdf",
+      "fileName": "1PH813_BE",
+      "orderNumber": "610.48006.40",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766306/dms/DOConCD_0911/1794766304957_1PH813_BE",
+      "fileSize": 2255111,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 110,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions/Installation Instructions Three-phase synchronous motor 1PH818, 1PH822",
+      "softwareVersion": "",
+      "edition": "07/10",
+      "orderNumber": "A5E03029571A AA",
+      "fileName": "1PH818S_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5e7600e90616dc6cebb",
+      "title": "Operating Instructions/Installation Instructions Three-phase synchronous motor 1PH818, 1PH822",
+      "originalFileName": "1PH818S_BE.pdf",
+      "fileName": "1PH818S_BE",
+      "orderNumber": "A5E03029571A AA",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766311/dms/DOConCD_0911/1794766307259_1PH818S_BE",
+      "fileSize": 4533416,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 111,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions Three-phase synchronous motor 1PH818, 1PH822",
+      "softwareVersion": "",
+      "edition": "10/09",
+      "orderNumber": "A5E02446774A AB",
+      "fileName": "1PH818S_BE0909"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5ec600e90616dc6cebc",
+      "title": "Operating Instructions Three-phase synchronous motor 1PH818, 1PH822",
+      "originalFileName": "1PH818S_BE0909.pdf",
+      "fileName": "1PH818S_BE0909",
+      "orderNumber": "A5E02446774A AB",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766315/dms/DOConCD_0911/1794766312157_1PH818S_BE0909",
+      "fileSize": 4957211,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 112,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "2SP1",
+      "title": "Configuration Manual ECS Motor Spindle",
+      "softwareVersion": "",
+      "edition": "11/08",
+      "orderNumber": "6SN1 197-0AD04-0BP5",
+      "fileName": "PMS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd43480f676f52aca3e3",
+      "title": "PMS",
+      "originalFileName": "PMS.pdf",
+      "fileName": "PMS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825538/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825537707_PMS",
+      "fileSize": 3727670,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 113,
+      "page": 3,
+      "category": "Synchronous motors",
+      "system": "2SP1",
+      "title": "Operating Instructions ECS Motor Spindle",
+      "softwareVersion": "",
+      "edition": "02/11",
+      "orderNumber": "6SN1197-0AD14-0BP1",
+      "fileName": "2SP1_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5f7600e90616dc6ced4",
+      "title": "Operating Instructions ECS Motor Spindle",
+      "originalFileName": "2SP1_BE.pdf",
+      "fileName": "2SP1_BE",
+      "orderNumber": "6SN1197-0AD14-0BP1",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766326/dms/DOConCD_0911/1794766322801_2SP1_BE",
+      "fileSize": 5103366,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 114,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH2",
+      "title": "Planning Guide AC Induction Motors",
+      "softwareVersion": "",
+      "edition": "10/03",
+      "orderNumber": "6SN1197-0AC63-0BP0",
+      "fileName": "APH2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7844d8496612d7ceb719",
+      "title": "APH2",
+      "originalFileName": "APH2.pdf",
+      "fileName": "APH2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799684/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799682920_APH2",
+      "fileSize": 2058649,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 115,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH2",
+      "title": "Instructions Three-phase built-in Motors",
+      "softwareVersion": "",
+      "edition": "04/96",
+      "orderNumber": "610.43 414.02",
+      "fileName": "1PH2_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa780ed8496612d7ceb613",
+      "title": "1PH2_BE",
+      "originalFileName": "1PH2_BE.pdf",
+      "fileName": "1PH2_BE",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799630/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799629375_1PH2_BE",
+      "fileSize": 105929,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 116,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH4",
+      "title": "Configuration Manual AC Induction Motors",
+      "softwareVersion": "",
+      "edition": "04/06",
+      "orderNumber": "6SN1197-0AC64-0BP2",
+      "fileName": "APH4"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7846d8496612d7ceb72b",
+      "title": "APH4",
+      "originalFileName": "APH4.pdf",
+      "fileName": "APH4",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799686/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799684926_APH4",
+      "fileSize": 592514,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 117,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH4",
+      "title": "Operating Instructions Induction Motors",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "610.43093.40e",
+      "fileName": "1PH4_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5fd600e90616dc6ced8",
+      "title": "Operating Instructions Induction Motors",
+      "originalFileName": "1PH4_BE.pdf",
+      "fileName": "1PH4_BE",
+      "orderNumber": "610.43093.40e",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766332/dms/DOConCD_0911/1794766331547_1PH4_BE",
+      "fileSize": 1760872,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 118,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH7",
+      "title": "Planning Guide AC Induction Motors",
+      "softwareVersion": "",
+      "edition": "05/04",
+      "orderNumber": "6SN1197-0AC65-0BP1",
+      "fileName": "APH7"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7848d8496612d7ceb72d",
+      "title": "APH7",
+      "originalFileName": "APH7.pdf",
+      "fileName": "APH7",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799687/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799686608_APH7",
+      "fileSize": 1614801,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 119,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH7",
+      "title": "Instructions Separately-Ventilated Three-Phase Motors 1PH7 10 - 16",
+      "softwareVersion": "",
+      "edition": "11/08",
+      "orderNumber": "610.43429.22c",
+      "fileName": "1PH7_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f60a600e90616dc6cee1",
+      "title": "Operating Instructions Induction motors 1PH7 10 - 16",
+      "originalFileName": "1PH7_BE.pdf",
+      "fileName": "1PH7_BE",
+      "orderNumber": "610.43429.22c",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766346/dms/DOConCD_0911/1794766338656_1PH7_BE",
+      "fileSize": 2373310,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 120,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH7",
+      "title": "Operating Instructions Three-phase servomotor 1PH718",
+      "softwareVersion": "",
+      "edition": "02/08",
+      "orderNumber": "A5E00215729A",
+      "fileName": "1PH718_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f610600e90616dc6cee4",
+      "title": "Operating Instructions Three-phase induction motor 1PH718",
+      "originalFileName": "1PH718_BE.pdf",
+      "fileName": "1PH718_BE",
+      "orderNumber": "A5E00215729A",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766352/dms/DOConCD_0911/1794766347005_1PH718_BE",
+      "fileSize": 1737224,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 121,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH7",
+      "title": "Operating Instructions Three-phase servomotor 1PH722",
+      "softwareVersion": "",
+      "edition": "03/08",
+      "orderNumber": "A5E00264369A",
+      "fileName": "1PH722_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f617600e90616dc6cee6",
+      "title": "Operating Instructions Three-phase induction motor 1PH722",
+      "originalFileName": "1PH722_BE.pdf",
+      "fileName": "1PH722_BE",
+      "orderNumber": "A5E00264369A",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766358/dms/DOConCD_0911/1794766353008_1PH722_BE",
+      "fileSize": 1821212,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 122,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH7",
+      "title": "Operating Instructions Three-phase servomotor 1PH728",
+      "softwareVersion": "",
+      "edition": "03/08",
+      "orderNumber": "A5E00177602A",
+      "fileName": "1PH728_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f61c600e90616dc6cee8",
+      "title": "Operating Instructions Three-phase induction motor 1PH728",
+      "originalFileName": "1PH728_BE.pdf",
+      "fileName": "1PH728_BE",
+      "orderNumber": "A5E00177602A",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766364/dms/DOConCD_0911/1794766359407_1PH728_BE",
+      "fileSize": 1630047,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 123,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions Induction motors 1PH808 and 1PH810",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "610.48004.40",
+      "fileName": "1PH808_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f623600e90616dc6ceed",
+      "title": "Operating Instructions Induction motors 1PH808 and 1PH810",
+      "originalFileName": "1PH808_BE.pdf",
+      "fileName": "1PH808_BE",
+      "orderNumber": "610.48004.40",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766371/dms/DOConCD_0911/1794766365200_1PH808_BE",
+      "fileSize": 2165992,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 124,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions Synchronous/induction motors 1PH813 and 1PH816",
+      "softwareVersion": "",
+      "edition": "05/10",
+      "orderNumber": "610.48006.40",
+      "fileName": "1PH813_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f5e3600e90616dc6ceb8",
+      "title": "Operating Instructions Synchronous/induction motors 1PH813 and 1PH816",
+      "originalFileName": "1PH813_BE.pdf",
+      "fileName": "1PH813_BE",
+      "orderNumber": "610.48006.40",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766306/dms/DOConCD_0911/1794766304957_1PH813_BE",
+      "fileSize": 2255111,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de5"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 125,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PH8",
+      "title": "Operating Instructions Three-phase induction motor 1PH818, 1PH822, 1PH828",
+      "softwareVersion": "",
+      "edition": "07/09",
+      "orderNumber": "A5E02605207A AA",
+      "fileName": "1PH8_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f633600e90616dc6cf01",
+      "title": "Operating Instructions Three-phase induction motor 1PH818, 1PH822, 1PH828",
+      "originalFileName": "1PH8_BE.pdf",
+      "fileName": "1PH8_BE",
+      "orderNumber": "A5E02605207A AA",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766386/dms/DOConCD_0911/1794766372069_1PH8_BE",
+      "fileSize": 4868301,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 126,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PM6/1PM4",
+      "title": "Configuration Manual Hollow Shaft Motors for Main Spindle Drives",
+      "softwareVersion": "",
+      "edition": "08/05",
+      "orderNumber": "6SN1197-0AD03-0BP1",
+      "fileName": "PPM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd54480f676f52aca494",
+      "title": "PPM",
+      "originalFileName": "PPM.pdf",
+      "fileName": "PPM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825555/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825553513_PPM",
+      "fileSize": 1737808,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 127,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PM6",
+      "title": "Instructions Hollow Shaft Motors, Air cooled",
+      "softwareVersion": "",
+      "edition": "12/05",
+      "orderNumber": "610.40 037.31",
+      "fileName": "1PM6_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f63f600e90616dc6cf1f",
+      "title": "Instructions Hollow Shaft Motors, Air cooled",
+      "originalFileName": "1PM6_BE.pdf",
+      "fileName": "1PM6_BE",
+      "orderNumber": "610.40 037.31",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766399/dms/DOConCD_0911/1794766397008_1PM6_BE",
+      "fileSize": 461903,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 128,
+      "page": 4,
+      "category": "Asynchronous motors",
+      "system": "1PM4",
+      "title": "Instructions Hollow Shaft Motors, Liquid cooled",
+      "softwareVersion": "",
+      "edition": "12/05",
+      "orderNumber": "610.40 036.31",
+      "fileName": "1PM4_BE"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f642600e90616dc6cf2b",
+      "title": "Instructions Hollow Shaft Motors, Liquid cooled",
+      "originalFileName": "1PM4_BE.pdf",
+      "fileName": "1PM4_BE",
+      "orderNumber": "610.40 036.31",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766401/dms/DOConCD_0911/1794766399928_1PM4_BE",
+      "fileSize": 391453,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de6"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 129,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "1FN1",
+      "title": "Configuration Manual Linear Motors",
+      "softwareVersion": "",
+      "edition": "10/06",
+      "orderNumber": "6SN1197-0AB70-0BP6",
+      "fileName": "PFN1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7908d8496612d7cebabe",
+      "title": "PFN1",
+      "originalFileName": "PFN1.pdf",
+      "fileName": "PFN1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799880/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799876614_PFN1",
+      "fileSize": 4864298,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 130,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "1FN3",
+      "title": "Configuration Manual Continuous Load Motors",
+      "softwareVersion": "",
+      "edition": "03/08",
+      "orderNumber": "6SN1197-0AB74-0BP3",
+      "fileName": "PFN3DLM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa790ed8496612d7cebad0",
+      "title": "PFN3DLM",
+      "originalFileName": "PFN3DLM.pdf",
+      "fileName": "PFN3DLM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799886/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799881430_PFN3DLM",
+      "fileSize": 6776400,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 131,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "1FN3",
+      "title": "Configuration Manual Peak load motors",
+      "softwareVersion": "",
+      "edition": "04/08",
+      "orderNumber": "6SN1197-0AB73-0BP1",
+      "fileName": "PFN3SLM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7918d8496612d7cebb02",
+      "title": "PFN3SLM",
+      "originalFileName": "PFN3SLM.pdf",
+      "fileName": "PFN3SLM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799896/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799887819_PFN3SLM",
+      "fileSize": 9162127,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 132,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "1FW6",
+      "title": "Configuration Manual Built-in Torque Motors",
+      "softwareVersion": "",
+      "edition": "05/09",
+      "orderNumber": "6SN1197-0AD00-0BP7",
+      "fileName": "PJTM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd3c480f676f52aca39d",
+      "title": "PJTM",
+      "originalFileName": "PJTM.pdf",
+      "fileName": "PJTM",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794825532599_PJTM_PJTM.pdf",
+      "fileSize": 10843829,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 133,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "1FN1/1FN3/1FW6",
+      "title": "Equipment Manual Sensor Module External SME9x",
+      "softwareVersion": "",
+      "edition": "11/07",
+      "orderNumber": "6SN1197-0AE10-0BP0",
+      "fileName": "GH_SME9x"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78dbd8496612d7ceb9e6",
+      "title": "GH_SME9x",
+      "originalFileName": "GH_SME9x.pdf",
+      "fileName": "GH_SME9x",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799835/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799833646_GH_SME9x",
+      "fileSize": 1644754,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 134,
+      "page": 4,
+      "category": "Linear/Torque Motors",
+      "system": "",
+      "title": "Safety instructions for direct drives",
+      "softwareVersion": "",
+      "edition": "01/10",
+      "orderNumber": "",
+      "fileName": "1FN_FW_SH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f680600e90616dc6cfd2",
+      "title": "Safety instructions for direct drives",
+      "originalFileName": "1FN_FW_SH.pdf",
+      "fileName": "1FN_FW_SH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766464/dms/DOConCD_0911/1794766461599_1FN_FW_SH",
+      "fileSize": 697602,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de7"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 135,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "User Manual",
+      "softwareVersion": "",
+      "edition": "10/07",
+      "orderNumber": "6SN2197-0AA00-1BP1",
+      "fileName": "POS1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd45480f676f52aca406",
+      "title": "POS1",
+      "originalFileName": "POS1.pdf",
+      "fileName": "POS1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825540/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825539853_POS1",
+      "fileSize": 3347138,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 136,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "Operating Instructions Power Management Modul DC-PMM / 24 V",
+      "softwareVersion": "",
+      "edition": "04/03",
+      "orderNumber": "",
+      "fileName": "POS1_BE24"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd46480f676f52aca408",
+      "title": "POS1_BE24",
+      "originalFileName": "POS1_BE24.pdf",
+      "fileName": "POS1_BE24",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825541/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825541278_POS1_BE24",
+      "fileSize": 90490,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 137,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "Operating Instructions Power Management Modul DC-PMM / 48 V",
+      "softwareVersion": "",
+      "edition": "04/03",
+      "orderNumber": "",
+      "fileName": "POS1_BE48"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd46480f676f52aca40a",
+      "title": "POS1_BE48",
+      "originalFileName": "POS1_BE48.pdf",
+      "fileName": "POS1_BE48",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825542/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825542340_POS1_BE48",
+      "fileSize": 87807,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 138,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "Assembly Instructions",
+      "softwareVersion": "",
+      "edition": "08/03",
+      "orderNumber": "A5E00158596",
+      "fileName": "POS2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd48480f676f52aca42d",
+      "title": "POS2",
+      "originalFileName": "POS2.pdf",
+      "fileName": "POS2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825543/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825543181_POS2",
+      "fileSize": 296324,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 139,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "Assembly Instructions extension set “Separate variant”",
+      "softwareVersion": "",
+      "edition": "12/06",
+      "orderNumber": "A5E00397126A",
+      "fileName": "posa_mv"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd71480f676f52aca5cf",
+      "title": "posa_mv",
+      "originalFileName": "posa_mv.pdf",
+      "fileName": "posa_mv",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825584/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825584402_posa_mv",
+      "fileSize": 238035,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 140,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A",
+      "title": "Assembly Instructions replacing the drive unit",
+      "softwareVersion": "",
+      "edition": "12/01",
+      "orderNumber": "A5E00101611B",
+      "fileName": "posa_mta"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd6e480f676f52aca5aa",
+      "title": "posa_mta",
+      "originalFileName": "posa_mta.pdf",
+      "fileName": "posa_mta",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825582/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825581448_posa_mta",
+      "fileSize": 86898,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 141,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO A/SI",
+      "title": "Assembly Instructions replacing the gearbox",
+      "softwareVersion": "",
+      "edition": "02/04",
+      "orderNumber": "A5E00297127",
+      "fileName": "posa_mtg"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd70480f676f52aca5cd",
+      "title": "posa_mtg",
+      "originalFileName": "posa_mtg.pdf",
+      "fileName": "posa_mtg",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825583/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825582813_posa_mtg",
+      "fileSize": 208307,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 142,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI/CD/CA",
+      "title": "User Manual",
+      "softwareVersion": "",
+      "edition": "06/08",
+      "orderNumber": "6SN2197-0AA20-1BP3",
+      "fileName": "POS3"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd51480f676f52aca477",
+      "title": "POS3",
+      "originalFileName": "POS3.pdf",
+      "fileName": "POS3",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825552/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825544454_POS3",
+      "fileSize": 8467397,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 143,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI/CD/CA",
+      "title": "Assembly interference suppression filter",
+      "softwareVersion": "",
+      "edition": "08/03",
+      "orderNumber": "A5E00245073B-A1",
+      "fileName": "poscd_mf"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd75480f676f52aca617",
+      "title": "poscd_mf",
+      "originalFileName": "poscd_mf.pdf",
+      "fileName": "poscd_mf",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825589/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825589127_poscd_mf",
+      "fileSize": 33130,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 144,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI/CD/CA",
+      "title": "Assembly Instructions replacing the PROFIBUS unit",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00145169 ae",
+      "fileName": "poscd_mpe"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd78480f676f52aca61b",
+      "title": "poscd_mpe",
+      "originalFileName": "poscd_mpe.pdf",
+      "fileName": "poscd_mpe",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825591/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825591081_poscd_mpe",
+      "fileSize": 365104,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 145,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI/CD/CA",
+      "title": "Assembly interference suppression filter ECOFAST",
+      "softwareVersion": "",
+      "edition": "03/03",
+      "orderNumber": "",
+      "fileName": "poscd_mfe"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd76480f676f52aca619",
+      "title": "poscd_mfe",
+      "originalFileName": "poscd_mfe.pdf",
+      "fileName": "poscd_mfe",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825590/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825590060_poscd_mfe",
+      "fileSize": 33008,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 146,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI/CD/CA",
+      "title": "Assembly Instructions replacing the PROFIBUS unit ECOFAST",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00335711 ac",
+      "fileName": "poscd_mpee"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd79480f676f52aca63e",
+      "title": "poscd_mpee",
+      "originalFileName": "poscd_mpee.pdf",
+      "fileName": "poscd_mpee",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825593/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825592668_poscd_mpee",
+      "fileSize": 378322,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 147,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI",
+      "title": "Assembly Instructions",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00282739 ac",
+      "fileName": "poss_m"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd7b480f676f52aca640",
+      "title": "poss_m",
+      "originalFileName": "poss_m.pdf",
+      "fileName": "poss_m",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825594/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825593991_poss_m",
+      "fileSize": 359086,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 148,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI",
+      "title": "Assembly Instructions replacing the fan",
+      "softwareVersion": "",
+      "edition": "07/05",
+      "orderNumber": "462 028 0042 00",
+      "fileName": "poss_mtl"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd7f480f676f52aca667",
+      "title": "poss_mtl",
+      "originalFileName": "poss_mtl.pdf",
+      "fileName": "poss_mtl",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825598/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825598407_poss_mtl",
+      "fileSize": 97379,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 149,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI",
+      "title": "Assembly Instructions replacing the drive unit",
+      "softwareVersion": "",
+      "edition": "07/05",
+      "orderNumber": "A5E00145904",
+      "fileName": "poss_mta"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd7e480f676f52aca665",
+      "title": "poss_mta",
+      "originalFileName": "poss_mta.pdf",
+      "fileName": "poss_mta",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825597/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825597041_poss_mta",
+      "fileSize": 351409,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 150,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO SI",
+      "title": "Assembly Instructions with the PROFIBUS unit ECOFAST",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00335557 ac",
+      "fileName": "poss_mpe"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd7c480f676f52aca65d",
+      "title": "poss_mpe",
+      "originalFileName": "poss_mpe.pdf",
+      "fileName": "poss_mpe",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825595/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825595278_poss_mpe",
+      "fileSize": 437385,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 151,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO CD/CA",
+      "title": "Assembly Instructions",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00257954 ad",
+      "fileName": "posca_m"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd73480f676f52aca5f2",
+      "title": "posca_m",
+      "originalFileName": "posca_m.pdf",
+      "fileName": "posca_m",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825586/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825585781_posca_m",
+      "fileSize": 786651,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 152,
+      "page": 4,
+      "category": "Distributed drive technology",
+      "system": "POSMO CD/CA",
+      "title": "Assembly Instructions with the PROFIBUS unit ECOFAST",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "A5E00335554 ac",
+      "fileName": "posca_me"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd74480f676f52aca5f4",
+      "title": "posca_me",
+      "originalFileName": "posca_me.pdf",
+      "fileName": "posca_me",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825588/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825587421_posca_me",
+      "fileSize": 875988,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 153,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual RPC SINUMERIK Computer Link",
+      "softwareVersion": "",
+      "edition": "10/05",
+      "orderNumber": "6FC5297-6AD61-0BP0",
+      "fileName": "FBR"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f689600e90616dc6cfd3",
+      "title": "Function Manual RPC SINUMERIK Computer Link",
+      "originalFileName": "FBR.pdf",
+      "fileName": "FBR",
+      "orderNumber": "6FC5297-6AD61-0BP0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766472/dms/DOConCD_0911/1794766465039_FBR",
+      "fileSize": 3043267,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 154,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Function Manual NC program management DNC",
+      "softwareVersion": "",
+      "edition": "12/10",
+      "orderNumber": "6FC5297-2AE80-0BP3",
+      "fileName": "FBDN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f69f600e90616dc6cfdb",
+      "title": "Function Manual NC program management DNC",
+      "originalFileName": "FBDN.pdf",
+      "fileName": "FBDN",
+      "orderNumber": "6FC5297-2AE80-0BP3",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766494/dms/DOConCD_0911/1794766474288_FBDN",
+      "fileSize": 6778035,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 155,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Description of Functions NC Program Management DNC Machine",
+      "softwareVersion": "",
+      "edition": "09/03",
+      "orderNumber": "6FC5297-1AE81-0BP0",
+      "fileName": "FBDM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6a1600e90616dc6cfdc",
+      "title": "Description of Functions NC Program Management DNC Machine",
+      "originalFileName": "FBDM.pdf",
+      "fileName": "FBDM",
+      "orderNumber": "6FC5297-1AE81-0BP0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766496/dms/DOConCD_0911/1794766495773_FBDM",
+      "fileSize": 557472,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 156,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User's Guide \"DNC Machine\" User Interface",
+      "softwareVersion": "",
+      "edition": "07/07",
+      "orderNumber": "",
+      "fileName": "BBDNC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6a2600e90616dc6cfdd",
+      "title": "User's Guide \"DNC Machine\" User Interface",
+      "originalFileName": "BBDNC.pdf",
+      "fileName": "BBDNC",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766498/dms/DOConCD_0911/1794766497554_BBDNC",
+      "fileSize": 324720,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 157,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Description of Functions Preventive maintenance TPM",
+      "softwareVersion": "",
+      "edition": "02/07",
+      "orderNumber": "6FC5260-2FX28-0BG2",
+      "fileName": "FBTP"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6ac600e90616dc6cff0",
+      "title": "Function Manual Preventive maintenance TPM",
+      "originalFileName": "FBTP.pdf",
+      "fileName": "FBTP",
+      "orderNumber": "Online help",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766507/dms/DOConCD_0911/1794766500775_FBTP",
+      "fileSize": 6861156,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 158,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Description of Functions TDI Ident Connection",
+      "softwareVersion": "",
+      "edition": "06/03",
+      "orderNumber": "6FC5297-1AE60-0BP0",
+      "fileName": "FBIC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6ae600e90616dc6cff2",
+      "title": "Description of Functions TDI Ident Connection",
+      "originalFileName": "FBIC.pdf",
+      "fileName": "FBIC",
+      "orderNumber": "6FC5297-1AE60-0BP0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766509/dms/DOConCD_0911/1794766508717_FBIC",
+      "fileSize": 1090248,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 159,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Operator's Guide Tool Data Information (TDI)",
+      "softwareVersion": "",
+      "edition": "06/07",
+      "orderNumber": "6FC5297-6AE01-0BP3",
+      "fileName": "BTDI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6ae600e90616dc6cff3",
+      "title": "Operating Manual Tool Data Information",
+      "originalFileName": "BTDI.pdf",
+      "fileName": "BTDI",
+      "orderNumber": "6FC5297-6AE01-0BP3",
+      "secureUrl": "http://localhost:5000/uploads/1794766510372_BTDI_BTDI.pdf",
+      "fileSize": 11234836,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 160,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User's Guide ADDM Server Version 6.0",
+      "softwareVersion": "",
+      "edition": "08/05",
+      "orderNumber": "",
+      "fileName": "BEDMS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6af600e90616dc6cff5",
+      "title": "User's Guide ADDM Server Version 6.0",
+      "originalFileName": "BEDMS.pdf",
+      "fileName": "BEDMS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766511/dms/DOConCD_0911/1794766510462_BEDMS",
+      "fileSize": 509712,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 161,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Operator Manual ADDM Client Version 6.1",
+      "softwareVersion": "",
+      "edition": "07/06",
+      "orderNumber": "",
+      "fileName": "BEDMC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6b4600e90616dc6cff6",
+      "title": "Operator Manual ADDM Client Version 6.1",
+      "originalFileName": "BEDMC.pdf",
+      "fileName": "BEDMC",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766515/dms/DOConCD_0911/1794766512148_BEDMC",
+      "fileSize": 3710434,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 162,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Operator Manual ADDM Agent Version 1.1",
+      "softwareVersion": "",
+      "edition": "12/04",
+      "orderNumber": "",
+      "fileName": "BEDMA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6b5600e90616dc6cff7",
+      "title": "Operator Manual ADDM Agent Version 1.1",
+      "originalFileName": "BEDMA.pdf",
+      "fileName": "BEDMA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766516/dms/DOConCD_0911/1794766516140_BEDMA",
+      "fileSize": 637715,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 163,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User Guide MDA / PDA Machine Evaluations",
+      "softwareVersion": "",
+      "edition": "08/07",
+      "orderNumber": "",
+      "fileName": "GUIRT"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6be600e90616dc6cffb",
+      "title": "User Guide MDA / PDA Machine Evaluations",
+      "originalFileName": "GUIRT.pdf",
+      "fileName": "GUIRT",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766525/dms/DOConCD_0911/1794766517490_GUIRT",
+      "fileSize": 9616192,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 164,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User Guide MDA Monitor",
+      "softwareVersion": "",
+      "edition": "08/07",
+      "orderNumber": "",
+      "fileName": "MonGUI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6bf600e90616dc6cffc",
+      "title": "User Guide MDA Monitor",
+      "originalFileName": "MonGUI.pdf",
+      "fileName": "MonGUI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766526/dms/DOConCD_0911/1794766526551_MonGUI",
+      "fileSize": 118622,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 165,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User Guide MDA \"Configuration\" User Interface",
+      "softwareVersion": "",
+      "edition": "08/07",
+      "orderNumber": "",
+      "fileName": "PrjGUI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c1600e90616dc6d000",
+      "title": "User Guide MDA \"Configuration\" User Interface",
+      "originalFileName": "PrjGUI.pdf",
+      "fileName": "PrjGUI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766529/dms/DOConCD_0911/1794766527651_PrjGUI",
+      "fileSize": 1466119,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 166,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "User Guide MDA Works Calendar",
+      "softwareVersion": "",
+      "edition": "08/07",
+      "orderNumber": "",
+      "fileName": "WkalGUI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c2600e90616dc6d001",
+      "title": "User Guide MDA Works Calendar",
+      "originalFileName": "WkalGUI.pdf",
+      "fileName": "WkalGUI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766530/dms/DOConCD_0911/1794766530055_WkalGUI",
+      "fileSize": 155590,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 167,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Customizing MDA",
+      "softwareVersion": "",
+      "edition": "10/07",
+      "orderNumber": "",
+      "fileName": "PMDA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c5600e90616dc6d002",
+      "title": "Customizing MDA",
+      "originalFileName": "PMDA.pdf",
+      "fileName": "PMDA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766532/dms/DOConCD_0911/1794766530858_PMDA",
+      "fileSize": 1562654,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 168,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Commissioning Guide MDA Machine",
+      "softwareVersion": "",
+      "edition": "10/07",
+      "orderNumber": "",
+      "fileName": "IMDA_M"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c6600e90616dc6d003",
+      "title": "Commissioning Guide MDA Machine",
+      "originalFileName": "IMDA_M.pdf",
+      "fileName": "IMDA_M",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766533/dms/DOConCD_0911/1794766533264_IMDA_M",
+      "fileSize": 258423,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 169,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Commissioning Guide MDA Cell",
+      "softwareVersion": "",
+      "edition": "10/07",
+      "orderNumber": "",
+      "fileName": "IMDA_C"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c8600e90616dc6d005",
+      "title": "Commissioning Guide MDA Cell",
+      "originalFileName": "IMDA_C.pdf",
+      "fileName": "IMDA_C",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766535/dms/DOConCD_0911/1794766534920_IMDA_C",
+      "fileSize": 230596,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 170,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Commissioning Guide MDA HMI",
+      "softwareVersion": "",
+      "edition": "06/07",
+      "orderNumber": "",
+      "fileName": "IMDA_HMI"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6c9600e90616dc6d008",
+      "title": "Commissioning Guide MDA HMI",
+      "originalFileName": "IMDA_HMI.pdf",
+      "fileName": "IMDA_HMI",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766536/dms/DOConCD_0911/1794766536159_IMDA_HMI",
+      "fileSize": 94996,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 171,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Commissioning Guide database program Oracle for MDA",
+      "softwareVersion": "",
+      "edition": "04/05",
+      "orderNumber": "",
+      "fileName": "IMDA_O"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6ca600e90616dc6d009",
+      "title": "Commissioning Guide database program Oracle for MDA",
+      "originalFileName": "IMDA_O.pdf",
+      "fileName": "IMDA_O",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766538/dms/DOConCD_0911/1794766537110_IMDA_O",
+      "fileSize": 1155179,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 172,
+      "page": 5,
+      "category": "Motion Control Information System",
+      "system": "840D sl/840Di sl/840D/840Di/810D",
+      "title": "Description of Functions MDA Machine",
+      "softwareVersion": "",
+      "edition": "10/03",
+      "orderNumber": "",
+      "fileName": "FMDA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6cd600e90616dc6d00c",
+      "title": "Description of Functions MDA Machine",
+      "originalFileName": "FMDA.pdf",
+      "fileName": "FMDA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766540/dms/DOConCD_0911/1794766539100_FMDA",
+      "fileSize": 1150069,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de8"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 173,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Manual FM 353 Stepper Drive Positioning Module",
+      "softwareVersion": "",
+      "edition": "08/08",
+      "orderNumber": "6ES7353-1AH01-8BG0",
+      "fileName": "FM353"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78ced8496612d7ceb9a9",
+      "title": "FM353",
+      "originalFileName": "FM353.pdf",
+      "fileName": "FM353",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799821/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799820372_FM353",
+      "fileSize": 1965783,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 174,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Manual FM 354 Positioning Module for Servo Drive",
+      "softwareVersion": "",
+      "edition": "08/08",
+      "orderNumber": "6ES7354-1AH01-8BG0",
+      "fileName": "FM354"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78d0d8496612d7ceb9bb",
+      "title": "FM354",
+      "originalFileName": "FM354.pdf",
+      "fileName": "FM354",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799824/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799822580_FM354",
+      "fileSize": 2044266,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 175,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Getting Started First Steps in Commissioning FM 354/FM 353",
+      "softwareVersion": "",
+      "edition": "04/07",
+      "orderNumber": "",
+      "fileName": "FM354_GS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78d1d8496612d7ceb9bd",
+      "title": "FM354_GS",
+      "originalFileName": "FM354_GS.pdf",
+      "fileName": "FM354_GS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799825/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799824788_FM354_GS",
+      "fileSize": 81069,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 176,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Manual FM 357-2 Multi-Axis Module for Servo and Stepper Drives",
+      "softwareVersion": "",
+      "edition": "01/03",
+      "orderNumber": "6ES7357-4AH00-8BG0",
+      "fileName": "FM357_2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78d4d8496612d7ceb9cf",
+      "title": "FM357_2",
+      "originalFileName": "FM357_2.pdf",
+      "fileName": "FM357_2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799828/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799826203_FM357_2",
+      "fileSize": 3546616,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 177,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Manual FM 453 Positioning Module for Servo and Stepper Drives",
+      "softwareVersion": "",
+      "edition": "08/08",
+      "orderNumber": "6ES7453-3AH00-8BG0",
+      "fileName": "FM453"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78d7d8496612d7ceb9e1",
+      "title": "FM453",
+      "originalFileName": "FM453.pdf",
+      "fileName": "FM453",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799831/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799829142_FM453",
+      "fileSize": 2696461,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 178,
+      "page": 5,
+      "category": "SIMATIC Positioning Modules",
+      "system": "",
+      "title": "Getting Started First Steps in Commissioning FM 453",
+      "softwareVersion": "",
+      "edition": "04/07",
+      "orderNumber": "",
+      "fileName": "FM453_GS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa78d8d8496612d7ceb9e3",
+      "title": "FM453_GS",
+      "originalFileName": "FM453_GS.pdf",
+      "fileName": "FM453_GS",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799832/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799831853_FM453_GS",
+      "fileSize": 75762,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 179,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D/840Di/810D",
+      "title": "Software Installation Manual",
+      "softwareVersion": "",
+      "edition": "02/08",
+      "orderNumber": "",
+      "fileName": "EPS_IA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa787bd8496612d7ceb821",
+      "title": "EPS_IA",
+      "originalFileName": "EPS_IA.pdf",
+      "fileName": "EPS_IA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799739/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799735932_EPS_IA",
+      "fileSize": 1412500,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 180,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D/840Di/810D",
+      "title": "Operating Manual",
+      "softwareVersion": "",
+      "edition": "11/06",
+      "orderNumber": "",
+      "fileName": "EPS_BH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7875d8496612d7ceb809",
+      "title": "EPS_BH",
+      "originalFileName": "EPS_BH.pdf",
+      "fileName": "EPS_BH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799733/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799730962_EPS_BH",
+      "fileSize": 3122483,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 181,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D sl/840Di sl/840D/840Di",
+      "title": "Configuration Manual",
+      "softwareVersion": "",
+      "edition": "04/10",
+      "orderNumber": "",
+      "fileName": "EPS_PH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6cf600e90616dc6d00e",
+      "title": "Configuration Manual",
+      "originalFileName": "EPS_PH.pdf",
+      "fileName": "EPS_PH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766542/dms/DOConCD_0911/1794766541607_EPS_PH",
+      "fileSize": 805115,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de9"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 182,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D sl/840Di sl/840D/840Di",
+      "title": "Function Manual",
+      "softwareVersion": "",
+      "edition": "12/10",
+      "orderNumber": "",
+      "fileName": "EPS_FH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6d8600e90616dc6d00f",
+      "title": "Function Manual",
+      "originalFileName": "ePS_FH.pdf",
+      "fileName": "ePS_FH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766551/dms/DOConCD_0911/1794766543214_ePS_FH",
+      "fileSize": 9009302,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de9"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 183,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "",
+      "title": "",
+      "softwareVersion": "",
+      "edition": "12/10",
+      "orderNumber": "",
+      "fileName": "EP_BA"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6db600e90616dc6d011",
+      "title": "Operating Instructions eP-Satellite server",
+      "originalFileName": "EP_BA.pdf",
+      "fileName": "EP_BA",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766554/dms/DOConCD_0911/1794766552220_EP_BA",
+      "fileSize": 3340570,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de9"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 184,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D/840Di/810D",
+      "title": "Performance Description",
+      "softwareVersion": "",
+      "edition": "01/09",
+      "orderNumber": "",
+      "fileName": "EPS_LB"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6dc600e90616dc6d012",
+      "title": "Performance Description ASP Certificate",
+      "originalFileName": "EPS_LB.pdf",
+      "fileName": "EPS_LB",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766555/dms/DOConCD_0911/1794766555401_EPS_LB",
+      "fileSize": 115438,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de9"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 185,
+      "page": 5,
+      "category": "ePS Network Services",
+      "system": "840D sl/840Di sl/840D/840Di",
+      "title": "Release Notes",
+      "softwareVersion": "",
+      "edition": "12/10",
+      "orderNumber": "",
+      "fileName": "EPS_RN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6de600e90616dc6d014",
+      "title": "Release Notes",
+      "originalFileName": "EPS_RN.pdf",
+      "fileName": "EPS_RN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766557/dms/DOConCD_0911/1794766556534_EPS_RN",
+      "fileSize": 1498952,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7de9"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 186,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7",
+      "title": "Getting Started:Working with STEP 7 V5.4",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_GS"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6e0600e90616dc6d019",
+      "title": "Getting Started Working with STEP 7",
+      "originalFileName": "S7_GS.pdf",
+      "fileName": "S7_GS",
+      "orderNumber": "A5E02904800-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766560/dms/DOConCD_0911/1794766558539_S7_GS",
+      "fileSize": 1826467,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 187,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7",
+      "title": "Programming with STEP 7 V5.4",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7P"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6e3600e90616dc6d022",
+      "title": "Programming with STEP 7",
+      "originalFileName": "S7P.pdf",
+      "fileName": "S7P",
+      "orderNumber": "A5E02789666-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766563/dms/DOConCD_0911/1794766561061_S7P",
+      "fileSize": 5363493,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 188,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7",
+      "title": "Configuring HW and Communication Connections with STEP 7 V5.4",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_HW"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6e6600e90616dc6d029",
+      "title": "Configuring HW and Communication Connections with STEP 7",
+      "originalFileName": "S7_HW.pdf",
+      "fileName": "S7_HW",
+      "orderNumber": "A5E02789741-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766565/dms/DOConCD_0911/1794766563861_S7_HW",
+      "fileSize": 3332995,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 189,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300/400",
+      "title": "Reference Manual Ladder Logic (LAD)",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_KOP"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6e8600e90616dc6d02e",
+      "title": "Reference Manual Ladder Logic (LAD)",
+      "originalFileName": "S7_KOP.pdf",
+      "fileName": "S7_KOP",
+      "orderNumber": "A5E02790079-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766567/dms/DOConCD_0911/1794766566850_S7_KOP",
+      "fileSize": 1557115,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 190,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300/400",
+      "title": "Reference Manual Function Block Diagram (FBD)",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_FUP"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6e9600e90616dc6d030",
+      "title": "Reference Manual Function Block Diagram (FBD)",
+      "originalFileName": "S7_FUP.pdf",
+      "fileName": "S7_FUP",
+      "orderNumber": "A5E02790131-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766569/dms/DOConCD_0911/1794766568336_S7_FUP",
+      "fileSize": 2791948,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 191,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300/400",
+      "title": "Reference Manual Statement List (STL)",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_AWL"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6eb600e90616dc6d032",
+      "title": "Reference Manual Statement List (STL)",
+      "originalFileName": "S7_AWL.pdf",
+      "fileName": "S7_AWL",
+      "orderNumber": "A5E02790283-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766571/dms/DOConCD_0911/1794766569900_S7_AWL",
+      "fileSize": 2303778,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 192,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300/400",
+      "title": "Reference Manual for System and Standard Functions",
+      "softwareVersion": "",
+      "edition": "03/06",
+      "orderNumber": "",
+      "fileName": "S7_SFC"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6f0600e90616dc6d034",
+      "title": "Reference Manual for System and Standard Functions",
+      "originalFileName": "S7_SFC.pdf",
+      "fileName": "S7_SFC",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766575/dms/DOConCD_0911/1794766572093_S7_SFC",
+      "fileSize": 3086038,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 193,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Operating Instructions CPU 31xC and CPU 31x: Installation",
+      "softwareVersion": "",
+      "edition": "06/08",
+      "orderNumber": "",
+      "fileName": "S7_BA31A"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6f6600e90616dc6d035",
+      "title": "Operating Instructions CPU 31xC and CPU 31x: Installation",
+      "originalFileName": "S7_BA31A.pdf",
+      "fileName": "S7_BA31A",
+      "orderNumber": "A5E00105492-12",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766581/dms/DOConCD_0911/1794766576597_S7_BA31A",
+      "fileSize": 4869293,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 194,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Manual Technical Specifications CPU 31xC and CPU 31x",
+      "softwareVersion": "",
+      "edition": "06/08",
+      "orderNumber": "",
+      "fileName": "S7_GH31TD"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6fa600e90616dc6d036",
+      "title": "Manual Technical Specifications CPU 31xC and CPU 31x",
+      "originalFileName": "S7_GH31TD.pdf",
+      "fileName": "S7_GH31TD",
+      "orderNumber": "A5E00105475-12",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766586/dms/DOConCD_0911/1794766582505_S7_GH31TD",
+      "fileSize": 2930119,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 195,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Reference Manual CPU Specifications CPU 312 IFM to CPU 318-2 DP",
+      "softwareVersion": "",
+      "edition": "10.01",
+      "orderNumber": "",
+      "fileName": "S7300Re2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6fc600e90616dc6d037",
+      "title": "Reference Manual CPU Specifications CPU 312 IFM to CPU 318-2 DP",
+      "originalFileName": "S7300Re2.pdf",
+      "fileName": "S7300Re2",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766587/dms/DOConCD_0911/1794766586958_S7300Re2",
+      "fileSize": 850184,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 196,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Instruction List CPUs 312 IFM to 318-2 DP",
+      "softwareVersion": "",
+      "edition": "10.01",
+      "orderNumber": "",
+      "fileName": "S7OP1"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd5b480f676f52aca4da",
+      "title": "S7OP1",
+      "originalFileName": "S7OP1.pdf",
+      "fileName": "S7OP1",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825562/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825561115_S7OP1",
+      "fileSize": 595364,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 197,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Instruction List CPU 31xC, CPU 31x,",
+      "softwareVersion": "",
+      "edition": "06/08",
+      "orderNumber": "",
+      "fileName": "S7OP2"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f6fd600e90616dc6d038",
+      "title": "Instruction list S7-300 CPUs and ET 200 CPUs",
+      "originalFileName": "S7OP2.pdf",
+      "fileName": "S7OP2",
+      "orderNumber": "A5E02354744-04",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766589/dms/DOConCD_0911/1794766588493_S7OP2",
+      "fileSize": 556257,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 198,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-300",
+      "title": "Technological Functions CPU 31xC",
+      "softwareVersion": "",
+      "edition": "02/07",
+      "orderNumber": "",
+      "fileName": "S7300TF"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f704600e90616dc6d03b",
+      "title": "Operating Instructions Technological Functions CPU 31xC",
+      "originalFileName": "S7300TF.pdf",
+      "fileName": "S7300TF",
+      "orderNumber": "A5E00105484-05",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766595/dms/DOConCD_0911/1794766590112_S7300TF",
+      "fileSize": 4801649,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 199,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-200",
+      "title": "System Manual",
+      "softwareVersion": "",
+      "edition": "09/07",
+      "orderNumber": "",
+      "fileName": "S7200SH"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f70a600e90616dc6d03e",
+      "title": "System Manual",
+      "originalFileName": "S7200SH.pdf",
+      "fileName": "S7200SH",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766602/dms/DOConCD_0911/1794766596585_S7200SH",
+      "fileSize": 6314488,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 200,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC S7-200",
+      "title": "System Manual CPU 210",
+      "softwareVersion": "",
+      "edition": "Edition 1",
+      "orderNumber": "",
+      "fileName": "S7_C210"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f70e600e90616dc6d040",
+      "title": "System Manual Programmable Controller",
+      "originalFileName": "S7_C210.pdf",
+      "fileName": "S7_C210",
+      "orderNumber": "6ES7298-8FA01-8BH0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766605/dms/DOConCD_0911/1794766603052_S7_C210",
+      "fileSize": 971509,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 201,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC",
+      "title": "System Manual Communication with SIMATIC",
+      "softwareVersion": "",
+      "edition": "09/06",
+      "orderNumber": "",
+      "fileName": "SSH_Komm"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f71f600e90616dc6d055",
+      "title": "System Manual Communication with SIMATIC",
+      "originalFileName": "SSH_Komm.pdf",
+      "fileName": "SSH_Komm",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766622/dms/DOConCD_0911/1794766612294_SSH_Komm",
+      "fileSize": 8637259,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 202,
+      "page": 6,
+      "category": "SIMATIC",
+      "system": "SIMATIC HMI",
+      "title": "Operating Instructions HMI device Mobile Panel 177 (WinCC flexible)",
+      "softwareVersion": "",
+      "edition": "07/05",
+      "orderNumber": "",
+      "fileName": "SBE_MP177"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f72e600e90616dc6d05a",
+      "title": "Operating Instructions HMI device Mobile Panel 177 (WinCC flexible)",
+      "originalFileName": "SBE_MP177.pdf",
+      "fileName": "SBE_MP177",
+      "orderNumber": "A5E01075489-01",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766637/dms/DOConCD_0911/1794766635448_SBE_MP177",
+      "fileSize": 7333969,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dea"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 203,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "",
+      "title": "System Manual Safety Integrated",
+      "softwareVersion": "",
+      "edition": "2005",
+      "orderNumber": "6ZB5000-0AA02-0BA1",
+      "fileName": "APPL_HB"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa7848d8496612d7ceb72f",
+      "title": "APPL_HB",
+      "originalFileName": "APPL_HB.pdf",
+      "fileName": "APPL_HB",
+      "orderNumber": "",
+      "secureUrl": "http://localhost:5000/uploads/1794799688759_APPL_HB_APPL_HB.pdf",
+      "fileSize": 12685820,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 204,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "",
+      "title": "System Manual Safety Integrated Supplement",
+      "softwareVersion": "",
+      "edition": "2006",
+      "orderNumber": "6ZB5000-0AB02-0BA0",
+      "fileName": "APPL_HBN"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa784dd8496612d7ceb741",
+      "title": "APPL_HBN",
+      "originalFileName": "APPL_HBN.pdf",
+      "fileName": "APPL_HBN",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799692/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799689493_APPL_HBN",
+      "fileSize": 6517304,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 205,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "",
+      "title": "Training Documentation Milling made easy with ShopMill",
+      "softwareVersion": "",
+      "edition": "08/06",
+      "orderNumber": "6FC5095-0AA50-0BP2",
+      "fileName": "TUSM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f72e600e90616dc6d05b",
+      "title": "Training Documents easy milling with ShopMill",
+      "originalFileName": "TUSM.pdf",
+      "fileName": "TUSM",
+      "orderNumber": "6FC5095-0AB50-1BP0",
+      "secureUrl": "http://localhost:5000/uploads/1794766638646_TUSM_TUSM.pdf",
+      "fileSize": 8776421,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7deb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 206,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "",
+      "title": "Training Documentation Turning made easy with ShopTurn",
+      "softwareVersion": "",
+      "edition": "04/04",
+      "orderNumber": "6FC5095-0AA80-0BP1",
+      "fileName": "ST_ein"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f736600e90616dc6d062",
+      "title": "Training Documentation Turning made easy with ShopTurn",
+      "originalFileName": "ST_ein.pdf",
+      "fileName": "ST_ein",
+      "orderNumber": "6FC5095-0AA80-0BP1",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766646/dms/DOConCD_0911/1794766639346_ST_ein",
+      "fileSize": 7698219,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7deb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 207,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "840D/840Di/810D",
+      "title": "Beginner’s Manual: Milling and Turning",
+      "softwareVersion": "",
+      "edition": "10/03",
+      "orderNumber": "6FC5095-0AB00-0BP1",
+      "fileName": "SIN_ein"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f73b600e90616dc6d063",
+      "title": "Beginner’s Manual: Milling and Turning",
+      "originalFileName": "SIN_ein.pdf",
+      "fileName": "SIN_ein",
+      "orderNumber": "6FC5095-0AB00-0BP1",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766650/dms/DOConCD_0911/1794766646773_SIN_ein",
+      "fileSize": 5464157,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7deb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 208,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "840D/810D sl/840Di",
+      "title": "Manual 5-axis machining",
+      "softwareVersion": "",
+      "edition": "05/09",
+      "orderNumber": "6FC5095-0AB10-0BP1",
+      "fileName": "SIN_WF5"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f73f600e90616dc6d064",
+      "title": "Manual 5-axis machining",
+      "originalFileName": "SIN_WF5.pdf",
+      "fileName": "SIN_WF5",
+      "orderNumber": "6FC5095-0AB10-0BP1",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766654/dms/DOConCD_0911/1794766651513_SIN_WF5",
+      "fileSize": 4647153,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7deb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 209,
+      "page": 6,
+      "category": "Info/Training",
+      "system": "840D/840Di/810D/802D sl",
+      "title": "Manual Tool and Mold Making (3 axes)",
+      "softwareVersion": "",
+      "edition": "08/07",
+      "orderNumber": "6FC5095-0AB20-0BP0",
+      "fileName": "SIN_WF3"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f743600e90616dc6d06a",
+      "title": "Manual Tool and Mold Making (3 axes)",
+      "originalFileName": "SIN_WF3.pdf",
+      "fileName": "SIN_WF3",
+      "orderNumber": "6FC5095-0AB20-0BP0",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766659/dms/DOConCD_0911/1794766655917_SIN_WF3",
+      "fileSize": 4519044,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7deb"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 210,
+      "page": 6,
+      "category": "Control system overview",
+      "system": "SINUMERIK powerline",
+      "title": "Overviews of functions",
+      "softwareVersion": "",
+      "edition": "2009",
+      "orderNumber": "",
+      "fileName": "BU"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afa786cd8496612d7ceb7d3",
+      "title": "BU",
+      "originalFileName": "BU.pdf",
+      "fileName": "BU",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794799724/dms/DOConCD_SINUMERIK_SIMODRIVE/1794799723399_BU",
+      "fileSize": 442713,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 211,
+      "page": 6,
+      "category": "Control system overview",
+      "system": "840D/810D",
+      "title": "Control system overview Milling with ShopMill",
+      "softwareVersion": "",
+      "edition": "07/07",
+      "orderNumber": "",
+      "fileName": "SSM"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6afadd6a480f676f52aca587",
+      "title": "SSM",
+      "originalFileName": "SSM.pdf",
+      "fileName": "SSM",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794825577/dms/DOConCD_SINUMERIK_SIMODRIVE/1794825576474_SSM",
+      "fileSize": 1453760,
+      "mimeType": "application/pdf",
+      "folderId": "6af9d05ba1a8b3b2f4ddf68b"
+    }
+  },
+  {
+    "catEntry": {
+      "catalogueIndex": 212,
+      "page": 6,
+      "category": "Control system overview",
+      "system": "840D/810D",
+      "title": "Control system overview Turning with ShopTurn",
+      "softwareVersion": "",
+      "edition": "05/07",
+      "orderNumber": "",
+      "fileName": "SST"
+    },
+    "status": "Available",
+    "matchedDoc": {
+      "_id": "6af9f753600e90616dc6d076",
+      "title": "Control system overview Turning with ShopTurn",
+      "originalFileName": "SST.pdf",
+      "fileName": "SST",
+      "orderNumber": "",
+      "secureUrl": "https://res.cloudinary.com/we355whf/raw/upload/v1794766674/dms/DOConCD_0911/1794766673669_SST",
+      "fileSize": 1531438,
+      "mimeType": "application/pdf",
+      "folderId": "6af9f323d6e0139164aa7dec"
+    }
+  }
+]

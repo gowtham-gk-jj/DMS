@@ -11,7 +11,7 @@ import {
   FileText,
   AlertCircle,
 } from 'lucide-react';
-import DOConCDTable from '../components/DOConCDTable';
+import DOConCDTable, { SIMODRIVE_CATEGORY_ORDER } from '../components/DOConCDTable';
 import UploadModal from '../components/UploadModal';
 import CreateFolderModal from '../components/CreateFolderModal';
 import { useAuth } from '../context/AuthContext';
@@ -74,10 +74,11 @@ export default function LibraryPage() {
       setLoading(true);
       setError('');
 
-      const sortFolders = (list) => {
+      const sortFolders = (list, isSim = false) => {
+        const order = isSim ? SIMODRIVE_CATEGORY_ORDER : PDF_CATEGORY_ORDER;
         return [...list].sort((a, b) => {
-          const idxA = PDF_CATEGORY_ORDER.indexOf(a.name);
-          const idxB = PDF_CATEGORY_ORDER.indexOf(b.name);
+          const idxA = order.indexOf(a.name);
+          const idxB = order.indexOf(b.name);
           if (idxA !== -1 && idxB !== -1) return idxA - idxB;
           if (idxA !== -1) return -1;
           if (idxB !== -1) return 1;
@@ -89,26 +90,34 @@ export default function LibraryPage() {
         // Fetch root level folders
         const res = await api.get('/folders?parentId=root');
         if (res.data.success) {
-          setSubfolders(sortFolders(res.data.folders || []));
+          setSubfolders(res.data.folders || []);
           setCurrentFolder(null);
           setDocuments([]);
           setBreadcrumbs([{ name: 'Document Library', id: 'root' }]);
         }
       } else {
-        // Fetch folder details, subfolders, and documents
+        // Fetch folder details, subfolders, and documents without pagination truncation
         const [folderRes, subfoldersRes, docsRes] = await Promise.all([
           api.get(`/folders/${folderId}`),
           api.get(`/folders?parentId=${folderId}`),
-          api.get(`/documents/folder/${folderId}?limit=300`),
+          api.get(`/documents/folder/${folderId}?limit=1000`),
         ]);
 
+        const folderObj = folderRes.data.folder;
+        const breadcrumbList = folderRes.data.breadcrumbs || [];
+        const isSim = Boolean(
+          folderObj?.name?.includes('SIMODRIVE') ||
+          breadcrumbList.some((b) => b.name?.includes('SIMODRIVE')) ||
+          folderObj?.code === 'SIMODRIVE'
+        );
+
         if (folderRes.data.success) {
-          setCurrentFolder(folderRes.data.folder);
-          setBreadcrumbs(folderRes.data.breadcrumbs || []);
+          setCurrentFolder(folderObj);
+          setBreadcrumbs(breadcrumbList);
         }
 
         if (subfoldersRes.data.success) {
-          setSubfolders(sortFolders(subfoldersRes.data.folders || []));
+          setSubfolders(sortFolders(subfoldersRes.data.folders || [], isSim));
         }
 
         if (docsRes.data.success) {
@@ -458,15 +467,21 @@ export default function LibraryPage() {
                     isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
                   }`}
                 >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>DOConCD Technical Document Catalogue</span>
+                  <FileText className="w-3.5 h-3.5 text-sky-400" />
+                  <span>
+                    {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
+                      ? 'Siemens SINUMERIK / SIMODRIVE Technical Document Catalogue'
+                      : 'DOConCD Technical Document Catalogue'}
+                  </span>
                 </div>
                 <div
                   className={`text-[11px] font-mono ${
                     isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
                   }`}
                 >
-                  Siemens SINUMERIK / SINAMICS Table-of-Contents Specification
+                  {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
+                    ? 'DOConCD SINUMERIK / SIMODRIVE 09/2011 Table of Contents Reference'
+                    : 'Siemens SINUMERIK / SINAMICS Table-of-Contents Specification'}
                 </div>
               </div>
 
@@ -478,6 +493,11 @@ export default function LibraryPage() {
                 userPermissions={permissions}
                 onSelectDocument={(doc) => openDocument && openDocument(doc)}
                 onDownloadDocument={handleDownload}
+                isSimodrive={Boolean(
+                  currentFolder?.name?.includes('SIMODRIVE') ||
+                  breadcrumbs.some((b) => b.name?.includes('SIMODRIVE')) ||
+                  currentFolder?.code === 'SIMODRIVE'
+                )}
               />
             </div>
           ) : (
@@ -506,11 +526,15 @@ export default function LibraryPage() {
                   isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
                 }`}
               >
-                Click any folder above such as{' '}
+                Click any repository folder above such as{' '}
+                <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
+                  DOConCD_SINUMERIK_SIMODRIVE
+                </strong>{' '}
+                or{' '}
                 <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
                   DOConCD SINUMERIK - SINAMICS 09/2011 English
                 </strong>{' '}
-                to open the full DOConCD catalogue table.
+                to open the official DOConCD catalogue table.
               </p>
             </div>
           )}
