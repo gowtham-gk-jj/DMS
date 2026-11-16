@@ -1,10 +1,14 @@
 
 import axios from 'axios';
 
-// Production Render backend URL
-const API_BASE_URL =
+// Production Render backend URL (Normalized with /api)
+const rawBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||
-  'https://dms-dab9.onrender.com';
+  'https://dms-dab9.onrender.com/api';
+
+const API_BASE_URL = rawBaseUrl.replace(/\/+$/, '').endsWith('/api')
+  ? rawBaseUrl.replace(/\/+$/, '')
+  : `${rawBaseUrl.replace(/\/+$/, '')}/api`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,

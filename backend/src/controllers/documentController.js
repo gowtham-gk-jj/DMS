@@ -14,31 +14,145 @@ if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
 
+const MIME_TYPES = {
+  pdf: 'application/pdf',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  gif: 'image/gif',
+  webp: 'image/webp',
+  svg: 'image/svg+xml',
+  bmp: 'image/bmp',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  doc: 'application/msword',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  xls: 'application/vnd.ms-excel',
+  csv: 'text/csv; charset=utf-8',
+  txt: 'text/plain; charset=utf-8',
+  json: 'application/json; charset=utf-8',
+  mp4: 'video/mp4',
+  webm: 'video/webm',
+  mp3: 'audio/mpeg',
+  wav: 'audio/wav',
+};
+
+const resolveMimeType = (ext, defaultMime) => {
+  const cleanExt = (ext || '').toLowerCase().replace(/^\./, '');
+  if (MIME_TYPES[cleanExt]) return MIME_TYPES[cleanExt];
+  if (defaultMime && defaultMime !== 'application/octet-stream') return defaultMime;
+  return 'application/octet-stream';
+};
+
+const findLocalFile = (filename) => {
+  if (!filename) return null;
+  const searchDirs = [
+    UPLOADS_DIR,
+    path.resolve(__dirname, '../../uploads'),
+    path.resolve(process.cwd(), 'uploads'),
+    path.resolve(process.cwd(), 'backend/uploads'),
+    '/var/data/uploads',
+  ];
+  for (const dir of searchDirs) {
+    if (dir) {
+      const candidate = path.join(dir, filename);
+      if (fs.existsSync(candidate)) {
+        return candidate;
+      }
+    }
+  }
+  return null;
+};
+
+const streamLocalFile = (filePath, req, res, mimeType, dispositionType, encodedName) => {
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  const range = req.headers.range;
+
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Content-Type', mimeType);
+  res.setHeader(
+    'Content-Disposition',
+    `${dispositionType}; filename="${encodedName}"; filename*=UTF-8''${encodedName}`
+  );
+
+  if (range) {
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+    if (isNaN(start) || start >= fileSize || (parts[1] && end >= fileSize) || start > end) {
+      res.setHeader('Content-Range', `bytes */${fileSize}`);
+      return res.status(416).json({ success: false, message: 'Requested range not satisfiable' });
+    }
+
+    const chunkSize = end - start + 1;
+    res.status(206);
+    res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
+    res.setHeader('Content-Length', chunkSize);
+
+    const stream = fs.createReadStream(filePath, { start, end });
+    return stream.pipe(res);
+  } else {
+    res.status(200);
+    res.setHeader('Content-Length', fileSize);
+    const stream = fs.createReadStream(filePath);
+    return stream.pipe(res);
+  }
+};
+
 // Resilient remote stream proxy that follows redirects if issued by CDN or Cloudinary
-const streamRemoteFile = (url, res, maxRedirects = 3) => {
+const streamRemoteFile = (url, req, res, mimeType, dispositionType, encodedName, maxRedirects = 3) => {
   const client = url.startsWith('https:') ? https : http;
+  const requestHeaders = {};
+  if (req && req.headers && req.headers.range) {
+    requestHeaders['Range'] = req.headers.range;
+  }
+
   client
-    .get(url, (remoteRes) => {
+    .get(url, { headers: requestHeaders }, (remoteRes) => {
       if (
         (remoteRes.statusCode === 301 || remoteRes.statusCode === 302 || remoteRes.statusCode === 307) &&
         remoteRes.headers.location &&
         maxRedirects > 0
       ) {
-        return streamRemoteFile(remoteRes.headers.location, res, maxRedirects - 1);
+        return streamRemoteFile(
+          remoteRes.headers.location,
+          req,
+          res,
+          mimeType,
+          dispositionType,
+          encodedName,
+          maxRedirects - 1
+        );
       }
       if (remoteRes.statusCode >= 400) {
-        return res.status(remoteRes.statusCode).end('Failed to fetch remote asset');
+        return res.status(remoteRes.statusCode).json({
+          success: false,
+          message: `Remote storage responded with status ${remoteRes.statusCode}`,
+        });
       }
-      // Ensure Content-Length matches the actual remote stream
+
+      res.status(remoteRes.statusCode);
+      res.setHeader('Content-Type', mimeType);
+      res.setHeader(
+        'Content-Disposition',
+        `${dispositionType}; filename="${encodedName}"; filename*=UTF-8''${encodedName}`
+      );
+      res.setHeader('Accept-Ranges', 'bytes');
+
+      if (remoteRes.headers['content-range']) {
+        res.setHeader('Content-Range', remoteRes.headers['content-range']);
+      }
       if (remoteRes.headers['content-length']) {
         res.setHeader('Content-Length', remoteRes.headers['content-length']);
       }
+
       remoteRes.pipe(res);
     })
     .on('error', (err) => {
       console.error('Remote stream error:', err);
       if (!res.headersSent) {
-        res.status(500).end('Failed to stream document');
+        res.status(502).json({ success: false, message: 'Failed to stream document from remote storage' });
       }
     });
 };
@@ -185,14 +299,17 @@ const previewDocument = async (req, res, next) => {
       req,
     });
 
+    const resolvedMime = resolveMimeType(document.fileExtension, document.mimeType);
+
     return res.status(200).json({
       success: true,
-      previewUrl: document.secureUrl,
+      previewUrl: document.secureUrl || `/api/documents/${document._id}/stream`,
+      streamUrl: `/api/documents/${document._id}/stream`,
       document: {
         id: document._id,
         title: document.title,
         originalFileName: document.originalFileName,
-        mimeType: document.mimeType,
+        mimeType: resolvedMime,
         fileExtension: document.fileExtension,
         fileSize: document.fileSize,
         system: document.system,
@@ -231,30 +348,32 @@ const streamDocument = async (req, res, next) => {
       req,
     }).catch(() => {});
 
-    // Ensure correct inline headers so browsers render instead of downloading
-    const mimeType =
-      document.mimeType ||
-      (document.fileExtension === 'pdf' ? 'application/pdf' : 'application/octet-stream');
-    res.setHeader('Content-Type', mimeType);
-    res.setHeader(
-      'Content-Disposition',
-      `inline; filename="${encodeURIComponent(document.originalFileName)}"`
-    );
-    res.setHeader('Accept-Ranges', 'bytes');
+    const mimeType = resolveMimeType(document.fileExtension, document.mimeType);
+    const encodedName = encodeURIComponent(document.originalFileName || 'document.pdf');
 
-    // If local file
+    // 1. Check local persistent storage
     if (document.cloudinaryPublicId?.startsWith('local_')) {
       const filename = document.cloudinaryPublicId.replace('local_', '');
-      const filePath = path.join(UPLOADS_DIR, filename);
-      if (fs.existsSync(filePath)) {
-        const stat = fs.statSync(filePath);
-        res.setHeader('Content-Length', stat.size);
-        return fs.createReadStream(filePath).pipe(res);
+      const localFilePath = findLocalFile(filename);
+      if (localFilePath) {
+        return streamLocalFile(localFilePath, req, res, mimeType, 'inline', encodedName);
+      }
+
+      // If local file record exists but file is missing from disk:
+      if (document.secureUrl && (document.secureUrl.includes('localhost') || document.secureUrl.includes('/uploads/'))) {
+        return res.status(404).json({
+          success: false,
+          message: 'Document file not found on local persistent storage.',
+        });
       }
     }
 
-    // Stream from Cloudinary or remote storage
-    return streamRemoteFile(document.secureUrl, res);
+    // 2. Stream from Cloudinary or remote storage
+    if (document.secureUrl && (document.secureUrl.startsWith('http://') || document.secureUrl.startsWith('https://'))) {
+      return streamRemoteFile(document.secureUrl, req, res, mimeType, 'inline', encodedName);
+    }
+
+    return res.status(404).json({ success: false, message: 'Document file location is invalid or unavailable.' });
   } catch (err) {
     next(err);
   }
@@ -308,25 +427,31 @@ const downloadDocument = async (req, res, next) => {
     // Stream download attachment directly when requested by in-app download
     if (req.query.stream === 'true' || req.headers['x-download-stream'] === 'true') {
       const cleanFileName = document.originalFileName || 'document.pdf';
-      const mimeType = document.mimeType || 'application/octet-stream';
-      res.setHeader('Content-Type', mimeType);
-      res.setHeader(
-        'Content-Disposition',
-        `attachment; filename="${encodeURIComponent(cleanFileName)}"; filename*=UTF-8''${encodeURIComponent(cleanFileName)}`
-      );
+      const mimeType = resolveMimeType(document.fileExtension, document.mimeType);
+      const encodedName = encodeURIComponent(cleanFileName);
+
       // If stored locally in uploads/
       if (document.cloudinaryPublicId?.startsWith('local_')) {
         const filename = document.cloudinaryPublicId.replace('local_', '');
-        const filePath = path.join(UPLOADS_DIR, filename);
-        if (fs.existsSync(filePath)) {
-          const stat = fs.statSync(filePath);
-          res.setHeader('Content-Length', stat.size);
-          return fs.createReadStream(filePath).pipe(res);
+        const localFilePath = findLocalFile(filename);
+        if (localFilePath) {
+          return streamLocalFile(localFilePath, req, res, mimeType, 'attachment', encodedName);
+        }
+
+        if (document.secureUrl && (document.secureUrl.includes('localhost') || document.secureUrl.includes('/uploads/'))) {
+          return res.status(404).json({
+            success: false,
+            message: 'Document file not found on local persistent storage.',
+          });
         }
       }
 
       // Stream from Cloudinary or remote storage
-      return streamRemoteFile(document.secureUrl, res);
+      if (document.secureUrl && (document.secureUrl.startsWith('http://') || document.secureUrl.startsWith('https://'))) {
+        return streamRemoteFile(document.secureUrl, req, res, mimeType, 'attachment', encodedName);
+      }
+
+      return res.status(404).json({ success: false, message: 'Document file location is invalid or unavailable.' });
     }
 
     // Default JSON response for programmatic API and test suite

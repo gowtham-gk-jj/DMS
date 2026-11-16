@@ -73,7 +73,10 @@ app.use(
 
       const normalizedOrigin = origin.replace(/\/$/, '');
 
-      if (allowedOrigins.includes(normalizedOrigin)) {
+      if (
+        allowedOrigins.includes(normalizedOrigin) ||
+        normalizedOrigin.endsWith('.vercel.app')
+      ) {
         return callback(null, true);
       }
 
@@ -99,6 +102,17 @@ app.use(
       'Content-Type',
       'Authorization',
       'X-Requested-With',
+      'Range',
+      'Accept',
+      'x-download-stream',
+    ],
+
+    exposedHeaders: [
+      'Content-Range',
+      'Accept-Ranges',
+      'Content-Length',
+      'Content-Disposition',
+      'Content-Type',
     ],
 
     optionsSuccessStatus: 204,
