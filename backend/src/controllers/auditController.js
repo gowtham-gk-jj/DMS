@@ -1,4 +1,5 @@
 const AuditLog = require('../models/AuditLog');
+const { escapeRegex } = require('../utils/escapeRegex');
 
 const getAuditLogs = async (req, res, next) => {
   try {
@@ -14,12 +15,13 @@ const getAuditLogs = async (req, res, next) => {
     }
 
     if (search) {
+      const safeSearch = escapeRegex(search.trim());
       query.$or = [
-        { userEmail: { $regex: search, $options: 'i' } },
-        { userName: { $regex: search, $options: 'i' } },
-        { targetName: { $regex: search, $options: 'i' } },
-        { targetId: { $regex: search, $options: 'i' } },
-        { action: { $regex: search, $options: 'i' } },
+        { userEmail: { $regex: safeSearch, $options: 'i' } },
+        { userName: { $regex: safeSearch, $options: 'i' } },
+        { targetName: { $regex: safeSearch, $options: 'i' } },
+        { targetId: { $regex: safeSearch, $options: 'i' } },
+        { action: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 

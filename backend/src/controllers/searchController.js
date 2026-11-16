@@ -2,6 +2,7 @@ const Document = require('../models/Document');
 const Folder = require('../models/Folder');
 const Permission = require('../models/Permission');
 const { USER_ROLES } = require('../config/constants');
+const { escapeRegex } = require('../utils/escapeRegex');
 
 const globalSearch = async (req, res, next) => {
   try {
@@ -17,7 +18,7 @@ const globalSearch = async (req, res, next) => {
     }
 
     const searchQuery = q.trim();
-    const regex = new RegExp(searchQuery, 'i');
+    const regex = new RegExp(escapeRegex(searchQuery), 'i');
     const user = req.user;
 
     // Determine allowed folder IDs for non-admin users

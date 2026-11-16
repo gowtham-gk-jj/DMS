@@ -4,9 +4,10 @@ const Folder = require('../models/Folder');
 const Document = require('../models/Document');
 const Permission = require('../models/Permission');
 const EmailLog = require('../models/EmailLog');
-const { USER_ROLES, USER_STATUS, REQUEST_STATUS } = require('../config/constants');
+const { USER_ROLES, USER_STATUS, REQUEST_STATUS, ADMIN_EMAILS } = require('../config/constants');
 const { notifyUserApproved, notifyUserRejected, notifyPermissionsUpdated } = require('../services/emailService');
 const { logAudit } = require('../services/auditService');
+const { escapeRegex } = require('../utils/escapeRegex');
 
 // Get high-level admin dashboard statistics
 const getDashboardStats = async (req, res, next) => {
@@ -69,10 +70,11 @@ const getAccessRequests = async (req, res, next) => {
     }
 
     if (search) {
+      const safeSearch = escapeRegex(search.trim());
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { organization: { $regex: search, $options: 'i' } },
+        { name: { $regex: safeSearch, $options: 'i' } },
+        { email: { $regex: safeSearch, $options: 'i' } },
+        { organization: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 
@@ -249,11 +251,12 @@ const getUsers = async (req, res, next) => {
     }
 
     if (search) {
+      const safeSearch = escapeRegex(search.trim());
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { organization: { $regex: search, $options: 'i' } },
-        { department: { $regex: search, $options: 'i' } },
+        { name: { $regex: safeSearch, $options: 'i' } },
+        { email: { $regex: safeSearch, $options: 'i' } },
+        { organization: { $regex: safeSearch, $options: 'i' } },
+        { department: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 
@@ -286,18 +289,26 @@ const updateUser = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    // Prevent demoting the master admin if it's the primary system email
-    if (
-      user.email.toLowerCase() === (process.env.ADMIN_EMAIL || '').toLowerCase() &&
-      role &&
-      role !== USER_ROLES.ADMIN
-    ) {
+    // Prevent demoting or deactivating master administrator accounts
+    const isMasterAdmin = ADMIN_EMAILS.some(
+      (masterEmail) => masterEmail.toLowerCase() === user.email.toLowerCase()
+    ) || (process.env.ADMIN_EMAIL && user.email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase());
+
+    if (isMasterAdmin && role && role !== USER_ROLES.ADMIN) {
       return res.status(400).json({
         success: false,
         message: 'Cannot demote primary root administrator account.',
       });
     }
 
+    if (isMasterAdmin && status && status !== USER_STATUS.APPROVED) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot suspend or deactivate primary root administrator account.',
+      });
+    }
+
+    const previousStatus = user.status;
     if (role) user.role = role;
     if (status) user.status = status;
     if (rejectionReason !== undefined) user.rejectionReason = rejectionReason;
@@ -314,6 +325,28 @@ const updateUser = async (req, res, next) => {
     }
 
     await user.save();
+
+    // If user was approved or rejected directly, synchronize any pending access requests
+    if (status === USER_STATUS.APPROVED || status === USER_STATUS.REJECTED) {
+      await AccessRequest.updateMany(
+        { userId: user._id, status: REQUEST_STATUS.PENDING },
+        {
+          status: status === USER_STATUS.APPROVED ? REQUEST_STATUS.APPROVED : REQUEST_STATUS.REJECTED,
+          reviewedBy: req.user._id,
+          reviewedAt: new Date(),
+          rejectionReason: rejectionReason || user.rejectionReason,
+        }
+      );
+      if (status === USER_STATUS.APPROVED && previousStatus !== USER_STATUS.APPROVED) {
+        notifyUserApproved(user).catch((err) =>
+          console.error('[Notification Error] User approved email failed:', err.message)
+        );
+      } else if (status === USER_STATUS.REJECTED && previousStatus !== USER_STATUS.REJECTED) {
+        notifyUserRejected(user, rejectionReason || 'Access request was not approved.').catch((err) =>
+          console.error('[Notification Error] User rejected email failed:', err.message)
+        );
+      }
+    }
 
     await logAudit({
       action: 'ADMIN_UPDATE_USER',

@@ -179,12 +179,14 @@ export default function DashboardPage() {
               isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
             }`}
           >
-            {stats ? stats.totalDocuments : '186'}
+            {stats
+              ? stats.totalDocuments
+              : folders.reduce((acc, f) => acc + (f.documentsCount || 0), 0) || '—'}
           </div>
           <div
             className={`text-[10px] mt-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}
           >
-            DOConCD catalogue records
+            {stats ? 'Total active system manuals' : 'Indexed technical documents'}
           </div>
         </div>
 

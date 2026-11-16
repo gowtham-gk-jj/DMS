@@ -2,6 +2,7 @@ const Document = require('../models/Document');
 const Folder = require('../models/Folder');
 const Permission = require('../models/Permission');
 const { USER_ROLES } = require('../config/constants');
+const { escapeRegex } = require('../utils/escapeRegex');
 const { uploadToCloudinary, deleteFromCloudinary, getSignedDownloadUrl } = require('../services/cloudinaryService');
 const { logAudit } = require('../services/auditService');
 const fs = require('fs');
@@ -202,13 +203,14 @@ const getDocumentsInFolder = async (req, res, next) => {
     }
 
     if (search) {
+      const safeSearch = escapeRegex(search.trim());
       query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { system: { $regex: search, $options: 'i' } },
-        { orderNumber: { $regex: search, $options: 'i' } },
-        { documentCode: { $regex: search, $options: 'i' } },
-        { originalFileName: { $regex: search, $options: 'i' } },
-        { displayName: { $regex: search, $options: 'i' } },
+        { title: { $regex: safeSearch, $options: 'i' } },
+        { system: { $regex: safeSearch, $options: 'i' } },
+        { orderNumber: { $regex: safeSearch, $options: 'i' } },
+        { documentCode: { $regex: safeSearch, $options: 'i' } },
+        { originalFileName: { $regex: safeSearch, $options: 'i' } },
+        { displayName: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 

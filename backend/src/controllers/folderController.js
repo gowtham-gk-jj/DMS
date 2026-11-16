@@ -3,6 +3,7 @@ const Document = require('../models/Document');
 const Permission = require('../models/Permission');
 const { USER_ROLES } = require('../config/constants');
 const { logAudit } = require('../services/auditService');
+const { escapeRegex } = require('../utils/escapeRegex');
 
 // Helper to construct breadcrumbs
 const buildBreadcrumbs = async (folderId) => {
@@ -35,40 +36,71 @@ const getFolders = async (req, res, next) => {
 
     let folders = await Folder.find(query).sort({ name: 1 });
 
-    // Populate counts for each folder
-    const foldersWithCounts = await Promise.all(
-      folders.map(async (folder) => {
-        const [subfoldersCount, documentsCount] = await Promise.all([
-          Folder.countDocuments({ parentFolderId: folder._id, isArchived: false }),
-          Document.countDocuments({ folderId: folder._id, isArchived: false }),
-        ]);
+    // Fetch active folders and group documents by folderId to calculate descendant document counts without N+1 queries
+    const allActiveFolders = await Folder.find({ isArchived: false }).select('_id parentFolderId path').lean();
+    const docCountsAgg = await Document.aggregate([
+      { $match: { isArchived: false, folderId: { $ne: null } } },
+      { $group: { _id: '$folderId', count: { $sum: 1 } } },
+    ]);
 
-        // Check if user has specific permission override for this folder
-        let userPerm = null;
-        if (user.role === USER_ROLES.ADMIN) {
-          userPerm = { read: true, upload: true, download: true, manage: true };
+    const docCountMap = new Map();
+    docCountsAgg.forEach((d) => docCountMap.set(String(d._id), d.count));
+
+    const childrenMap = new Map();
+    allActiveFolders.forEach((f) => {
+      const pid = f.parentFolderId ? String(f.parentFolderId) : 'root';
+      if (!childrenMap.has(pid)) childrenMap.set(pid, []);
+      childrenMap.get(pid).push(f);
+    });
+
+    const getDescendantDocCount = (folderId) => {
+      let total = docCountMap.get(String(folderId)) || 0;
+      const children = childrenMap.get(String(folderId)) || [];
+      for (const child of children) {
+        total += getDescendantDocCount(child._id);
+      }
+      return total;
+    };
+
+    // Pre-fetch user permissions in one query
+    const targetFolderIds = folders.map((f) => f._id);
+    const permsMap = new Map();
+    if (user.role !== USER_ROLES.ADMIN) {
+      const perms = await Permission.find({ userId: user._id, folderId: { $in: targetFolderIds } }).lean();
+      perms.forEach((p) => permsMap.set(String(p.folderId), p));
+    }
+
+    const foldersWithCounts = folders.map((folder) => {
+      const directDocs = docCountMap.get(String(folder._id)) || 0;
+      const totalDocs = getDescendantDocCount(folder._id);
+      const subfolders = (childrenMap.get(String(folder._id)) || []).length;
+
+      let userPerm = null;
+      if (user.role === USER_ROLES.ADMIN) {
+        userPerm = { read: true, upload: true, download: true, manage: true };
+      } else {
+        const specific = permsMap.get(String(folder._id));
+        if (specific) {
+          userPerm = {
+            read: specific.read,
+            upload: specific.upload,
+            download: specific.download,
+            manage: specific.manage,
+          };
         } else {
-          const specific = await Permission.findOne({ userId: user._id, folderId: folder._id });
-          if (specific) {
-            userPerm = {
-              read: specific.read,
-              upload: specific.upload,
-              download: specific.download,
-              manage: specific.manage,
-            };
-          } else {
-            userPerm = user.permissions;
-          }
+          userPerm = user.permissions;
         }
+      }
 
-        return {
-          ...folder.toObject(),
-          subfoldersCount,
-          documentsCount,
-          userPermissions: userPerm,
-        };
-      })
-    );
+      return {
+        ...folder.toObject(),
+        subfoldersCount: subfolders,
+        directDocumentsCount: directDocs,
+        documentsCount: totalDocs > 0 ? totalDocs : directDocs,
+        totalDocumentsCount: totalDocs,
+        userPermissions: userPerm,
+      };
+    });
 
     // If a parent folder was requested, fetch its breadcrumbs and details
     let currentFolder = null;
@@ -99,10 +131,20 @@ const getFolderById = async (req, res, next) => {
     }
 
     const breadcrumbs = await buildBreadcrumbs(id);
-    const [subfoldersCount, documentsCount] = await Promise.all([
-      Folder.countDocuments({ parentFolderId: folder._id, isArchived: false }),
-      Document.countDocuments({ folderId: folder._id, isArchived: false }),
-    ]);
+    const subfoldersCount = await Folder.countDocuments({ parentFolderId: folder._id, isArchived: false });
+    const directDocs = await Document.countDocuments({ folderId: folder._id, isArchived: false });
+
+    // Calculate total descendants count across hierarchy
+    const descendantFolders = await Folder.find({
+      isArchived: false,
+      path: new RegExp(`^${escapeRegex(folder.path)}(/|$)`),
+    }).select('_id').lean();
+    const descendantFolderIds = descendantFolders.map((f) => f._id);
+    const totalDocumentsCount = await Document.countDocuments({
+      folderId: { $in: descendantFolderIds },
+      isArchived: false,
+    });
+    const documentsCount = totalDocumentsCount > 0 ? totalDocumentsCount : directDocs;
 
     // Permissions
     let userPermissions = null;
@@ -120,7 +162,9 @@ const getFolderById = async (req, res, next) => {
       folder: {
         ...folder.toObject(),
         subfoldersCount,
+        directDocumentsCount: directDocs,
         documentsCount,
+        totalDocumentsCount,
         userPermissions,
       },
       breadcrumbs,
