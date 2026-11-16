@@ -41,6 +41,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
   // PDF Page tracking
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [targetPage, setTargetPage] = useState(null);
 
   // In-memory document buffer and blob URL
   const [documentBuffer, setDocumentBuffer] = useState(null);
@@ -397,7 +398,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               >
                 <button
                   type="button"
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  onClick={() => {
+                    const prev = Math.max(currentPage - 1, 1);
+                    setCurrentPage(prev);
+                    setTargetPage({ page: prev, id: Date.now() });
+                  }}
                   disabled={currentPage <= 1}
                   title="Previous Page"
                   aria-label="Previous Page"
@@ -410,7 +415,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 </span>
                 <button
                   type="button"
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  onClick={() => {
+                    const next = Math.min(currentPage + 1, totalPages);
+                    setCurrentPage(next);
+                    setTargetPage({ page: next, id: Date.now() });
+                  }}
                   disabled={currentPage >= totalPages}
                   title="Next Page"
                   aria-label="Next Page"
@@ -601,6 +610,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                     data={documentBuffer}
                     zoom={zoom}
                     rotation={rotation}
+                    targetPage={targetPage}
                     currentPage={currentPage}
                     onTotalPages={setTotalPages}
                     onCurrentPageChange={setCurrentPage}
