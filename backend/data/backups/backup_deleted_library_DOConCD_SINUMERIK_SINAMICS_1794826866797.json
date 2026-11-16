@@ -1,0 +1,188 @@
+{
+  "backupTimestamp": "2026-11-16T11:01:06.791Z",
+  "approvedScope": {
+    "targetLibrary": "DOConCD_SINUMERIK_SINAMICS",
+    "rootFolderId": "6af9d05ca1a8b3b2f4ddf68c",
+    "childFolderIds": [
+      "6af9d05ca1a8b3b2f4ddf692",
+      "6af9d05da1a8b3b2f4ddf693",
+      "6af9d05da1a8b3b2f4ddf694",
+      "6af9d05da1a8b3b2f4ddf695"
+    ],
+    "documentIds": [
+      "6af9d05ea1a8b3b2f4ddf69d",
+      "6af9d05ea1a8b3b2f4ddf69e",
+      "6af9d05ea1a8b3b2f4ddf69f"
+    ]
+  },
+  "records": {
+    "rootFolder": {
+      "_id": "6af9d05ca1a8b3b2f4ddf68c",
+      "name": "DOConCD_SINUMERIK_SINAMICS",
+      "code": "DOConCD_SINUMERIK_SINAMICS",
+      "description": "Technical document repository for SINUMERIK Solution Line and SINAMICS S120 drives.",
+      "parentFolderId": null,
+      "path": "/DOConCD_SINUMERIK_SINAMICS",
+      "level": 0,
+      "isArchived": false,
+      "createdBy": "6af9d059a1a8b3b2f4ddf68a",
+      "createdAt": "2026-11-15T15:31:40.027Z",
+      "updatedAt": "2026-11-15T15:31:40.027Z",
+      "__v": 0
+    },
+    "childFolders": [
+      {
+        "_id": "6af9d05ca1a8b3b2f4ddf692",
+        "name": "SINAMICS S120",
+        "code": "",
+        "description": "",
+        "parentFolderId": "6af9d05ca1a8b3b2f4ddf68c",
+        "path": "/DOConCD_SINUMERIK_SINAMICS/SINAMICS S120",
+        "level": 1,
+        "isArchived": false,
+        "createdBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:40.994Z",
+        "updatedAt": "2026-11-15T15:31:40.994Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af9d05da1a8b3b2f4ddf693",
+        "name": "SIMATIC S7",
+        "code": "",
+        "description": "",
+        "parentFolderId": "6af9d05ca1a8b3b2f4ddf68c",
+        "path": "/DOConCD_SINUMERIK_SINAMICS/SIMATIC S7",
+        "level": 1,
+        "isArchived": false,
+        "createdBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:41.106Z",
+        "updatedAt": "2026-11-15T15:31:41.106Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af9d05da1a8b3b2f4ddf694",
+        "name": "Motors & Encoders",
+        "code": "",
+        "description": "",
+        "parentFolderId": "6af9d05ca1a8b3b2f4ddf68c",
+        "path": "/DOConCD_SINUMERIK_SINAMICS/Motors & Encoders",
+        "level": 1,
+        "isArchived": false,
+        "createdBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:41.211Z",
+        "updatedAt": "2026-11-15T15:31:41.211Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af9d05da1a8b3b2f4ddf695",
+        "name": "Training Documents",
+        "code": "",
+        "description": "",
+        "parentFolderId": "6af9d05ca1a8b3b2f4ddf68c",
+        "path": "/DOConCD_SINUMERIK_SINAMICS/Training Documents",
+        "level": 1,
+        "isArchived": false,
+        "createdBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:41.313Z",
+        "updatedAt": "2026-11-15T15:31:41.313Z",
+        "__v": 0
+      }
+    ],
+    "documents": [
+      {
+        "_id": "6af9d05ea1a8b3b2f4ddf69d",
+        "displayName": "SINAMICS S120 Drive Functions (IH1)",
+        "originalFileName": "IH1_0113_en.pdf",
+        "folderId": "6af9d05ca1a8b3b2f4ddf692",
+        "cloudinaryAssetId": "",
+        "cloudinaryPublicId": "seed/IH1_0113_en",
+        "secureUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "mimeType": "application/pdf",
+        "fileExtension": "pdf",
+        "fileSize": 8300000,
+        "title": "Commissioning Manual Drive Functions",
+        "system": "SINAMICS S120",
+        "softwareVersion": "4.5",
+        "edition": "01/13",
+        "orderNumber": "6SL3097-4AB00-0AP3",
+        "documentCode": "IH1",
+        "category": "Commissioning",
+        "description": "Parameterization and optimization of SINAMICS S120 modular drive systems.",
+        "tags": [
+          "SINAMICS",
+          "Inverters",
+          "Drives",
+          "S120"
+        ],
+        "version": 1,
+        "isArchived": false,
+        "uploadedBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:42.299Z",
+        "updatedAt": "2026-11-15T15:31:42.299Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af9d05ea1a8b3b2f4ddf69e",
+        "displayName": "SIMATIC S7 Integration Guide (S7sl)",
+        "originalFileName": "S7sl_0412_en.pdf",
+        "folderId": "6af9d05da1a8b3b2f4ddf693",
+        "cloudinaryAssetId": "",
+        "cloudinaryPublicId": "seed/S7sl_0412_en",
+        "secureUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "mimeType": "application/pdf",
+        "fileExtension": "pdf",
+        "fileSize": 6100000,
+        "title": "PLC Toolbox and Basic Software Manual",
+        "system": "SIMATIC S7-300",
+        "softwareVersion": "5.5",
+        "edition": "04/12",
+        "orderNumber": "6ES7810-4CA10-8BW1",
+        "documentCode": "S7sl",
+        "category": "SIMATIC",
+        "description": "Hardware configuration, ladder logic blocks, and DB exchange with CNC.",
+        "tags": [
+          "SIMATIC",
+          "STEP 7",
+          "PLC"
+        ],
+        "version": 1,
+        "isArchived": false,
+        "uploadedBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:42.428Z",
+        "updatedAt": "2026-11-15T15:31:42.428Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af9d05ea1a8b3b2f4ddf69f",
+        "displayName": "System Topology Schematic Diagram",
+        "originalFileName": "Sinumerik_S120_Topology.png",
+        "folderId": "6af9d05da1a8b3b2f4ddf695",
+        "cloudinaryAssetId": "",
+        "cloudinaryPublicId": "seed/Sinumerik_S120_Topology",
+        "secureUrl": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+        "mimeType": "image/png",
+        "fileExtension": "png",
+        "fileSize": 1420000,
+        "title": "System Architecture & Interconnect Topology Diagram",
+        "system": "840D sl / S120",
+        "softwareVersion": "4.7",
+        "edition": "08/18",
+        "orderNumber": "6FC5398-0TP40-0AA0",
+        "documentCode": "ARCH-01",
+        "category": "Info / Training",
+        "description": "High-resolution industrial hardware schematic and bus interconnect diagram.",
+        "tags": [
+          "Schematic",
+          "DRIVE-CLiQ",
+          "Architecture"
+        ],
+        "version": 1,
+        "isArchived": false,
+        "uploadedBy": "6af9d059a1a8b3b2f4ddf68a",
+        "createdAt": "2026-11-15T15:31:42.529Z",
+        "updatedAt": "2026-11-15T15:31:42.529Z",
+        "__v": 0
+      }
+    ]
+  }
+}
