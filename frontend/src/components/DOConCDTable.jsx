@@ -395,29 +395,29 @@ export default function DOConCDTable({
       <div className="hidden md:block overflow-x-auto w-full">
         <table className="w-full text-left border-collapse text-xs min-w-[880px]">
           <thead>
-            <tr className="font-semibold text-xs tracking-wider select-none bg-[var(--table-header-bg)] text-[var(--table-header-text)] border-b border-[var(--border-color)]">
-              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-32 font-mono uppercase text-[11px]">
+            <tr className="font-semibold text-xs tracking-wider select-none bg-[var(--table-header-bg)] text-[var(--table-header-text)] border-b border-[#29364A]">
+              <th className="py-2.5 px-3 border-r border-[#29364A] w-32 font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 System
               </th>
-              <th className="py-2.5 px-4 border-r border-[var(--border-subtle)] uppercase text-[11px]">
+              <th className="py-2.5 px-4 border-r border-[#29364A] text-[11px] font-semibold text-[var(--text-secondary)]">
                 Title
               </th>
-              <th className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] w-20 text-center font-mono uppercase text-[11px]">
+              <th className="py-2.5 px-2.5 border-r border-[#29364A] w-20 text-center font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 SW
               </th>
-              <th className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] w-24 text-center font-mono uppercase text-[11px]">
+              <th className="py-2.5 px-2.5 border-r border-[#29364A] w-24 text-center font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 Edition
               </th>
-              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-44 font-mono uppercase text-[11px]">
+              <th className="py-2.5 px-3 border-r border-[#29364A] w-44 font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 Order No.
               </th>
-              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-32 text-center font-mono uppercase text-[11px]">
+              <th className="py-2.5 px-3 border-r border-[#29364A] w-32 text-center font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 File name
               </th>
-              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-28 text-center font-mono uppercase text-[11px]">
+              <th className="py-2.5 px-3 border-r border-[#29364A] w-28 text-center font-mono text-[11px] font-semibold text-[var(--text-secondary)]">
                 Status
               </th>
-              <th className="py-2.5 px-3 text-center w-36 uppercase text-[11px]">
+              <th className="py-2.5 px-3 text-center w-36 text-[11px] font-semibold text-[var(--text-secondary)]">
                 Actions
               </th>
             </tr>
@@ -435,35 +435,42 @@ export default function DOConCDTable({
                 </td>
               </tr>
             ) : (
-              categoriesToRender.map((category) => {
+              categoriesToRender.map((category, catIdx) => {
                 const categoryDocs = filteredGrouped[category] || [];
                 const isCollapsed = collapsedCategories[category];
+                const isPrimary = catIdx % 2 === 0;
 
                 return (
                   <React.Fragment key={category}>
-                    {/* CATEGORY HEADING ROW (Siemens DOConCD Section Banner) */}
+                    {/* CATEGORY HEADING ROW (Siemens DOConCD Section Banner: Alternating Warm Orange #F59E0B / Light Orange #FDBA74) */}
                     <tr
                       data-cat-row="true"
                       data-category={category}
+                      data-category-index={catIdx}
+                      data-band-type={isPrimary ? 'primary' : 'secondary'}
                       onClick={() => toggleCategory(category)}
-                      className="border-y border-[var(--border-color)] cursor-pointer select-none transition-colors bg-[var(--bg-elevated)] hover:bg-[var(--bg-hover)]"
+                      className={`cursor-pointer select-none transition-colors border-y border-[#29364A] ${
+                        isPrimary
+                          ? 'bg-[#F59E0B] hover:bg-[#EAA00A] text-[#292016]'
+                          : 'bg-[#FDBA74] hover:bg-[#FBA859] text-[#292016]'
+                      }`}
                     >
-                      <td colSpan={8} className="py-2.5 px-3 text-xs">
+                      <td colSpan={8} className="py-2.5 px-4 text-xs">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2.5">
                             {isCollapsed ? (
-                              <ChevronRight className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
+                              <ChevronRight className="w-4 h-4 shrink-0 text-[#292016]" />
                             ) : (
-                              <ChevronDown className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
+                              <ChevronDown className="w-4 h-4 shrink-0 text-[#292016]" />
                             )}
-                            <span className="uppercase tracking-wide font-bold text-[var(--text-primary)] font-mono">
+                            <span className="uppercase tracking-wider font-bold text-xs sm:text-[13px] font-mono text-[#292016]">
                               {category}
                             </span>
-                            <span className="text-[11px] font-normal text-[var(--text-muted)]">
-                              ({categoryDocs.length} {categoryDocs.length === 1 ? 'document' : 'documents'})
+                            <span className="text-[11px] font-mono font-semibold text-[#292016]/80 px-2 py-0.5 rounded-full bg-[#292016]/10">
+                              {categoryDocs.length} {categoryDocs.length === 1 ? 'document' : 'documents'}
                             </span>
                           </div>
-                          <span className="text-[11px] font-mono hidden sm:inline text-[var(--text-muted)]">
+                          <span className="text-[11px] font-mono font-semibold text-[#292016]/80 hidden sm:inline">
                             {isCollapsed ? 'Click to expand' : 'Click to collapse'}
                           </span>
                         </div>
@@ -484,38 +491,38 @@ export default function DOConCDTable({
                             data-doc-id={doc._id}
                             data-category={category}
                             onClick={() => handleRowClick(doc)}
-                            className={`border-b border-[var(--border-subtle)] transition-colors cursor-pointer ${
-                              idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
-                            } hover:bg-[var(--bg-hover)]`}
+                            className={`border-b border-[#29364A] transition-colors cursor-pointer ${
+                              idx % 2 === 1 ? 'bg-[#141C2B]' : 'bg-[#101827]'
+                            } hover:bg-[#1E2B3E]`}
                           >
                             {/* 1. System */}
-                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] font-mono text-[11px] text-[var(--text-primary)]">
+                            <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] text-[#F1F5F9]">
                               {doc.system && doc.system !== '—' ? (
                                 <span
-                                  className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs font-semibold text-[10px] inline-block max-w-[130px] truncate bg-[var(--bg-card)] text-[var(--text-primary)]"
+                                  className="border border-[#29364A] px-2 py-0.5 rounded font-mono font-semibold text-[10px] inline-block max-w-[130px] truncate bg-[#172235] text-[#F1F5F9]"
                                   title={doc.system}
                                 >
                                   {doc.system}
                                 </span>
                               ) : (
-                                <span className="text-[var(--text-muted)]">—</span>
+                                <span className="text-[var(--text-muted)] font-mono">—</span>
                               )}
                             </td>
 
                             {/* 2. Title */}
-                            <td className="py-2.5 px-4 border-r border-[var(--border-subtle)] text-[var(--text-primary)]">
-                              <div className="flex items-center space-x-2">
+                            <td className="py-2.5 px-4 border-r border-[#29364A] text-[#F1F5F9]">
+                              <div className="flex items-start space-x-2.5 py-0.5">
                                 <FileText
-                                  className={`w-3.5 h-3.5 shrink-0 ${
-                                    isAvailable ? 'text-[var(--primary-blue)]' : 'text-[var(--text-muted)]'
+                                  className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${
+                                    isAvailable ? 'text-[#60A5FA]' : 'text-[var(--text-muted)]'
                                   }`}
                                 />
                                 <span
                                   className={`font-medium ${
                                     isAvailable
-                                      ? 'text-[var(--text-primary)] hover:text-[var(--primary-blue)]'
-                                      : 'text-[var(--text-secondary)]'
-                                  } leading-snug`}
+                                      ? 'text-[#F1F5F9] hover:text-[#60A5FA]'
+                                      : 'text-[#94A3B8]'
+                                  } leading-snug break-words`}
                                 >
                                   {doc.title && doc.title !== '—' ? doc.title : '—'}
                                 </span>
@@ -523,45 +530,45 @@ export default function DOConCDTable({
                             </td>
 
                             {/* 3. SW (Software Version) */}
-                            <td className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] text-center font-mono text-[11px] text-[var(--text-secondary)]">
+                            <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
                               {doc.softwareVersion && doc.softwareVersion !== '—' ? (
-                                doc.softwareVersion
+                                <span className="font-mono">{doc.softwareVersion}</span>
                               ) : (
-                                <span className="text-[var(--text-muted)]">—</span>
+                                <span className="text-[var(--text-muted)] font-mono">—</span>
                               )}
                             </td>
 
                             {/* 4. Edition */}
-                            <td className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] text-center font-mono text-[11px] text-[var(--text-secondary)]">
+                            <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
                               {doc.edition && doc.edition !== '—' ? (
-                                doc.edition
+                                <span className="font-mono">{doc.edition}</span>
                               ) : (
-                                <span className="text-[var(--text-muted)]">—</span>
+                                <span className="text-[var(--text-muted)] font-mono">—</span>
                               )}
                             </td>
 
                             {/* 5. Order No. */}
-                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] font-mono text-[11px] whitespace-nowrap text-[var(--text-secondary)]">
+                            <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] whitespace-nowrap text-[#94A3B8]">
                               {doc.orderNumber && doc.orderNumber !== '—' ? (
-                                doc.orderNumber
+                                <span className="font-mono tracking-tight">{doc.orderNumber}</span>
                               ) : (
-                                <span className="text-[var(--text-muted)]">—</span>
+                                <span className="text-[var(--text-muted)] font-mono">—</span>
                               )}
                             </td>
 
                             {/* 6. File name */}
-                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center font-mono font-bold text-[11px] text-[var(--text-primary)]">
+                            <td className="py-2.5 px-3 border-r border-[#29364A] text-center font-mono font-bold text-[11px] text-[#F1F5F9]">
                               {doc.fileName && doc.fileName !== '—' ? (
-                                <span className="px-1.5 py-0.5 rounded-xs border border-[var(--border-color)] bg-[var(--bg-main)] text-[var(--primary-blue)]">
+                                <span className="px-2 py-0.5 rounded border border-[#29364A] bg-[#0F172A] text-[#60A5FA] font-mono">
                                   {doc.fileName}
                                 </span>
                               ) : (
-                                <span className="text-[var(--text-muted)]">—</span>
+                                <span className="text-[var(--text-muted)] font-mono">—</span>
                               )}
                             </td>
 
                             {/* 7. Status */}
-                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center whitespace-nowrap">
+                            <td className="py-2.5 px-3 border-r border-[#29364A] text-center whitespace-nowrap">
                               {isAvailable ? (
                                 <span
                                   className="dms-badge dms-badge-success"
@@ -596,7 +603,7 @@ export default function DOConCDTable({
                                       aria-label={`Preview ${doc.title}`}
                                       className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
                                     >
-                                      <Eye className="w-3.5 h-3.5 text-[var(--primary-blue)]" />
+                                      <Eye className="w-3.5 h-3.5 text-[#60A5FA]" />
                                       <span>Preview</span>
                                     </button>
 
@@ -652,44 +659,53 @@ export default function DOConCDTable({
             <p className="text-xs mt-1 text-[var(--text-muted)]">Try resetting the search or category filters.</p>
           </div>
         ) : (
-          categoriesToRender.map((category) => {
+          categoriesToRender.map((category, catIdx) => {
             const categoryDocs = filteredGrouped[category] || [];
             const isCollapsed = collapsedCategories[category];
+            const isPrimary = catIdx % 2 === 0;
 
             return (
               <div
                 key={`mob_cat_${category}`}
-                className="rounded-lg border border-[var(--border-color)] overflow-hidden bg-[var(--bg-card)]"
+                className="rounded-lg border border-[#29364A] overflow-hidden bg-[#101827]"
               >
-                {/* Mobile Category Accordion Header */}
+                {/* Mobile Category Accordion Header (Siemens Coloured Band: Alternating Warm Orange #F59E0B / Light Orange #FDBA74) */}
                 <button
                   type="button"
                   onClick={() => toggleCategory(category)}
-                  className="w-full p-3.5 min-h-[44px] flex items-center justify-between text-left transition-colors cursor-pointer bg-[var(--bg-elevated)] hover:bg-[var(--bg-hover)]"
+                  data-mobile-cat-header="true"
+                  data-category={category}
+                  data-category-index={catIdx}
+                  data-band-type={isPrimary ? 'primary' : 'secondary'}
+                  className={`w-full p-3.5 min-h-[44px] flex items-center justify-between text-left transition-colors cursor-pointer border-b border-[#29364A] ${
+                    isPrimary
+                      ? 'bg-[#F59E0B] hover:bg-[#EAA00A] text-[#292016]'
+                      : 'bg-[#FDBA74] hover:bg-[#FBA859] text-[#292016]'
+                  }`}
                 >
-                  <div className="flex items-center space-x-2 min-w-0 pr-2">
+                  <div className="flex items-center space-x-2.5 min-w-0 pr-2">
                     {isCollapsed ? (
-                      <ChevronRight className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
+                      <ChevronRight className="w-4 h-4 shrink-0 text-[#292016]" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
+                      <ChevronDown className="w-4 h-4 shrink-0 text-[#292016]" />
                     )}
                     <div className="min-w-0">
-                      <div className="text-xs font-bold uppercase tracking-wide truncate text-[var(--text-primary)] font-mono">
+                      <div className="text-xs font-bold uppercase tracking-wider truncate text-[#292016] font-mono">
                         {category}
                       </div>
-                      <div className="text-[10px] font-mono text-[var(--text-muted)]">
+                      <div className="text-[10px] font-mono text-[#292016]/80 font-semibold">
                         {categoryDocs.length} {categoryDocs.length === 1 ? 'doc' : 'docs'}
                       </div>
                     </div>
                   </div>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-xs border border-[var(--border-color)] shrink-0 text-[var(--text-muted)]">
+                  <span className="text-[9px] font-mono px-2 py-0.5 rounded font-bold border border-[#292016]/30 text-[#292016] bg-[#292016]/10 shrink-0">
                     {isCollapsed ? 'EXPAND' : 'COLLAPSE'}
                   </span>
                 </button>
 
                 {/* Mobile Document Cards List (Continuous List, No Pagination) */}
                 {!isCollapsed && (
-                  <div className="divide-y divide-[var(--border-subtle)]">
+                  <div className="divide-y divide-[#29364A]">
                     {categoryDocs.map((doc, idx) => {
                       const isAvailable =
                         doc.status === 'Available' ||
@@ -699,21 +715,21 @@ export default function DOConCDTable({
                         <div
                           key={`mob_doc_${doc._id || idx}`}
                           className={`p-3.5 space-y-2.5 transition-colors ${
-                            idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
+                            idx % 2 === 1 ? 'bg-[#141C2B]' : 'bg-[#101827]'
                           }`}
                         >
                           {/* Badges: System, SW, Edition, Status */}
                           <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-mono">
-                            <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs font-semibold bg-[var(--bg-card)] text-[var(--text-primary)]">
+                            <span className="border border-[#29364A] px-2 py-0.5 rounded font-semibold bg-[#172235] text-[#F1F5F9]">
                               {doc.system && doc.system !== '—' ? doc.system : '—'}
                             </span>
                             {doc.softwareVersion && doc.softwareVersion !== '—' && (
-                              <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs text-[var(--text-secondary)]">
+                              <span className="border border-[#29364A] px-1.5 py-0.5 rounded text-[#94A3B8]">
                                 SW {doc.softwareVersion}
                               </span>
                             )}
                             {doc.edition && doc.edition !== '—' && (
-                              <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs text-[var(--text-secondary)]">
+                              <span className="border border-[#29364A] px-1.5 py-0.5 rounded text-[#94A3B8]">
                                 Ed: {doc.edition}
                               </span>
                             )}
@@ -734,8 +750,8 @@ export default function DOConCDTable({
                             <h4
                               className={`text-xs font-semibold leading-snug break-words ${
                                 isAvailable
-                                  ? 'text-[var(--text-primary)] group-hover:text-[var(--primary-blue)]'
-                                  : 'text-[var(--text-secondary)]'
+                                  ? 'text-[#F1F5F9] group-hover:text-[#60A5FA]'
+                                  : 'text-[#94A3B8]'
                               }`}
                             >
                               {doc.title && doc.title !== '—' ? doc.title : '—'}
@@ -743,21 +759,21 @@ export default function DOConCDTable({
                           </div>
 
                           {/* Order No & File Name */}
-                          <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono text-[var(--text-secondary)]">
+                          <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono text-[#94A3B8]">
                             <div className="truncate">
                               <span className="text-[var(--text-muted)]">Order:</span>{' '}
-                              <span className="font-semibold text-[var(--text-primary)]">{doc.orderNumber || '—'}</span>
+                              <span className="font-semibold text-[#F1F5F9]">{doc.orderNumber || '—'}</span>
                             </div>
                             <div className="truncate">
                               <span className="text-[var(--text-muted)]">File:</span>{' '}
-                              <span className="font-bold text-[var(--primary-blue)]">
+                              <span className="font-bold text-[#60A5FA]">
                                 {doc.fileName || '—'}
                               </span>
                             </div>
                           </div>
 
                           {/* Action Buttons: touch target >= 44px */}
-                          <div className="flex items-center gap-2 pt-1 border-t border-[var(--border-subtle)]">
+                          <div className="flex items-center gap-2 pt-1 border-t border-[#29364A]">
                             {isAvailable ? (
                               <>
                                 <button
@@ -765,7 +781,7 @@ export default function DOConCDTable({
                                   onClick={() => onSelectDocument && onSelectDocument(doc)}
                                   className="dms-btn-secondary flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold"
                                 >
-                                  <Eye className="w-4 h-4 text-[var(--primary-blue)]" />
+                                  <Eye className="w-4 h-4 text-[#60A5FA]" />
                                   <span>Preview</span>
                                 </button>
                                 {userPermissions?.download !== false && (
@@ -806,7 +822,7 @@ export default function DOConCDTable({
       </div>
 
       {/* DOConCD Table Footer */}
-      <div className="border-t border-[var(--border-color)] p-3 px-4 text-xs flex flex-col sm:flex-row items-center justify-between gap-2 bg-[var(--bg-elevated)] text-[var(--text-muted)]">
+      <div className="border-t border-[#29364A] p-3 px-4 text-xs flex flex-col sm:flex-row items-center justify-between gap-2 bg-[var(--bg-elevated)] text-[var(--text-muted)]">
         <div className="flex items-center space-x-4">
           <span className="font-mono text-[10px] sm:text-[11px] text-center sm:text-left">
             DOConCD 09/2011 Master Catalogue • Siemens SINUMERIK / SIMODRIVE Reference
