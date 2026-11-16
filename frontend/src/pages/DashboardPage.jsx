@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   FolderTree,
   FileText,
@@ -17,10 +17,8 @@ export default function DashboardPage() {
   const { user, isAdmin } = useAuth();
   const { isDark } = useTheme();
   const navigate = useNavigate();
-  const { openDocument } = useOutletContext() || {};
 
   const [folders, setFolders] = useState([]);
-  const [recentDocs, setRecentDocs] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [foldersLoading, setFoldersLoading] = useState(true);
@@ -37,19 +35,12 @@ export default function DashboardPage() {
       }
       setFoldersError(null);
 
-      const [foldersRes, recentRes] = await Promise.all([
-        api.get('/folders?parentId=root'),
-        api.get('/documents/recent?limit=6'),
-      ]);
+      const foldersRes = await api.get('/folders?parentId=root');
 
       if (foldersRes.data.success) {
         setFolders(foldersRes.data.folders || []);
       } else {
         setFoldersError('Failed to load primary document repositories.');
-      }
-
-      if (recentRes.data.success) {
-        setRecentDocs(recentRes.data.documents || []);
       }
 
       // If admin, load dashboard statistics
@@ -511,128 +502,6 @@ export default function DashboardPage() {
             })}
           </div>
         )}
-      </div>
-
-      {/* Recently Catalogued Documents */}
-      <div
-        className={`border transition-colors ${
-          isDark ? 'bg-[#141c2b] border-[#243042]' : 'bg-[#ffffff] border-[#e5e5e5]'
-        }`}
-      >
-        <div
-          className={`border-b p-3.5 sm:p-4 flex items-center justify-between ${
-            isDark ? 'bg-[#111827] border-[#243042]' : 'bg-[#fafafa] border-[#e5e5e5]'
-          }`}
-        >
-          <div>
-            <h2
-              className={`text-xs font-bold uppercase tracking-wider ${
-                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-              }`}
-            >
-              Recently Catalogued Documents
-            </h2>
-            <p className={`text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
-              Click any document to inspect in the integrated in-app viewer
-            </p>
-          </div>
-          <span
-            className={`text-xs font-mono ${
-              isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-            }`}
-          >
-            {recentDocs.length} ENTRIES
-          </span>
-        </div>
-
-        <div
-          className={`divide-y ${
-            isDark ? 'divide-[#243042]' : 'divide-[#e5e5e5]'
-          }`}
-        >
-          {recentDocs.length === 0 ? (
-            <div
-              className={`p-8 text-center text-xs ${
-                isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-              }`}
-            >
-              No documents catalogued yet.
-            </div>
-          ) : (
-            recentDocs.map((doc) => (
-              <div
-                key={doc._id}
-                onClick={() => openDocument && openDocument(doc)}
-                className={`p-3.5 cursor-pointer flex items-center justify-between transition-colors text-xs group ${
-                  isDark ? 'hover:bg-[#1e293b]' : 'hover:bg-[#f9f9f9]'
-                }`}
-              >
-                <div className="flex items-center space-x-3 truncate mr-2 sm:mr-4 min-w-0">
-                  <FileText
-                    className={`w-4 h-4 shrink-0 ${
-                      isDark ? 'text-[#60a5fa]' : 'text-[#777777]'
-                    }`}
-                  />
-                  <div className="truncate min-w-0">
-                    <div
-                      className={`font-medium group-hover:underline truncate ${
-                        isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                      }`}
-                    >
-                      {doc.title}
-                    </div>
-                    <div
-                      className={`flex flex-wrap items-center gap-1.5 text-[11px] mt-0.5 ${
-                        isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                      }`}
-                    >
-                      {doc.system && (
-                        <span
-                          className={`border px-1 py-0.2 font-mono text-[10px] ${
-                            isDark
-                              ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155]'
-                              : 'bg-[#f5f5f5] text-[#111111] border-[#e5e5e5]'
-                          }`}
-                        >
-                          {doc.system}
-                        </span>
-                      )}
-                      {doc.fileName && (
-                        <span
-                          className={`font-mono font-semibold ${
-                            isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                          }`}
-                        >
-                          {doc.fileName}
-                        </span>
-                      )}
-                      {doc.category && <span className="truncate">• {doc.category}</span>}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 text-xs">
-                  <span
-                    className={`font-mono text-[11px] hidden sm:inline ${
-                      isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                    }`}
-                  >
-                    {doc.fileExtension?.toUpperCase()}
-                  </span>
-                  <span
-                    className={`border px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                      isDark
-                        ? 'border-[#334155] text-[#f8fafc] group-hover:bg-[#f8fafc] group-hover:text-[#0b0f17]'
-                        : 'border-[#111111] text-[#111111] group-hover:bg-[#111111] group-hover:text-[#ffffff]'
-                    }`}
-                  >
-                    Preview
-                  </span>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
       </div>
     </div>
   );
