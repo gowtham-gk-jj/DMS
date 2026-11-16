@@ -62,6 +62,15 @@ const getFolders = async (req, res, next) => {
       return total;
     };
 
+    const getDescendantFolderCount = (folderId) => {
+      const children = childrenMap.get(String(folderId)) || [];
+      let total = children.length;
+      for (const child of children) {
+        total += getDescendantFolderCount(child._id);
+      }
+      return total;
+    };
+
     // Pre-fetch user permissions in one query
     const targetFolderIds = folders.map((f) => f._id);
     const permsMap = new Map();
@@ -73,7 +82,8 @@ const getFolders = async (req, res, next) => {
     const foldersWithCounts = folders.map((folder) => {
       const directDocs = docCountMap.get(String(folder._id)) || 0;
       const totalDocs = getDescendantDocCount(folder._id);
-      const subfolders = (childrenMap.get(String(folder._id)) || []).length;
+      const directSubfolders = (childrenMap.get(String(folder._id)) || []).length;
+      const totalSubfolders = getDescendantFolderCount(folder._id);
 
       let userPerm = null;
       if (user.role === USER_ROLES.ADMIN) {
@@ -94,7 +104,9 @@ const getFolders = async (req, res, next) => {
 
       return {
         ...folder.toObject(),
-        subfoldersCount: subfolders,
+        subfoldersCount: directSubfolders,
+        directSubfoldersCount: directSubfolders,
+        totalSubfoldersCount: totalSubfolders,
         directDocumentsCount: directDocs,
         documentsCount: totalDocs > 0 ? totalDocs : directDocs,
         totalDocumentsCount: totalDocs,
@@ -146,6 +158,8 @@ const getFolderById = async (req, res, next) => {
     });
     const documentsCount = totalDocumentsCount > 0 ? totalDocumentsCount : directDocs;
 
+    const totalSubfoldersCount = Math.max(0, descendantFolders.length - 1);
+
     // Permissions
     let userPermissions = null;
     if (req.user.role === USER_ROLES.ADMIN) {
@@ -162,6 +176,8 @@ const getFolderById = async (req, res, next) => {
       folder: {
         ...folder.toObject(),
         subfoldersCount,
+        directSubfoldersCount: subfoldersCount,
+        totalSubfoldersCount,
         directDocumentsCount: directDocs,
         documentsCount,
         totalDocumentsCount,

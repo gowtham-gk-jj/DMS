@@ -6,6 +6,8 @@ import {
   ShieldCheck,
   HardDrive,
   ArrowRight,
+  RotateCw,
+  AlertCircle,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -21,38 +23,72 @@ export default function DashboardPage() {
   const [recentDocs, setRecentDocs] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [foldersLoading, setFoldersLoading] = useState(true);
+  const [foldersError, setFoldersError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadDashboardData = async (isManualRefresh = false) => {
+    try {
+      if (isManualRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+        setFoldersLoading(true);
+      }
+      setFoldersError(null);
+
+      const [foldersRes, recentRes] = await Promise.all([
+        api.get('/folders?parentId=root'),
+        api.get('/documents/recent?limit=6'),
+      ]);
+
+      if (foldersRes.data.success) {
+        setFolders(foldersRes.data.folders || []);
+      } else {
+        setFoldersError('Failed to load primary document repositories.');
+      }
+
+      if (recentRes.data.success) {
+        setRecentDocs(recentRes.data.documents || []);
+      }
+
+      // If admin, load dashboard statistics
+      if (isAdmin) {
+        const statsRes = await api.get('/admin/stats');
+        if (statsRes.data.success) {
+          setStats(statsRes.data.stats);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load dashboard:', err);
+      setFoldersError('Network error while fetching repository document metrics.');
+    } finally {
+      setLoading(false);
+      setFoldersLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const loadDashboardData = async () => {
-      try {
-        setLoading(true);
-        const [foldersRes, recentRes] = await Promise.all([
-          api.get('/folders?parentId=root'),
-          api.get('/documents/recent?limit=6'),
-        ]);
+    loadDashboardData();
 
-        if (foldersRes.data.success) {
-          setFolders(foldersRes.data.folders || []);
-        }
-        if (recentRes.data.success) {
-          setRecentDocs(recentRes.data.documents || []);
-        }
+    // Auto-refresh when tab receives focus
+    const handleFocus = () => {
+      loadDashboardData(true);
+    };
 
-        // If admin, load dashboard statistics
-        if (isAdmin) {
-          const statsRes = await api.get('/admin/stats');
-          if (statsRes.data.success) {
-            setStats(statsRes.data.stats);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard:', err);
-      } finally {
-        setLoading(false);
+    const handleStorageEvent = (e) => {
+      if (e.key === 'dms_data_updated') {
+        loadDashboardData(true);
       }
     };
 
-    loadDashboardData();
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('storage', handleStorageEvent);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('storage', handleStorageEvent);
+    };
   }, [isAdmin]);
 
   const permissions = isAdmin
@@ -309,114 +345,172 @@ export default function DashboardPage() {
           }`}
         >
           <div>
-            <h2
-              className={`text-xs font-bold uppercase tracking-wider ${
-                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-              }`}
-            >
-              Primary Document Repositories
-            </h2>
+            <div className="flex items-center space-x-2">
+              <h2
+                className={`text-xs font-bold uppercase tracking-wider ${
+                  isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
+                }`}
+              >
+                Primary Document Repositories
+              </h2>
+              {refreshing && (
+                <span className="text-[10px] font-mono text-[#60a5fa] animate-pulse">
+                  Syncing live metrics...
+                </span>
+              )}
+            </div>
             <p className={`text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
               Siemens DOConCD nested catalogues and technical archives
             </p>
           </div>
-          <button
-            onClick={() => navigate('/library')}
-            className={`text-xs font-medium hover:underline flex items-center space-x-1 cursor-pointer self-start sm:self-auto ${
-              isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-            }`}
-          >
-            <span>View All Folders</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <div className="p-3 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-          {folders.map((folder) => (
-            <div
-              key={folder._id}
-              onClick={() => navigate(`/library/${folder._id}`)}
-              className={`border p-4 cursor-pointer transition-all group ${
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => loadDashboardData(true)}
+              disabled={refreshing || foldersLoading}
+              title="Refresh repository document counts from database"
+              className={`px-2.5 py-1.5 border text-xs font-medium flex items-center space-x-1.5 cursor-pointer transition-colors ${
                 isDark
-                  ? 'bg-[#0f172a] border-[#243042] hover:border-[#60a5fa]'
-                  : 'bg-[#ffffff] border-[#e5e5e5] hover:border-[#111111]'
+                  ? 'bg-[#1e293b] border-[#334155] text-[#94a3b8] hover:text-[#f8fafc] hover:border-[#60a5fa]'
+                  : 'bg-[#ffffff] border-[#e5e5e5] text-[#555555] hover:text-[#111111] hover:border-[#999999]'
               }`}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-2.5 min-w-0">
-                  <div
-                    className={`w-8 h-8 border flex items-center justify-center shrink-0 transition-colors ${
-                      isDark
-                        ? 'bg-[#1e293b] border-[#334155] text-[#60a5fa] group-hover:bg-[#f8fafc] group-hover:text-[#0b0f17]'
-                        : 'bg-[#f5f5f5] border-[#e5e5e5] text-[#111111] group-hover:bg-[#111111] group-hover:text-[#ffffff]'
+              <RotateCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#60a5fa]' : ''}`} />
+              <span className="text-[11px]">Sync Counts</span>
+            </button>
+            <button
+              onClick={() => navigate('/library')}
+              className={`text-xs font-medium hover:underline flex items-center space-x-1 cursor-pointer self-start sm:self-auto ${
+                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
+              }`}
+            >
+              <span>View All Folders</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {foldersError ? (
+          <div
+            className={`p-6 text-center text-xs border m-4 ${
+              isDark
+                ? 'bg-[#1f1616] border-[#4c1d1d] text-[#fca5a5]'
+                : 'bg-[#fff5f5] border-[#fecaca] text-[#dc2626]'
+            }`}
+          >
+            <AlertCircle className="w-4 h-4 mx-auto mb-1 text-red-500" />
+            <p className="font-semibold">{foldersError}</p>
+            <button
+              onClick={() => loadDashboardData(true)}
+              className="mt-2 text-xs underline font-medium hover:opacity-80 cursor-pointer"
+            >
+              Retry Database Fetch
+            </button>
+          </div>
+        ) : (
+          <div className="p-3 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            {folders.map((folder) => {
+              const docCount = folder.totalDocumentsCount ?? folder.documentsCount;
+              const subCount = folder.totalSubfoldersCount ?? folder.subfoldersCount;
+
+              return (
+                <div
+                  key={folder._id}
+                  onClick={() => navigate(`/library/${folder._id}`)}
+                  className={`border p-4 cursor-pointer transition-all group ${
+                    isDark
+                      ? 'bg-[#0f172a] border-[#243042] hover:border-[#60a5fa]'
+                      : 'bg-[#ffffff] border-[#e5e5e5] hover:border-[#111111]'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-2.5 min-w-0">
+                      <div
+                        className={`w-8 h-8 border flex items-center justify-center shrink-0 transition-colors ${
+                          isDark
+                            ? 'bg-[#1e293b] border-[#334155] text-[#60a5fa] group-hover:bg-[#f8fafc] group-hover:text-[#0b0f17]'
+                            : 'bg-[#f5f5f5] border-[#e5e5e5] text-[#111111] group-hover:bg-[#111111] group-hover:text-[#ffffff]'
+                        }`}
+                      >
+                        <FolderTree className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3
+                          className={`font-semibold text-xs truncate group-hover:underline ${
+                            isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
+                          }`}
+                        >
+                          {folder.name}
+                        </h3>
+                        <span
+                          className={`text-[10px] font-mono block truncate ${
+                            isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
+                          }`}
+                        >
+                          {folder.code || folder.path}
+                        </span>
+                      </div>
+                    </div>
+                    <ArrowRight
+                      className={`w-4 h-4 shrink-0 transition-colors ${
+                        isDark
+                          ? 'text-[#64748b] group-hover:text-[#f8fafc]'
+                          : 'text-[#cccccc] group-hover:text-[#111111]'
+                      }`}
+                    />
+                  </div>
+
+                  <p
+                    className={`text-xs mt-3 leading-relaxed ${
+                      isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
                     }`}
                   >
-                    <FolderTree className="w-4 h-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3
-                      className={`font-semibold text-xs truncate group-hover:underline ${
-                        isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                      }`}
-                    >
-                      {folder.name}
-                    </h3>
+                    {folder.description || 'Enterprise document collection and technical reference.'}
+                  </p>
+
+                  <div
+                    className={`border-t mt-3 pt-2.5 flex items-center justify-between text-[11px] ${
+                      isDark
+                        ? 'border-[#1e293b] text-[#94a3b8]'
+                        : 'border-[#f0f0f0] text-[#777777]'
+                    }`}
+                  >
+                    <span>
+                      <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
+                        {foldersLoading ? (
+                          <span className="inline-block w-4 h-3 bg-gray-400/20 animate-pulse rounded" />
+                        ) : subCount !== undefined ? (
+                          subCount
+                        ) : (
+                          <span className="text-amber-500">Unavailable</span>
+                        )}
+                      </strong>{' '}
+                      Subcategories
+                    </span>
+                    <span>
+                      <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
+                        {foldersLoading ? (
+                          <span className="inline-block w-6 h-3 bg-gray-400/20 animate-pulse rounded" />
+                        ) : docCount !== undefined ? (
+                          docCount
+                        ) : (
+                          <span className="text-amber-500">Unavailable</span>
+                        )}
+                      </strong>{' '}
+                      Documents
+                    </span>
                     <span
-                      className={`text-[10px] font-mono block truncate ${
-                        isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
+                      className={`font-medium group-hover:underline ${
+                        isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
                       }`}
                     >
-                      {folder.code || folder.path}
+                      Browse Table →
                     </span>
                   </div>
                 </div>
-                <ArrowRight
-                  className={`w-4 h-4 shrink-0 transition-colors ${
-                    isDark
-                      ? 'text-[#64748b] group-hover:text-[#f8fafc]'
-                      : 'text-[#cccccc] group-hover:text-[#111111]'
-                  }`}
-                />
-              </div>
-
-              <p
-                className={`text-xs mt-3 leading-relaxed ${
-                  isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                }`}
-              >
-                {folder.description || 'Enterprise document collection and technical reference.'}
-              </p>
-
-              <div
-                className={`border-t mt-3 pt-2.5 flex items-center justify-between text-[11px] ${
-                  isDark
-                    ? 'border-[#1e293b] text-[#94a3b8]'
-                    : 'border-[#f0f0f0] text-[#777777]'
-                }`}
-              >
-                <span>
-                  <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
-                    {folder.subfoldersCount || 0}
-                  </strong>{' '}
-                  Subcategories
-                </span>
-                <span>
-                  <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
-                    {folder.documentsCount || 0}
-                  </strong>{' '}
-                  Documents
-                </span>
-                <span
-                  className={`font-medium group-hover:underline ${
-                    isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                  }`}
-                >
-                  Browse Table →
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Recently Catalogued Documents */}

@@ -431,7 +431,7 @@ export default function LibraryPage() {
                               isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
                             }`}
                           >
-                            {sf.documentsCount || 0} docs • {sf.subfoldersCount || 0} subfolders
+                            {(sf.totalDocumentsCount ?? sf.documentsCount) || 0} docs • {(sf.totalSubfoldersCount ?? sf.subfoldersCount) || 0} subfolders
                           </div>
                         </div>
                       </div>
