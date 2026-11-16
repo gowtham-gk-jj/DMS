@@ -18,6 +18,16 @@ const {
   resumeMigrationHandler,
   retryFailedUploadsHandler,
   exportMigrationReportHandler,
+  getGitHubSyncStatusHandler,
+  checkGitHubRepositoryHandler,
+  getDetectedFilesHandler,
+  createMigrationJobHandler,
+  createBulkMigrationJobHandler,
+  getMigrationJobsHandler,
+  getMigrationJobHandler,
+  cancelMigrationJobHandler,
+  retryMigrationJobHandler,
+  exportJobReportHandler,
 } = require('../controllers/adminController');
 const { protect, requireAdmin } = require('../middleware/auth');
 
@@ -43,5 +53,19 @@ router.post('/migration/pause', pauseMigrationHandler);
 router.post('/migration/resume', resumeMigrationHandler);
 router.post('/migration/retry', retryFailedUploadsHandler);
 router.get('/migration/report', exportMigrationReportHandler);
+
+// GitHub Repository Monitoring & One-Click ZIP Migration routes
+router.get('/migration/github/status', getGitHubSyncStatusHandler);
+router.get('/migration/github/check', checkGitHubRepositoryHandler);
+router.post('/migration/github/check', checkGitHubRepositoryHandler);
+router.get('/migration/github/files', getDetectedFilesHandler);
+router.post('/migration/github/import', createMigrationJobHandler);
+router.post('/migration/github/import-all', createBulkMigrationJobHandler);
+router.get('/migration/jobs', getMigrationJobsHandler);
+router.get('/migration/jobs/:jobId', getMigrationJobHandler);
+router.post('/migration/jobs/:jobId/cancel', cancelMigrationJobHandler);
+router.post('/migration/jobs/:jobId/retry', retryMigrationJobHandler);
+router.get('/migration/history', getMigrationJobsHandler);
+router.get('/migration/history/:jobId/report', exportJobReportHandler);
 
 module.exports = router;

@@ -1,8 +1,13 @@
 
 import axios from 'axios';
 
-// Production Render backend URL (Normalized with /api)
+// Auto-detect localhost vs Production Render backend URL
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 const rawBaseUrl =
+  (isLocalhost ? 'http://localhost:5000/api' : null) ||
   import.meta.env.VITE_API_BASE_URL ||
   'https://dms-dab9.onrender.com/api';
 

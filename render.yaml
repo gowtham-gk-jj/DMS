@@ -1,0 +1,57 @@
+# Render Infrastructure Specification for Siemens DOConCD DMS
+# Configures persistent disk storage for 10MB+ Siemens manuals and CAD packages.
+
+services:
+  # --------------------------------------------------------------------------
+  # 1. Backend API Service with Persistent Disk
+  # --------------------------------------------------------------------------
+  - type: web
+    name: dms-backend
+    env: node
+    plan: standard
+    region: frankfurt # Low latency to European Siemens data repositories
+    buildCommand: npm install --prefix backend
+    startCommand: npm start --prefix backend
+    disk:
+      name: dms-uploads-disk
+      mountPath: /var/data/uploads
+      sizeGB: 10
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: ADMIN_EMAILS
+        value: technova552026@gmail.com
+      - key: FRONTEND_URL
+        value: https://dms-frontend.onrender.com
+
+  # --------------------------------------------------------------------------
+  # 2. Frontend React Client (Vite Single Page Application)
+  # --------------------------------------------------------------------------
+  - type: web
+    name: dms-frontend
+    env: static
+    plan: free
+    buildCommand: npm install --prefix frontend && npm run build --prefix frontend
+    staticPublishPath: ./frontend/dist
+    routes:
+      # SPA rewrite rule so React Router routes (/admin/migration, /library, etc.) resolve cleanly
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://dms-backend.onrender.com

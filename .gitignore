@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.local
+dist/
+dist-ssr/
+*.local
+.DS_Store
+.vscode/
+.idea/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+temp_migration/
+scratch/
+*.log
+backend/uploads/1794799*

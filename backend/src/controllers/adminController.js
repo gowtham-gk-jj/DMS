@@ -570,6 +570,114 @@ const exportMigrationReportHandler = async (req, res, next) => {
   }
 };
 
+// ==========================================
+// GITHUB REPOSITORY & ONE-CLICK MIGRATION HANDLERS
+// ==========================================
+const githubMigrationService = require('../services/githubMigrationService');
+
+const getGitHubSyncStatusHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.getGitHubSyncStatus();
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const checkGitHubRepositoryHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.checkGitHubRepository(req.body || {});
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getDetectedFilesHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.getDetectedFiles(req.query);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const createMigrationJobHandler = async (req, res, next) => {
+  try {
+    const { fileId } = req.body;
+    if (!fileId) {
+      return res.status(400).json({ success: false, message: 'fileId is required to start migration.' });
+    }
+    const result = await githubMigrationService.createMigrationJob(fileId, req.user?._id);
+    return res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const createBulkMigrationJobHandler = async (req, res, next) => {
+  try {
+    const { fileIds } = req.body;
+    if (!fileIds || !Array.isArray(fileIds) || fileIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'fileIds array is required.' });
+    }
+    const result = await githubMigrationService.createBulkMigrationJob(fileIds, req.user?._id);
+    return res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getMigrationJobsHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.getMigrationJobs(req.query);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getMigrationJobHandler = async (req, res, next) => {
+  try {
+    const job = await githubMigrationService.getMigrationJob(req.params.jobId);
+    return res.status(200).json({ success: true, job });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const cancelMigrationJobHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.cancelMigrationJob(req.params.jobId);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const retryMigrationJobHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.retryMigrationJob(req.params.jobId, req.user?._id);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const exportJobReportHandler = async (req, res, next) => {
+  try {
+    const report = await githubMigrationService.exportJobReport(req.params.jobId);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="Migration_Report_${req.params.jobId}.json"`
+    );
+    return res.status(200).send(JSON.stringify(report, null, 2));
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getAccessRequests,
@@ -588,4 +696,14 @@ module.exports = {
   resumeMigrationHandler,
   retryFailedUploadsHandler,
   exportMigrationReportHandler,
+  getGitHubSyncStatusHandler,
+  checkGitHubRepositoryHandler,
+  getDetectedFilesHandler,
+  createMigrationJobHandler,
+  createBulkMigrationJobHandler,
+  getMigrationJobsHandler,
+  getMigrationJobHandler,
+  cancelMigrationJobHandler,
+  retryMigrationJobHandler,
+  exportJobReportHandler,
 };

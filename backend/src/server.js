@@ -32,7 +32,14 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Connect to MongoDB Atlas
-connectDB();
+connectDB().then(() => {
+  try {
+    const { recoverInterruptedJobs } = require('./services/githubMigrationService');
+    recoverInterruptedJobs().catch((err) => console.error('[Recovery Error]', err.message));
+  } catch (err) {
+    console.error('[Recovery Hook Error]', err.message);
+  }
+});
 
 // ==========================================
 // SECURITY MIDDLEWARE
@@ -123,9 +130,11 @@ app.use(
 // RATE LIMITING
 // ==========================================
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: isDev ? 10000 : 1000,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -136,7 +145,7 @@ const generalLimiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: isDev ? 5000 : 300,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
