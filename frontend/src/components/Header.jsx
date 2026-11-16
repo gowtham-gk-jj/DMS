@@ -32,11 +32,7 @@ export default function Header({
           type="button"
           onClick={onToggleMobileDrawer}
           aria-label="Open navigation menu"
-          className={`lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center ${
-            isDark
-              ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
-              : 'bg-[#fafafa] text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0]'
-          }`}
+          className="lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center bg-[#162234] text-[#94A3B8] hover:text-[#E2E8F0] border-[#29364A] hover:bg-[#203B59]"
         >
           <Menu className="w-4 h-4" />
         </button>
@@ -48,11 +44,7 @@ export default function Header({
             onClick={onToggleCollapse}
             aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             title={isCollapsed ? 'Expand sidebar (Ctrl+[)' : 'Collapse sidebar (Ctrl+[)'}
-            className={`hidden lg:flex p-1.5 rounded-none border transition-colors cursor-pointer shrink-0 items-center justify-center ${
-              isDark
-                ? 'bg-[#1e293b] text-[#94a3b8] hover:text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
-                : 'bg-[#fafafa] text-[#64748b] hover:text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0]'
-            }`}
+            className="hidden lg:flex p-1.5 rounded-none border transition-colors cursor-pointer shrink-0 items-center justify-center bg-[#162234] text-[#94A3B8] hover:text-[#E2E8F0] border-[#29364A] hover:bg-[#203B59]"
           >
             {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>

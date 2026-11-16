@@ -97,7 +97,7 @@ export default function AppLayout({ breadcrumbs = [] }) {
 
         {/* Slide-in Drawer Container */}
         <div
-          className={`fixed inset-y-0 left-0 max-w-[85vw] w-72 h-full z-50 transform transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-y-0 left-0 max-w-[85vw] w-[270px] h-full z-50 transform transition-transform duration-300 ease-in-out ${
             isMobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
