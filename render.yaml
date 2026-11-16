@@ -23,6 +23,8 @@ services:
         value: 5000
       - key: UPLOADS_DIR
         value: /var/data/uploads
+      - key: MIGRATION_TEMP_DIR
+        value: /var/data/uploads/temp_migration
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET

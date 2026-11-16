@@ -6,6 +6,7 @@ import {
   Upload,
   ArrowLeft,
   ChevronRight,
+  ChevronDown,
   Folder,
   FileText,
   AlertCircle,
@@ -55,6 +56,7 @@ export default function LibraryPage() {
 
   const [currentFolder, setCurrentFolder] = useState(null);
   const [subfolders, setSubfolders] = useState([]);
+  const [isFoldersExpanded, setIsFoldersExpanded] = useState(false);
   const [documents, setDocuments] = useState([]);
   const [groupedByCategory, setGroupedByCategory] = useState({});
   const [availableCategories, setAvailableCategories] = useState([]);
@@ -125,6 +127,7 @@ export default function LibraryPage() {
   };
 
   useEffect(() => {
+    setIsFoldersExpanded(false);
     fetchLibraryData();
   }, [folderId]);
 
@@ -307,75 +310,141 @@ export default function LibraryPage() {
         </div>
       ) : (
         <>
-          {/* Subfolders Grid (if any exist) */}
+          {/* Collapsible Subfolders & Categories Section */}
           {subfolders.length > 0 && (
             <div
               className={`border transition-colors ${
                 isDark ? 'bg-[#141c2b] border-[#243042]' : 'bg-[#ffffff] border-[#e5e5e5]'
               }`}
             >
-              <div
-                className={`border-b px-4 py-2.5 flex items-center justify-between text-xs ${
+              {/* Collapsible Accordion Header */}
+              <button
+                type="button"
+                id="subfolders-accordion-header"
+                aria-expanded={isFoldersExpanded}
+                aria-controls="subfolders-accordion-content"
+                onClick={() => setIsFoldersExpanded((prev) => !prev)}
+                className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between text-xs cursor-pointer transition-colors text-left focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 select-none group ${
                   isDark
-                    ? 'bg-[#111827] border-[#243042] text-[#f8fafc]'
-                    : 'bg-[#fafafa] border-[#e5e5e5] text-[#111111]'
+                    ? 'bg-[#111827] text-[#f8fafc] hover:bg-[#162032]'
+                    : 'bg-[#fafafa] text-[#111111] hover:bg-[#f0f0f0]'
+                } ${
+                  isFoldersExpanded
+                    ? 'border-b ' + (isDark ? 'border-[#243042]' : 'border-[#e5e5e5]')
+                    : ''
                 }`}
               >
-                <span className="font-semibold uppercase tracking-wider">
-                  Subfolders & Categories ({subfolders.length})
-                </span>
-                <span
-                  className={`text-[11px] hidden sm:inline ${
-                    isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                  }`}
-                >
-                  Click folder to view contents
-                </span>
-              </div>
-
-              <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3">
-                {subfolders.map((sf) => (
-                  <div
-                    key={sf._id}
-                    onClick={() => navigate(`/library/${sf._id}`)}
-                    className={`border p-3 cursor-pointer transition-colors flex items-center justify-between group ${
-                      isDark
-                        ? 'bg-[#0f172a] border-[#243042] hover:border-[#60a5fa] hover:bg-[#162032]'
-                        : 'bg-[#ffffff] border-[#e5e5e5] hover:border-[#111111] hover:bg-[#fafafa]'
+                <div className="flex items-center space-x-2 truncate min-w-0 mr-2">
+                  <Folder
+                    className={`w-4 h-4 shrink-0 transition-colors ${
+                      isFoldersExpanded
+                        ? isDark
+                          ? 'text-[#60a5fa]'
+                          : 'text-sky-600'
+                        : isDark
+                        ? 'text-[#94a3b8]'
+                        : 'text-[#64748b]'
+                    }`}
+                  />
+                  <span className="font-semibold uppercase tracking-wider text-xs sm:text-xs truncate">
+                    Subfolders & Categories ({subfolders.length})
+                  </span>
+                  <span
+                    className={`text-[11px] hidden md:inline transition-opacity duration-150 ${
+                      isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
                     }`}
                   >
-                    <div className="flex items-center space-x-2.5 truncate mr-2 min-w-0">
-                      <Folder
-                        className={`w-4 h-4 shrink-0 ${
-                          isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                        }`}
-                      />
-                      <div className="truncate min-w-0">
-                        <div
-                          className={`font-medium text-xs truncate group-hover:underline ${
-                            isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                          }`}
-                        >
-                          {sf.name}
-                        </div>
-                        <div
-                          className={`text-[10px] ${
-                            isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                          }`}
-                        >
-                          {sf.documentsCount || 0} docs • {sf.subfoldersCount || 0} subfolders
-                        </div>
-                      </div>
-                    </div>
-                    <ChevronRight
-                      className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                        isDark
-                          ? 'text-[#64748b] group-hover:text-[#f8fafc]'
-                          : 'text-[#cccccc] group-hover:text-[#111111]'
+                    • {isFoldersExpanded ? 'Click to collapse folders' : 'Click to show folders'}
+                  </span>
+                </div>
+
+                <div className="flex items-center space-x-2 shrink-0">
+                  <span
+                    className={`text-[10px] font-mono uppercase tracking-wider hidden sm:inline ${
+                      isDark ? 'text-[#64748b]' : 'text-[#94a3b8]'
+                    }`}
+                  >
+                    {isFoldersExpanded ? 'Hide' : 'Show'}
+                  </span>
+                  <div
+                    className={`w-7 h-7 rounded flex items-center justify-center transition-colors ${
+                      isDark
+                        ? 'group-hover:bg-[#1e293b] text-[#cbd5e1]'
+                        : 'group-hover:bg-[#e2e8f0] text-[#475569]'
+                    }`}
+                  >
+                    <ChevronDown
+                      className={`w-4 h-4 shrink-0 transition-transform duration-300 ease-in-out ${
+                        isFoldersExpanded ? 'rotate-180 text-sky-400' : ''
                       }`}
                     />
                   </div>
-                ))}
+                </div>
+              </button>
+
+              {/* Collapsible Content Area */}
+              <div
+                id="subfolders-accordion-content"
+                role="region"
+                aria-labelledby="subfolders-accordion-header"
+                className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                  isFoldersExpanded
+                    ? 'max-h-[3000px] opacity-100 p-3 sm:p-4'
+                    : 'max-h-0 opacity-0 p-0 pointer-events-none'
+                }`}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                  {subfolders.map((sf) => (
+                    <div
+                      key={sf._id}
+                      onClick={() => navigate(`/library/${sf._id}`)}
+                      role="button"
+                      tabIndex={isFoldersExpanded ? 0 : -1}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          navigate(`/library/${sf._id}`);
+                        }
+                      }}
+                      className={`border p-3 cursor-pointer transition-colors flex items-center justify-between group focus:outline-hidden focus-visible:ring-1 focus-visible:ring-sky-500 ${
+                        isDark
+                          ? 'bg-[#0f172a] border-[#243042] hover:border-[#60a5fa] hover:bg-[#162032]'
+                          : 'bg-[#ffffff] border-[#e5e5e5] hover:border-[#111111] hover:bg-[#fafafa]'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-2.5 truncate mr-2 min-w-0">
+                        <Folder
+                          className={`w-4 h-4 shrink-0 ${
+                            isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
+                          }`}
+                        />
+                        <div className="truncate min-w-0">
+                          <div
+                            className={`font-medium text-xs truncate group-hover:underline ${
+                              isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
+                            }`}
+                          >
+                            {sf.name}
+                          </div>
+                          <div
+                            className={`text-[10px] ${
+                              isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
+                            }`}
+                          >
+                            {sf.documentsCount || 0} docs • {sf.subfoldersCount || 0} subfolders
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight
+                        className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                          isDark
+                            ? 'text-[#64748b] group-hover:text-[#f8fafc]'
+                            : 'text-[#cccccc] group-hover:text-[#111111]'
+                        }`}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

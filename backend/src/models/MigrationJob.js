@@ -35,10 +35,12 @@ const migrationJobSchema = new mongoose.Schema(
       enum: [
         'QUEUED',
         'DOWNLOADING',
+        'VERIFYING',
         'EXTRACTING',
         'SCANNING',
         'MATCHING',
         'UPLOADING',
+        'PAUSED',
         'COMPLETED',
         'COMPLETED_WITH_WARNINGS',
         'FAILED',
@@ -56,6 +58,47 @@ const migrationJobSchema = new mongoose.Schema(
     currentStage: {
       type: String,
       default: 'Job Queued',
+    },
+    downloadedBytes: {
+      type: Number,
+      default: 0,
+    },
+    totalBytes: {
+      type: Number,
+      default: 0,
+    },
+    extractionProgress: {
+      type: Number,
+      default: 0,
+    },
+    lastProcessedFile: {
+      type: String,
+      default: '',
+    },
+    errorMessage: {
+      type: String,
+      default: '',
+    },
+    retryCount: {
+      type: Number,
+      default: 0,
+    },
+    archiveSha256: {
+      type: String,
+      default: '',
+    },
+    isResumable: {
+      type: Boolean,
+      default: true,
+    },
+    processedFileHashes: [
+      {
+        type: String,
+      },
+    ],
+    checkpoint: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
     },
     stats: {
       discoveredCount: { type: Number, default: 0 },

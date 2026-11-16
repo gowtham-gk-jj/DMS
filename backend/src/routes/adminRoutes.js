@@ -27,6 +27,7 @@ const {
   getMigrationJobHandler,
   cancelMigrationJobHandler,
   retryMigrationJobHandler,
+  resumeMigrationJobHandler,
   exportJobReportHandler,
 } = require('../controllers/adminController');
 const { protect, requireAdmin } = require('../middleware/auth');
@@ -65,6 +66,7 @@ router.get('/migration/jobs', getMigrationJobsHandler);
 router.get('/migration/jobs/:jobId', getMigrationJobHandler);
 router.post('/migration/jobs/:jobId/cancel', cancelMigrationJobHandler);
 router.post('/migration/jobs/:jobId/retry', retryMigrationJobHandler);
+router.post('/migration/jobs/:jobId/resume', resumeMigrationJobHandler);
 router.get('/migration/history', getMigrationJobsHandler);
 router.get('/migration/history/:jobId/report', exportJobReportHandler);
 

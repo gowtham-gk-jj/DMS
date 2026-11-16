@@ -664,6 +664,15 @@ const retryMigrationJobHandler = async (req, res, next) => {
   }
 };
 
+const resumeMigrationJobHandler = async (req, res, next) => {
+  try {
+    const result = await githubMigrationService.resumeMigrationJob(req.params.jobId, req.user?._id);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const exportJobReportHandler = async (req, res, next) => {
   try {
     const report = await githubMigrationService.exportJobReport(req.params.jobId);
@@ -705,5 +714,6 @@ module.exports = {
   getMigrationJobHandler,
   cancelMigrationJobHandler,
   retryMigrationJobHandler,
+  resumeMigrationJobHandler,
   exportJobReportHandler,
 };

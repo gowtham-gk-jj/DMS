@@ -98,6 +98,7 @@ export default function AdminMigrationPage() {
   const [confirmModal, setConfirmModal] = useState({ open: false, files: [] });
   const [detailsModal, setDetailsModal] = useState({ open: false, file: null });
   const [reportModal, setReportModal] = useState({ open: false, job: null });
+  const [errorModal, setErrorModal] = useState({ open: false, job: null });
 
   // ----------------------------------------------------
   // Legacy DOConCD Status Fetcher
@@ -173,7 +174,7 @@ export default function AdminMigrationPage() {
 
         // Find active job if any
         const active = jobs.find((j) =>
-          ['QUEUED', 'DOWNLOADING', 'EXTRACTING', 'SCANNING', 'MATCHING', 'UPLOADING'].includes(j.status)
+          ['QUEUED', 'DOWNLOADING', 'VERIFYING', 'EXTRACTING', 'SCANNING', 'MATCHING', 'UPLOADING'].includes(j.status)
         );
         setActiveJob(active || null);
       }
@@ -346,6 +347,20 @@ export default function AdminMigrationPage() {
     }
   };
 
+  const handleResumeJob = async (jobId) => {
+    try {
+      setActionLoading(true);
+      const res = await api.post(`/admin/migration/jobs/${jobId}/resume`);
+      setMessage(res.data.message || 'Job resumed from checkpoint.');
+      fetchJobs();
+      fetchDetectedFiles();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to resume job.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleExportJobReport = async (jobId) => {
     try {
       const res = await api.get(`/admin/migration/history/${jobId}/report`, {
@@ -472,21 +487,66 @@ export default function AdminMigrationPage() {
           </span>
         );
       case 'PENDING':
+      case 'QUEUED':
         return (
           <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 uppercase">
-            Pending
+            {status}
+          </span>
+        );
+      case 'DOWNLOADING':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30 uppercase animate-pulse">
+            Downloading
+          </span>
+        );
+      case 'VERIFYING':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30 uppercase animate-pulse">
+            Verifying
+          </span>
+        );
+      case 'EXTRACTING':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 uppercase animate-pulse">
+            Extracting
+          </span>
+        );
+      case 'SCANNING':
+      case 'MATCHING':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 uppercase animate-pulse">
+            {status}
           </span>
         );
       case 'PROCESSING':
+      case 'UPLOADING':
         return (
           <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 uppercase animate-pulse">
-            Processing
+            {status}
           </span>
         );
       case 'COMPLETED':
         return (
           <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 uppercase">
             Completed
+          </span>
+        );
+      case 'COMPLETED_WITH_WARNINGS':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 uppercase">
+            Warnings
+          </span>
+        );
+      case 'PAUSED':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 uppercase">
+            Paused
+          </span>
+        );
+      case 'CANCELLED':
+        return (
+          <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-neutral-500/10 text-neutral-500 border border-neutral-500/30 uppercase">
+            Cancelled
           </span>
         );
       case 'FAILED':
@@ -768,10 +828,24 @@ export default function AdminMigrationPage() {
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[var(--text-primary)] font-bold">{activeJob.currentStage}</span>
-                <span className="text-[var(--text-secondary)]">{activeJob.progressPercent}%</span>
+            <div className="space-y-1.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono gap-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-[var(--text-primary)] font-bold">{activeJob.currentStage}</span>
+                  {activeJob.totalBytes > 0 && activeJob.downloadedBytes > 0 && (
+                    <span className="text-[11px] text-[var(--text-muted)] font-mono">
+                      ({(activeJob.downloadedBytes / (1024 * 1024)).toFixed(1)} / {(activeJob.totalBytes / (1024 * 1024)).toFixed(1)} MB)
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2">
+                  {activeJob.lastProcessedFile && (
+                    <span className="text-[10px] text-[var(--text-muted)] truncate max-w-[200px]" title={activeJob.lastProcessedFile}>
+                      File: {activeJob.lastProcessedFile}
+                    </span>
+                  )}
+                  <span className="text-[var(--text-secondary)] font-bold">{activeJob.progressPercent}%</span>
+                </div>
               </div>
               <div className="w-full bg-[var(--bg-hover)] h-2.5 border border-[var(--border-color)]">
                 <div
@@ -1047,7 +1121,17 @@ export default function AdminMigrationPage() {
                       </td>
 
                       <td className="py-2 px-3 border-r border-[var(--border-subtle)] text-center">
-                        {renderStatusBadge(job.status)}
+                        <div>{renderStatusBadge(job.status)}</div>
+                        {(job.status === 'FAILED' || job.errorMessage || job.errorLog?.length > 0) && (
+                          <button
+                            onClick={() => setErrorModal({ open: true, job })}
+                            className="mt-1 text-[10px] text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:underline font-mono inline-flex items-center space-x-0.5 cursor-pointer"
+                            title={job.errorMessage || 'Click to view failure details'}
+                          >
+                            <AlertTriangle className="w-2.5 h-2.5 inline-block mr-0.5" />
+                            <span>View Error</span>
+                          </button>
+                        )}
                       </td>
 
                       <td className="py-2 px-4 text-center">
@@ -1069,15 +1153,27 @@ export default function AdminMigrationPage() {
                             <Download className="w-3.5 h-3.5" />
                           </button>
 
-                          {job.status === 'FAILED' && (
-                            <button
-                              onClick={() => handleRetryJob(job.jobId)}
-                              disabled={actionLoading}
-                              className="p-1 border border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10 cursor-pointer"
-                              title="Retry failed job"
-                            >
-                              <RotateCcw className="w-3.5 h-3.5" />
-                            </button>
+                          {['FAILED', 'CANCELLED', 'PAUSED'].includes(job.status) && (
+                            <>
+                              <button
+                                onClick={() => handleResumeJob(job.jobId)}
+                                disabled={actionLoading}
+                                className="px-2 py-1 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer text-[11px] font-mono font-bold flex items-center space-x-1"
+                                title="Resume job from persistent checkpoint"
+                              >
+                                <Play className="w-3 h-3" />
+                                <span>Resume</span>
+                              </button>
+
+                              <button
+                                onClick={() => handleRetryJob(job.jobId)}
+                                disabled={actionLoading}
+                                className="p-1 border border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10 cursor-pointer"
+                                title="Restart job from scratch"
+                              >
+                                <RotateCcw className="w-3.5 h-3.5" />
+                              </button>
+                            </>
                           )}
                         </div>
                       </td>
@@ -1620,6 +1716,133 @@ export default function AdminMigrationPage() {
               <button
                 onClick={() => setReportModal({ open: false, job: null })}
                 className="px-4 py-1.5 bg-[var(--text-primary)] text-[var(--bg-primary)] text-xs font-mono font-bold cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ERROR DETAILS MODAL */}
+      {errorModal.open && errorModal.job && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-[var(--bg-card)] border border-red-500/40 shadow-xl max-w-2xl w-full p-6 space-y-4 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
+              <div className="flex items-center space-x-2 text-sm font-bold text-red-600 dark:text-red-400">
+                <AlertTriangle className="w-5 h-5 text-red-500" />
+                <span>Migration Failure Diagnostics: {errorModal.job.jobId}</span>
+              </div>
+              <button
+                onClick={() => setErrorModal({ open: false, job: null })}
+                className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto space-y-4 pr-1 text-xs">
+              {/* Failed Stage & Primary Error Message */}
+              <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-300 font-mono space-y-1">
+                <div className="font-bold text-[11px] uppercase tracking-wider">Failed Processing Stage</div>
+                <div className="text-xs font-bold">{errorModal.job.currentStage}</div>
+                {errorModal.job.errorMessage && (
+                  <div className="mt-2 pt-2 border-t border-red-500/20 text-xs">
+                    <span className="font-bold">Error Details: </span>
+                    {errorModal.job.errorMessage}
+                  </div>
+                )}
+              </div>
+
+              {/* Progress & Checkpoint State */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
+                <div className="border border-[var(--border-color)] p-2 bg-[var(--bg-hover)]">
+                  <div className="text-[10px] text-[var(--text-muted)]">PROCESSED</div>
+                  <div className="font-bold text-[var(--text-primary)]">
+                    {errorModal.job.checkpoint?.processedCount || 0} files
+                  </div>
+                </div>
+                <div className="border border-[var(--border-color)] p-2 bg-[var(--bg-hover)]">
+                  <div className="text-[10px] text-[var(--text-muted)]">UPLOADED</div>
+                  <div className="font-bold text-emerald-600 dark:text-emerald-400">
+                    {errorModal.job.stats?.uploadedCount || 0}
+                  </div>
+                </div>
+                <div className="border border-[var(--border-color)] p-2 bg-[var(--bg-hover)]">
+                  <div className="text-[10px] text-[var(--text-muted)]">DUPLICATES</div>
+                  <div className="font-bold text-amber-600 dark:text-amber-400">
+                    {errorModal.job.stats?.duplicateCount || 0}
+                  </div>
+                </div>
+                <div className="border border-[var(--border-color)] p-2 bg-[var(--bg-hover)]">
+                  <div className="text-[10px] text-[var(--text-muted)]">RESUMABLE</div>
+                  <div className="font-bold text-emerald-600 dark:text-emerald-400">
+                    {errorModal.job.isResumable !== false ? 'YES' : 'NO'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Technical Diagnostics */}
+              <div className="space-y-1 font-mono text-[11px] bg-[var(--bg-hover)] p-3 border border-[var(--border-color)]">
+                <div>Source Archive: <span className="font-bold text-[var(--text-primary)]">{errorModal.job.sourceFile}</span></div>
+                <div>Repository Path: <span className="text-[var(--text-secondary)]">{errorModal.job.repoPath}</span></div>
+                <div>Last Processed File: <span className="text-[var(--text-secondary)]">{errorModal.job.lastProcessedFile || 'None'}</span></div>
+                <div>Archive SHA-256: <span className="text-[var(--text-secondary)]">{errorModal.job.archiveSha256 || 'Pending verification'}</span></div>
+                <div>Retry Count: <span className="text-[var(--text-secondary)]">{errorModal.job.retryCount || 0}</span></div>
+              </div>
+
+              {/* Detailed Error Log */}
+              {errorModal.job.errorLog?.length > 0 && (
+                <div className="space-y-1">
+                  <div className="font-bold text-xs uppercase font-mono text-red-500">
+                    Error Log Entries ({errorModal.job.errorLog.length})
+                  </div>
+                  <div className="p-3 bg-red-500/5 border border-red-500/20 text-red-600 dark:text-red-400 font-mono text-[11px] space-y-1.5 max-h-48 overflow-y-auto">
+                    {errorModal.job.errorLog.map((errItem, idx) => (
+                      <div key={idx} className="border-b border-red-500/10 pb-1 last:border-0">
+                        <div className="text-[10px] text-[var(--text-muted)]">
+                          {new Date(errItem.timestamp).toLocaleTimeString()} {errItem.filePath ? `[${errItem.filePath}]` : ''}
+                        </div>
+                        <div>{errItem.message}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 border-t border-[var(--border-color)]">
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => {
+                    handleResumeJob(errorModal.job.jobId);
+                    setErrorModal({ open: false, job: null });
+                  }}
+                  disabled={actionLoading}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-mono font-bold flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
+                  title="Resume from last checkpoint without re-uploading"
+                >
+                  <Play className="w-3.5 h-3.5" />
+                  <span>Resume from Checkpoint</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleRetryJob(errorModal.job.jobId);
+                    setErrorModal({ open: false, job: null });
+                  }}
+                  disabled={actionLoading}
+                  className="px-3 py-1.5 border border-red-500/40 text-red-600 dark:text-red-400 hover:bg-red-500/10 text-xs font-mono font-bold flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
+                  title="Restart job pipeline"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Restart Job</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => setErrorModal({ open: false, job: null })}
+                className="px-4 py-1.5 border border-[var(--border-color)] hover:bg-[var(--bg-hover)] text-xs font-mono cursor-pointer"
               >
                 Close
               </button>

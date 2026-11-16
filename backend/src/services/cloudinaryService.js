@@ -19,7 +19,7 @@ const getResourceType = (filename) => {
   return 'raw'; // PDFs, docs, spreadsheets, binaries
 };
 
-const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_documents') => {
+const uploadToCloudinary = async (fileInput, originalname, folder = 'dms_documents') => {
   const sanitizedName = originalname
     .replace(/\.[^/.]+$/, '')
     .replace(/[^a-zA-Z0-9_-]/g, '_')
@@ -27,12 +27,27 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
 
   const resourceType = getResourceType(originalname);
 
+  // Check if fileInput is a disk file path or a Buffer
+  const isFilePath = typeof fileInput === 'string';
+  let fileSize = 0;
+  if (isFilePath) {
+    const stat = fs.statSync(fileInput);
+    fileSize = stat.size;
+  } else if (Buffer.isBuffer(fileInput)) {
+    fileSize = fileInput.length;
+  }
+
   // Cloudinary free tier enforces a strict 10MB (10485760 bytes) limit on raw assets.
   // Pre-emptively route >10MB raw files to resilient local fallback to prevent wasting bandwidth.
-  if (resourceType === 'raw' && fileBuffer.length > 10485760) {
+  if (resourceType === 'raw' && fileSize > 10485760) {
     const filename = `${Date.now()}_${sanitizedName}_${originalname}`;
-    const filePath = path.join(UPLOADS_DIR, filename);
-    fs.writeFileSync(filePath, fileBuffer);
+    const destFilePath = path.join(UPLOADS_DIR, filename);
+
+    if (isFilePath) {
+      fs.copyFileSync(fileInput, destFilePath);
+    } else {
+      fs.writeFileSync(destFilePath, fileInput);
+    }
 
     const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}`;
     const localUrl = `${backendUrl}/uploads/${encodeURIComponent(filename)}`;
@@ -43,7 +58,7 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
       secure_url: localUrl,
       resource_type: resourceType,
       format: originalname.split('.').pop(),
-      bytes: fileBuffer.length,
+      bytes: fileSize,
       storage: 'LOCAL_PERSISTED',
     };
   }
@@ -66,8 +81,15 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
         }
       );
 
-      const readable = Readable.from(fileBuffer);
-      readable.pipe(uploadStream);
+      if (isFilePath) {
+        const stream = fs.createReadStream(fileInput);
+        stream.on('error', reject);
+        stream.pipe(uploadStream);
+      } else {
+        const readable = Readable.from(fileInput);
+        readable.on('error', reject);
+        readable.pipe(uploadStream);
+      }
     });
 
     return {
@@ -76,7 +98,7 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
       secure_url: result.secure_url,
       resource_type: result.resource_type || resourceType,
       format: result.format || originalname.split('.').pop(),
-      bytes: result.bytes || fileBuffer.length,
+      bytes: result.bytes || fileSize,
       storage: 'CLOUDINARY',
     };
   } catch (cloudinaryError) {
@@ -96,8 +118,13 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
 
     // 2. Resilient local fallback so users never experience upload failures
     const filename = `${Date.now()}_${sanitizedName}_${originalname}`;
-    const filePath = path.join(UPLOADS_DIR, filename);
-    fs.writeFileSync(filePath, fileBuffer);
+    const destFilePath = path.join(UPLOADS_DIR, filename);
+
+    if (isFilePath) {
+      fs.copyFileSync(fileInput, destFilePath);
+    } else {
+      fs.writeFileSync(destFilePath, fileInput);
+    }
 
     const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}`;
     const localUrl = `${backendUrl}/uploads/${encodeURIComponent(filename)}`;
@@ -108,7 +135,7 @@ const uploadToCloudinary = async (fileBuffer, originalname, folder = 'dms_docume
       secure_url: localUrl,
       resource_type: resourceType,
       format: originalname.split('.').pop(),
-      bytes: fileBuffer.length,
+      bytes: fileSize,
       storage: 'LOCAL_PERSISTED',
     };
   }

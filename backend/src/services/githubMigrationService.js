@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const axios = require('axios');
-const AdmZip = require('adm-zip');
+const yauzl = require('yauzl');
 const GitHubSyncState = require('../models/GitHubSyncState');
 const DetectedRepositoryFile = require('../models/DetectedRepositoryFile');
 const MigrationJob = require('../models/MigrationJob');
@@ -16,13 +16,30 @@ const DEFAULT_REPO_OWNER = process.env.GITHUB_REPO_OWNER || 'gowtham-gk-jj';
 const DEFAULT_REPO_NAME = process.env.GITHUB_REPO_NAME || 'fileforDMS';
 const DEFAULT_BRANCH = process.env.GITHUB_REPO_BRANCH || 'main';
 
-// Working temp directory for downloads and extractions
-const TEMP_BASE_DIR =
-  process.env.MIGRATION_TEMP_DIR ||
-  path.resolve(__dirname, '../../temp_migration/github_downloads');
+/**
+ * Determine persistent working directory for downloads and extractions.
+ * Prefers MIGRATION_TEMP_DIR or persistent volume mounted on Render at /var/data/uploads.
+ */
+const resolveTempBaseDir = () => {
+  if (process.env.MIGRATION_TEMP_DIR && process.env.MIGRATION_TEMP_DIR.trim()) {
+    return process.env.MIGRATION_TEMP_DIR.trim();
+  }
+  if (process.env.UPLOADS_DIR && process.env.UPLOADS_DIR.trim()) {
+    return path.join(process.env.UPLOADS_DIR.trim(), 'temp_migration');
+  }
+  if (fs.existsSync('/var/data/uploads')) {
+    return '/var/data/uploads/temp_migration';
+  }
+  return path.resolve(__dirname, '../../temp_migration/github_downloads');
+};
 
+const TEMP_BASE_DIR = resolveTempBaseDir();
 if (!fs.existsSync(TEMP_BASE_DIR)) {
-  fs.mkdirSync(TEMP_BASE_DIR, { recursive: true });
+  try {
+    fs.mkdirSync(TEMP_BASE_DIR, { recursive: true });
+  } catch (err) {
+    console.error(`[MIGRATION STORAGE ERROR] Unable to create TEMP_BASE_DIR at ${TEMP_BASE_DIR}:`, err.message);
+  }
 }
 
 // Active jobs cancellation flags
@@ -54,7 +71,124 @@ const logJobEvent = async (job, level, message) => {
   if (job.logs.length > 500) {
     job.logs = job.logs.slice(-500);
   }
-  await job.save();
+  try {
+    await job.save();
+  } catch {}
+};
+
+/**
+ * Check persistent disk space before high-volume operations
+ */
+const checkDiskSpace = (targetDir, requiredBytes = 100 * 1024 * 1024) => {
+  try {
+    if (fs.existsSync(targetDir) && typeof fs.statfsSync === 'function') {
+      const stats = fs.statfsSync(targetDir);
+      const freeBytes = (stats.bavail || stats.bfree || 0) * (stats.bsize || 4096);
+      if (freeBytes > 0 && freeBytes < requiredBytes) {
+        const freeMb = Math.round(freeBytes / (1024 * 1024));
+        const reqMb = Math.round(requiredBytes / (1024 * 1024));
+        return {
+          ok: false,
+          freeBytes,
+          requiredBytes,
+          message: `Insufficient persistent disk space in ${targetDir}. Free: ${freeMb} MB, Required: ${reqMb} MB.`,
+        };
+      }
+      return { ok: true, freeBytes, requiredBytes };
+    }
+  } catch (err) {
+    console.warn('[Disk Space Check Warning]', err.message);
+  }
+  return { ok: true, freeBytes: -1, requiredBytes };
+};
+
+/**
+ * Calculate SHA-256 hash of a file with streaming zero-memory overhead
+ */
+const calculateSha256 = (filePath) => {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash('sha256');
+    const stream = fs.createReadStream(filePath);
+    stream.on('data', (data) => hash.update(data));
+    stream.on('end', () => resolve(hash.digest('hex')));
+    stream.on('error', reject);
+  });
+};
+
+/**
+ * Verify ZIP archive integrity, file size, magic bytes, Git LFS text pointer rejection,
+ * SHA-256 matching against Git LFS OID, and central directory readability.
+ */
+const verifyArchive = async (filePath, expectedSize = 0, expectedSha256 = '', isLfs = false) => {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Archive file does not exist at ${filePath}`);
+  }
+
+  const stat = fs.statSync(filePath);
+  const actualSize = stat.size;
+
+  if (actualSize === 0) {
+    throw new Error('Downloaded archive file is empty (0 bytes).');
+  }
+
+  // Inspect first 4 magic bytes
+  const fd = fs.openSync(filePath, 'r');
+  const buffer = Buffer.alloc(4);
+  fs.readSync(fd, buffer, 0, 4, 0);
+  fs.closeSync(fd);
+
+  // Check if Git LFS pointer text file was mistakenly downloaded
+  const firstFourStr = buffer.toString('utf8');
+  if (firstFourStr === 'vers') {
+    const textSnippet = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' }).slice(0, 100);
+    if (textSnippet.startsWith('version https://git-lfs')) {
+      throw new Error(
+        'Downloaded file is a Git LFS pointer text file, not a binary ZIP archive. Git LFS batch resolution required.'
+      );
+    }
+  }
+
+  if (expectedSize > 0 && actualSize !== expectedSize) {
+    throw new Error(
+      `Archive file size mismatch: Expected ${expectedSize} bytes, but file on disk is ${actualSize} bytes.`
+    );
+  }
+
+  const magicHex = buffer.toString('hex').toLowerCase();
+  // Valid ZIP starts with 504b0304 (PK\x03\x04), 504b0506 (empty ZIP), or 504b0708 (spanned ZIP)
+  if (!['504b0304', '504b0506', '504b0708'].includes(magicHex)) {
+    throw new Error(
+      `Invalid ZIP header signature (magic bytes: 0x${magicHex}). File is not a valid ZIP archive.`
+    );
+  }
+
+  // Streaming SHA-256 calculation
+  const computedSha256 = await calculateSha256(filePath);
+
+  if (isLfs && expectedSha256 && expectedSha256.trim()) {
+    if (computedSha256.toLowerCase() !== expectedSha256.toLowerCase().trim()) {
+      throw new Error(
+        `SHA-256 checksum mismatch! Expected Git LFS OID: ${expectedSha256}, but computed hash is: ${computedSha256}. Archive is corrupted or truncated.`
+      );
+    }
+  }
+
+  // Validate ZIP Central Directory with yauzl
+  await new Promise((resolve, reject) => {
+    yauzl.open(filePath, { lazyEntries: true, autoClose: true }, (err, zipfile) => {
+      if (err) {
+        return reject(new Error(`Corrupted ZIP central directory: ${err.message}`));
+      }
+      zipfile.close();
+      resolve();
+    });
+  });
+
+  return {
+    valid: true,
+    size: actualSize,
+    sha256: computedSha256,
+  };
 };
 
 /**
@@ -66,7 +200,7 @@ const checkLfsPointer = async (owner, repo, branch, filePath) => {
     const res = await axios.get(rawUrl, {
       headers: getGitHubHeaders(),
       timeout: 10000,
-      transformResponse: [(data) => data], // Raw text
+      transformResponse: [(data) => data],
     });
 
     if (typeof res.data === 'string' && res.data.startsWith('version https://git-lfs.github.com/spec/v1')) {
@@ -80,9 +214,7 @@ const checkLfsPointer = async (owner, repo, branch, filePath) => {
         };
       }
     }
-  } catch (err) {
-    // If not accessible or not LFS, ignore
-  }
+  } catch (err) {}
   return { isLfs: false, oid: '', size: 0 };
 };
 
@@ -140,10 +272,9 @@ const checkGitHubRepository = async (options = {}) => {
     let newlyDetectedCount = 0;
 
     for (const item of tree) {
-      // We only track files ('blob')
       if (item.type !== 'blob') continue;
 
-      // Skip internal repository metadata files
+      // Skip internal git metadata
       if (item.path.startsWith('.git') && !item.path.endsWith('.zip') && !item.path.endsWith('.pdf')) {
         continue;
       }
@@ -152,13 +283,11 @@ const checkGitHubRepository = async (options = {}) => {
       const ext = path.extname(item.path).toLowerCase().replace('.', '');
       const category = DetectedRepositoryFile.classifyExtension(ext);
 
-      // Check if file is an LFS pointer
       let isLfs = false;
       let lfsOid = '';
       let lfsSize = 0;
       let actualSize = item.size || 0;
 
-      // Git LFS pointer files are small blobs (< 500 bytes) with media/archive extensions
       if (['ZIP', 'PDF', 'CAD', 'DOCUMENT'].includes(category) && actualSize < 500) {
         const lfsInfo = await checkLfsPointer(owner, repo, branch, item.path);
         if (lfsInfo.isLfs) {
@@ -189,7 +318,6 @@ const checkGitHubRepository = async (options = {}) => {
         });
         newlyDetectedCount += 1;
       } else {
-        // If git blob SHA changed, mark as updated
         let hasChanged = false;
         if (existingRecord.gitBlobSha !== item.sha) {
           existingRecord.gitBlobSha = item.sha;
@@ -262,11 +390,9 @@ const getGitHubSyncStatus = async () => {
   });
 
   if (!syncState) {
-    // If not checked yet, run initial check
     return await checkGitHubRepository();
   }
 
-  // Refresh dynamic counts
   const totalFiles = await DetectedRepositoryFile.countDocuments();
   const pendingZips = await DetectedRepositoryFile.countDocuments({
     fileTypeCategory: 'ZIP',
@@ -331,7 +457,6 @@ const getDetectedFiles = async (query = {}) => {
   const pageNum = Math.max(1, parseInt(page, 10));
   const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10)));
   const skip = (pageNum - 1) * limitNum;
-
   const sort = { [sortBy]: parseInt(sortOrder, 10) || -1 };
 
   const [files, total] = await Promise.all([
@@ -339,7 +464,7 @@ const getDetectedFiles = async (query = {}) => {
       .sort(sort)
       .skip(skip)
       .limit(limitNum)
-      .populate('associatedJobId', 'jobId status progressPercent'),
+      .populate('associatedJobId', 'jobId status progressPercent currentStage errorMessage isResumable'),
     DetectedRepositoryFile.countDocuments(filter),
   ]);
 
@@ -356,12 +481,51 @@ const getDetectedFiles = async (query = {}) => {
 };
 
 /**
- * Download a file from GitHub (handles both direct raw / API and Git LFS objects)
+ * Download a file from GitHub with byte Range resumption, LFS batch resolution,
+ * streaming disk write, and active cancellation check.
  */
-const downloadFileFromGitHub = async (detectedFile, destPath, onProgress = null) => {
+const downloadFileFromGitHub = async (detectedFile, destPath, job, onProgress = null) => {
   const owner = DEFAULT_REPO_OWNER;
   const repo = DEFAULT_REPO_NAME;
   const branch = DEFAULT_BRANCH;
+
+  const expectedSize = detectedFile.lfsSize || detectedFile.fileSize || 0;
+
+  // Pre-flight disk space verification: ensure at least 2.5x archive size free on disk
+  const diskCheck = checkDiskSpace(path.dirname(destPath), expectedSize > 0 ? expectedSize * 2.5 : 100 * 1024 * 1024);
+  if (!diskCheck.ok) {
+    throw new Error(diskCheck.message);
+  }
+
+  // Check if file already exists on persistent disk
+  let existingBytes = 0;
+  if (fs.existsSync(destPath)) {
+    const stat = fs.statSync(destPath);
+    existingBytes = stat.size;
+
+    if (expectedSize > 0 && existingBytes === expectedSize) {
+      try {
+        await logJobEvent(job, 'INFO', `Found complete file on persistent disk (${(existingBytes / (1024 * 1024)).toFixed(1)} MB). Verifying integrity...`);
+        const ver = await verifyArchive(destPath, expectedSize, detectedFile.lfsOid, detectedFile.isLfs);
+        await logJobEvent(job, 'SUCCESS', `File integrity verified (SHA-256: ${ver.sha256.slice(0, 16)}...). Skipping network download.`);
+        if (onProgress) onProgress(existingBytes, expectedSize);
+        return { reused: true, size: existingBytes, sha256: ver.sha256 };
+      } catch (verErr) {
+        await logJobEvent(job, 'WARN', `Existing file failed integrity check (${verErr.message}). Overwriting from source...`);
+        try { fs.unlinkSync(destPath); } catch {}
+        existingBytes = 0;
+      }
+    } else if (expectedSize > 0 && existingBytes > expectedSize) {
+      await logJobEvent(job, 'WARN', `Existing file on disk (${existingBytes} bytes) exceeds expected size. Re-downloading.`);
+      try { fs.unlinkSync(destPath); } catch {}
+      existingBytes = 0;
+    } else if (existingBytes > 0) {
+      await logJobEvent(job, 'INFO', `Found partially downloaded file (${(existingBytes / (1024 * 1024)).toFixed(1)} MB / ${(expectedSize / (1024 * 1024)).toFixed(1)} MB). Resuming download via HTTP Range...`);
+    }
+  }
+
+  let downloadUrl = '';
+  let requestHeaders = {};
 
   if (detectedFile.isLfs && detectedFile.lfsOid) {
     // Git LFS batch API resolution
@@ -378,123 +542,280 @@ const downloadFileFromGitHub = async (detectedFile, destPath, onProgress = null)
           Accept: 'application/vnd.git-lfs+json',
           'Content-Type': 'application/vnd.git-lfs+json',
         }),
-        timeout: 20000,
+        timeout: 30000,
       }
     );
 
-    const downloadHref = batchRes.data?.objects?.[0]?.actions?.download?.href;
-    if (!downloadHref) {
+    downloadUrl = batchRes.data?.objects?.[0]?.actions?.download?.href;
+    if (!downloadUrl) {
       throw new Error(`Git LFS download link could not be resolved for ${detectedFile.fileName}`);
     }
-
-    // Stream download the LFS media asset
-    const response = await axios({
-      method: 'GET',
-      url: downloadHref,
-      responseType: 'stream',
-      timeout: 300000, // 5 min timeout for large LFS assets
-    });
-
-    const writer = fs.createWriteStream(destPath);
-    let downloadedBytes = 0;
-    const totalBytes = detectedFile.lfsSize || parseInt(response.headers['content-length'] || 0, 10);
-
-    return new Promise((resolve, reject) => {
-      response.data.on('data', (chunk) => {
-        downloadedBytes += chunk.length;
-        if (onProgress && totalBytes > 0) {
-          onProgress(downloadedBytes, totalBytes);
-        }
-      });
-      response.data.pipe(writer);
-      writer.on('finish', resolve);
-      writer.on('error', reject);
-    });
+    const lfsHeaders = batchRes.data?.objects?.[0]?.actions?.download?.header || {};
+    requestHeaders = { ...lfsHeaders };
   } else {
-    // Standard file download via raw.githubusercontent.com
-    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${detectedFile.repoPath}`;
-    const response = await axios({
-      method: 'GET',
-      url: rawUrl,
-      headers: getGitHubHeaders(),
-      responseType: 'stream',
-      timeout: 120000,
-    });
+    downloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${detectedFile.repoPath}`;
+    requestHeaders = getGitHubHeaders();
+  }
 
-    const writer = fs.createWriteStream(destPath);
-    let downloadedBytes = 0;
-    const totalBytes = detectedFile.fileSize || parseInt(response.headers['content-length'] || 0, 10);
+  if (existingBytes > 0) {
+    requestHeaders['Range'] = `bytes=${existingBytes}-`;
+  }
 
-    return new Promise((resolve, reject) => {
-      response.data.on('data', (chunk) => {
-        downloadedBytes += chunk.length;
+  const response = await axios({
+    method: 'GET',
+    url: downloadUrl,
+    headers: requestHeaders,
+    responseType: 'stream',
+    timeout: 600000, // 10 minute timeout for large multi-hundred-MB archives
+    validateStatus: (status) => status === 200 || status === 206,
+  });
+
+  const isPartial = response.status === 206;
+  const writer = fs.createWriteStream(destPath, { flags: isPartial ? 'a' : 'w' });
+  let downloadedBytes = isPartial ? existingBytes : 0;
+  const totalBytes = expectedSize || parseInt(response.headers['content-length'] || 0, 10);
+
+  let lastProgressUpdate = Date.now();
+
+  return new Promise((resolve, reject) => {
+    let streamClosed = false;
+
+    response.data.on('data', (chunk) => {
+      downloadedBytes += chunk.length;
+
+      const now = Date.now();
+      if (now - lastProgressUpdate > 2000) {
+        lastProgressUpdate = now;
         if (onProgress && totalBytes > 0) {
           onProgress(downloadedBytes, totalBytes);
         }
-      });
-      response.data.pipe(writer);
-      writer.on('finish', resolve);
-      writer.on('error', reject);
+      }
+
+      if (activeJobCancellations.has(job.jobId)) {
+        if (!streamClosed) {
+          streamClosed = true;
+          response.data.destroy();
+          writer.end();
+          reject(new Error('MIGRATION_CANCELLED'));
+        }
+      }
     });
-  }
+
+    response.data.pipe(writer);
+
+    writer.on('finish', () => {
+      if (onProgress && totalBytes > 0) {
+        onProgress(downloadedBytes, totalBytes);
+      }
+      resolve({ reused: false, size: downloadedBytes });
+    });
+
+    writer.on('error', (err) => {
+      if (!streamClosed) {
+        streamClosed = true;
+        reject(err);
+      }
+    });
+
+    response.data.on('error', (err) => {
+      if (!streamClosed) {
+        streamClosed = true;
+        writer.end();
+        reject(err);
+      }
+    });
+  });
 };
 
 /**
- * Recursive extraction helper with Zip Slip and Zip Bomb protection
+ * Extract a single ZIP file using yauzl streaming (zero contiguous RAM buffer).
+ * Includes Zip Slip protection, Zip Bomb protection, dangerous file filtering,
+ * and periodic event loop yielding.
  */
-const extractZipRecursively = (zipFilePath, targetDir, currentDepth = 0, maxDepth = 5) => {
-  if (currentDepth > maxDepth) {
-    console.warn(`[ZIP Warning] Reached maximum nesting depth (${maxDepth}) at ${zipFilePath}`);
-    return;
-  }
+const extractSingleZipStreaming = (zipFilePath, targetDir, job, onEntryExtracted = null) => {
+  return new Promise((resolve, reject) => {
+    yauzl.open(zipFilePath, { lazyEntries: true, autoClose: true }, (err, zipfile) => {
+      if (err) return reject(new Error(`Failed to open ZIP archive (${path.basename(zipFilePath)}): ${err.message}`));
 
-  const zip = new AdmZip(zipFilePath);
-  const zipEntries = zip.getEntries();
+      let totalUncompressed = 0;
+      let fileCount = 0;
+      const MAX_UNCOMPRESSED_SIZE = 5 * 1024 * 1024 * 1024; // 5 GB safety limit
+      const MAX_FILES = 25000;
+      const nestedZips = [];
 
-  // Zip Bomb safety limit: 10,000 files or 3 GB total uncompressed
-  let totalUncompressed = 0;
-  for (const entry of zipEntries) {
-    totalUncompressed += entry.header.size;
-    if (totalUncompressed > 3 * 1024 * 1024 * 1024) {
-      throw new Error('Archive exceeds maximum safe uncompressed size limit (3 GB).');
-    }
-  }
+      zipfile.readEntry();
 
-  for (const entry of zipEntries) {
-    const entryName = entry.entryName;
-
-    // Zip Slip security validation: forbid path traversal
-    if (entryName.includes('..') || path.isAbsolute(entryName)) {
-      console.warn(`[Security Alert] Rejected insecure ZIP entry: ${entryName}`);
-      continue;
-    }
-
-    const fullDestPath = path.join(targetDir, entryName);
-
-    if (entry.isDirectory) {
-      if (!fs.existsSync(fullDestPath)) {
-        fs.mkdirSync(fullDestPath, { recursive: true });
-      }
-    } else {
-      const parentDir = path.dirname(fullDestPath);
-      if (!fs.existsSync(parentDir)) {
-        fs.mkdirSync(parentDir, { recursive: true });
-      }
-      fs.writeFileSync(fullDestPath, entry.getData());
-
-      // If extracted file is itself a nested ZIP, unpack recursively
-      if (entryName.toLowerCase().endsWith('.zip')) {
-        const nestedTargetDir = path.join(
-          parentDir,
-          path.basename(entryName, path.extname(entryName))
-        );
-        if (!fs.existsSync(nestedTargetDir)) {
-          fs.mkdirSync(nestedTargetDir, { recursive: true });
+      zipfile.on('entry', (entry) => {
+        // Zip Slip path traversal check
+        if (entry.fileName.includes('..') || path.isAbsolute(entry.fileName)) {
+          console.warn(`[Security Alert] Rejected insecure ZIP entry: ${entry.fileName}`);
+          zipfile.readEntry();
+          return;
         }
-        extractZipRecursively(fullDestPath, nestedTargetDir, currentDepth + 1, maxDepth);
+
+        const fullDestPath = path.resolve(targetDir, entry.fileName);
+        if (!fullDestPath.startsWith(path.resolve(targetDir))) {
+          console.warn(`[Security Alert] Traversal attempt outside target dir: ${entry.fileName}`);
+          zipfile.readEntry();
+          return;
+        }
+
+        // Dangerous executable file extension check
+        const ext = path.extname(entry.fileName).toLowerCase();
+        if (['.exe', '.bat', '.cmd', '.sh', '.vbs', '.ps1', '.msi', '.com'].includes(ext)) {
+          console.warn(`[Security Alert] Skipped dangerous executable file: ${entry.fileName}`);
+          zipfile.readEntry();
+          return;
+        }
+
+        totalUncompressed += entry.uncompressedSize || 0;
+        fileCount++;
+
+        if (totalUncompressed > MAX_UNCOMPRESSED_SIZE) {
+          zipfile.close();
+          return reject(new Error('Archive exceeds maximum safe uncompressed size limit (5 GB).'));
+        }
+        if (fileCount > MAX_FILES) {
+          zipfile.close();
+          return reject(new Error('Archive exceeds maximum safe file count limit (25,000 files).'));
+        }
+
+        if (/\/$/.test(entry.fileName)) {
+          // Directory
+          fs.mkdirSync(fullDestPath, { recursive: true });
+          zipfile.readEntry();
+        } else {
+          // File
+          const parentDir = path.dirname(fullDestPath);
+          fs.mkdirSync(parentDir, { recursive: true });
+
+          zipfile.openReadStream(entry, (streamErr, readStream) => {
+            if (streamErr) {
+              zipfile.close();
+              return reject(streamErr);
+            }
+
+            const writeStream = fs.createWriteStream(fullDestPath);
+            readStream.pipe(writeStream);
+
+            writeStream.on('finish', async () => {
+              if (ext === '.zip') {
+                nestedZips.push(fullDestPath);
+              }
+
+              if (onEntryExtracted) {
+                onEntryExtracted(fileCount, totalUncompressed, entry.fileName);
+              }
+
+              // Yield to event loop every 20 entries to allow HTTP server health checks to respond
+              if (fileCount % 20 === 0) {
+                await new Promise((r) => setImmediate(r));
+              }
+
+              if (activeJobCancellations.has(job.jobId)) {
+                zipfile.close();
+                return reject(new Error('MIGRATION_CANCELLED'));
+              }
+
+              zipfile.readEntry();
+            });
+
+            writeStream.on('error', (wErr) => {
+              zipfile.close();
+              reject(wErr);
+            });
+
+            readStream.on('error', (rErr) => {
+              zipfile.close();
+              reject(rErr);
+            });
+          });
+        }
+      });
+
+      zipfile.on('end', () => {
+        resolve({ fileCount, totalUncompressed, nestedZips });
+      });
+
+      zipfile.on('error', (zErr) => {
+        reject(zErr);
+      });
+    });
+  });
+};
+
+/**
+ * Iterative streaming extraction for outer and nested archives.
+ * Uses a work queue instead of call-stack recursion to guarantee low memory usage.
+ */
+const extractZipRecursivelyStreaming = async (outerZipPath, targetDir, job) => {
+  const queue = [{ zipPath: outerZipPath, outDir: targetDir, depth: 0 }];
+  let totalFilesExtracted = 0;
+  let totalBytesExtracted = 0;
+  let nestedArchivesProcessed = 0;
+
+  let lastSaveTime = Date.now();
+
+  while (queue.length > 0) {
+    if (activeJobCancellations.has(job.jobId)) {
+      throw new Error('MIGRATION_CANCELLED');
+    }
+
+    const current = queue.shift();
+
+    const { fileCount, totalUncompressed, nestedZips } = await extractSingleZipStreaming(
+      current.zipPath,
+      current.outDir,
+      job,
+      (count, bytes, fileName) => {
+        const now = Date.now();
+        if (now - lastSaveTime > 3000) {
+          lastSaveTime = now;
+          const currentTotal = totalFilesExtracted + count;
+          job.extractionProgress = currentTotal;
+          job.stats.extractedCount = currentTotal;
+          job.lastProcessedFile = path.basename(fileName);
+          job.currentStage = `Extracting archives (${currentTotal} files extracted)...`;
+          job.save().catch(() => {});
+        }
+      }
+    );
+
+    totalFilesExtracted += fileCount;
+    totalBytesExtracted += totalUncompressed;
+
+    if (current.depth > 0) {
+      nestedArchivesProcessed++;
+      // Delete extracted nested .zip to reclaim persistent disk space
+      try {
+        fs.unlinkSync(current.zipPath);
+      } catch {}
+    }
+
+    // Queue nested archives if under max nesting depth (5)
+    if (current.depth < 5) {
+      for (const nestedZipPath of nestedZips) {
+        if (fs.existsSync(nestedZipPath)) {
+          const nestedBase = path.basename(nestedZipPath, '.zip');
+          const nestedOutDir = path.join(path.dirname(nestedZipPath), nestedBase);
+          fs.mkdirSync(nestedOutDir, { recursive: true });
+          queue.push({
+            zipPath: nestedZipPath,
+            outDir: nestedOutDir,
+            depth: current.depth + 1,
+          });
+        }
       }
     }
+
+    await new Promise((r) => setImmediate(r));
   }
+
+  job.stats.extractedCount = totalFilesExtracted;
+  job.extractionProgress = totalFilesExtracted;
+  await job.save();
+
+  return { totalFilesExtracted, totalBytesExtracted, nestedArchivesProcessed };
 };
 
 /**
@@ -505,36 +826,25 @@ const walkDir = (dir, fileList = []) => {
   const files = fs.readdirSync(dir);
   for (const file of files) {
     const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-    if (stat.isDirectory()) {
-      walkDir(fullPath, fileList);
-    } else {
-      fileList.push({
-        fullPath,
-        fileName: file,
-        size: stat.size,
-        ext: path.extname(file).toLowerCase().replace('.', ''),
-      });
-    }
+    try {
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        walkDir(fullPath, fileList);
+      } else {
+        fileList.push({
+          fullPath,
+          fileName: file,
+          size: stat.size,
+          ext: path.extname(file).toLowerCase().replace('.', ''),
+        });
+      }
+    } catch {}
   }
   return fileList;
 };
 
 /**
- * Calculate SHA-256 hash of a file
- */
-const calculateSha256 = (filePath) => {
-  return new Promise((resolve, reject) => {
-    const hash = crypto.createHash('sha256');
-    const stream = fs.createReadStream(filePath);
-    stream.on('data', (data) => hash.update(data));
-    stream.on('end', () => resolve(hash.digest('hex')));
-    stream.on('error', reject);
-  });
-};
-
-/**
- * Background migration job execution pipeline
+ * Background migration job execution pipeline with checkpointing and auto-resume
  */
 const runJobProcess = async (jobId) => {
   const job = await MigrationJob.findOne({ jobId });
@@ -543,7 +853,8 @@ const runJobProcess = async (jobId) => {
   const detectedFile = await DetectedRepositoryFile.findById(job.detectedFileId);
   if (!detectedFile) {
     job.status = 'FAILED';
-    await logJobEvent(job, 'ERROR', 'Associated DetectedRepositoryFile was not found in database.');
+    job.errorMessage = 'Associated DetectedRepositoryFile was not found in database.';
+    await logJobEvent(job, 'ERROR', job.errorMessage);
     return;
   }
 
@@ -553,26 +864,31 @@ const runJobProcess = async (jobId) => {
   }
 
   try {
-    job.startedAt = new Date();
+    if (!job.startedAt) {
+      job.startedAt = new Date();
+    }
     job.status = 'DOWNLOADING';
-    job.currentStage = 'Validating file and initiating download from GitHub';
-    job.progressPercent = 5;
+    job.errorMessage = '';
+    job.isResumable = true;
+    job.currentStage = 'Validating archive and preparing streaming download...';
+    if (job.progressPercent < 5) job.progressPercent = 5;
     detectedFile.importStatus = 'PROCESSING';
     detectedFile.lastImportAttempt = new Date();
+    detectedFile.lastError = '';
     await detectedFile.save();
     await logJobEvent(job, 'INFO', `Starting migration for ${detectedFile.repoPath} (${detectedFile.fileName})`);
 
-    // Check cancellation
     if (activeJobCancellations.has(jobId)) throw new Error('MIGRATION_CANCELLED');
 
-    // Step 2: Download file from GitHub
+    // 1. Download file from GitHub or resume existing download
     const downloadedFilePath = path.join(jobWorkDir, detectedFile.fileName);
     job.currentStage = `Downloading from GitHub (${(detectedFile.fileSize / (1024 * 1024)).toFixed(1)} MB)...`;
-    job.progressPercent = 10;
     await job.save();
 
-    await downloadFileFromGitHub(detectedFile, downloadedFilePath, (downloaded, total) => {
+    await downloadFileFromGitHub(detectedFile, downloadedFilePath, job, (downloaded, total) => {
       const pct = Math.min(30, 10 + Math.round((downloaded / total) * 20));
+      job.downloadedBytes = downloaded;
+      job.totalBytes = total;
       if (pct !== job.progressPercent) {
         job.progressPercent = pct;
         job.save().catch(() => {});
@@ -581,37 +897,82 @@ const runJobProcess = async (jobId) => {
 
     if (activeJobCancellations.has(jobId)) throw new Error('MIGRATION_CANCELLED');
 
-    await logJobEvent(job, 'SUCCESS', `File downloaded successfully to ${downloadedFilePath}`);
+    // 2. Verification Stage
+    job.status = 'VERIFYING';
+    job.currentStage = 'Verifying archive integrity, magic bytes, and SHA-256 checksum...';
+    job.progressPercent = 32;
+    await job.save();
+    await logJobEvent(job, 'INFO', 'Verifying downloaded archive integrity...');
+
+    const isZip = detectedFile.fileTypeCategory === 'ZIP';
+    if (isZip) {
+      const verResult = await verifyArchive(
+        downloadedFilePath,
+        detectedFile.lfsSize || detectedFile.fileSize,
+        detectedFile.lfsOid,
+        detectedFile.isLfs
+      );
+      job.archiveSha256 = verResult.sha256;
+      await logJobEvent(
+        job,
+        'SUCCESS',
+        `Archive verified successfully. SHA-256: ${verResult.sha256}, Size: ${(verResult.size / (1024 * 1024)).toFixed(1)} MB`
+      );
+    } else {
+      const docSha = await calculateSha256(downloadedFilePath);
+      job.archiveSha256 = docSha;
+    }
+
     job.progressPercent = 35;
     await job.save();
 
-    const isZip = detectedFile.fileTypeCategory === 'ZIP';
     const extractedDir = path.join(jobWorkDir, 'extracted');
     if (!fs.existsSync(extractedDir)) {
       fs.mkdirSync(extractedDir, { recursive: true });
     }
 
-    // Step 3: Extraction (if ZIP)
+    // 3. Extraction Stage (if ZIP)
     if (isZip) {
-      job.status = 'EXTRACTING';
-      job.currentStage = 'Extracting archive and inspecting internal nested archives...';
-      job.progressPercent = 40;
-      await logJobEvent(job, 'INFO', 'Unpacking archive with Zip Slip and nesting protection...');
+      // Check if files were already extracted in a previous interrupted run
+      const existingExtractedFiles = walkDir(extractedDir);
+      if (
+        existingExtractedFiles.length > 50 &&
+        (job.checkpoint?.processedCount > 0 || job.stats.extractedCount > 0)
+      ) {
+        await logJobEvent(
+          job,
+          'INFO',
+          `Found ${existingExtractedFiles.length} already extracted files on persistent storage. Reusing extracted archive.`
+        );
+      } else {
+        job.status = 'EXTRACTING';
+        job.currentStage = 'Extracting archive and inspecting internal nested archives...';
+        job.progressPercent = 40;
+        await job.save();
+        await logJobEvent(job, 'INFO', 'Unpacking archive with streaming yauzl (zero-buffer)...');
 
-      extractZipRecursively(downloadedFilePath, extractedDir);
+        const { totalFilesExtracted, nestedArchivesProcessed } = await extractZipRecursivelyStreaming(
+          downloadedFilePath,
+          extractedDir,
+          job
+        );
 
-      if (activeJobCancellations.has(jobId)) throw new Error('MIGRATION_CANCELLED');
+        if (activeJobCancellations.has(jobId)) throw new Error('MIGRATION_CANCELLED');
 
-      await logJobEvent(job, 'SUCCESS', 'Archive unpacked successfully.');
+        await logJobEvent(
+          job,
+          'SUCCESS',
+          `Archive unpacked successfully: ${totalFilesExtracted} total files extracted (${nestedArchivesProcessed} nested archives processed).`
+        );
+      }
     } else {
-      // Single document: copy to extractedDir
       const singleDest = path.join(extractedDir, detectedFile.fileName);
       fs.copyFileSync(downloadedFilePath, singleDest);
     }
 
-    // Step 4: Scan extracted contents
+    // 4. Scanning Stage
     job.status = 'SCANNING';
-    job.currentStage = 'Scanning extracted files and calculating SHA-256 checksums...';
+    job.currentStage = 'Scanning extracted files and inventorying supported formats...';
     job.progressPercent = 50;
     await job.save();
 
@@ -622,16 +983,14 @@ const runJobProcess = async (jobId) => {
     await logJobEvent(
       job,
       'INFO',
-      `Found ${allDiscoveredFiles.length} extracted files. Classifying and deduplicating...`
+      `Found ${allDiscoveredFiles.length} extracted files. Classifying documents and CAD files...`
     );
 
-    // Filter into supported documents vs unsupported formats
     const supportedFiles = [];
     let unsupportedCount = 0;
 
     for (const fileInfo of allDiscoveredFiles) {
       const ext = fileInfo.ext;
-      // Skip unpacked zip archives themselves
       if (ext === 'zip') continue;
 
       if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
@@ -645,12 +1004,11 @@ const runJobProcess = async (jobId) => {
     job.progressPercent = 60;
     await job.save();
 
-    // Step 5: Matching & Deduplication
+    // 5. Matching Stage
     job.status = 'MATCHING';
-    job.currentStage = 'Matching documents with DOConCD catalogue & deduplicating...';
-    await logJobEvent(job, 'INFO', `Processing ${supportedFiles.length} supported documents.`);
+    job.currentStage = 'Matching documents with DOConCD catalogue & folder hierarchy...';
+    await logJobEvent(job, 'INFO', `Processing ${supportedFiles.length} supported documents (${unsupportedCount} other files).`);
 
-    // Load catalogue metadata and folder lookup if available
     const matchedCataloguePath = path.join(__dirname, '../../data/catalogue_matched.json');
     const folderLookupPath = path.join(__dirname, '../../data/folder_lookup.json');
 
@@ -661,26 +1019,29 @@ const runJobProcess = async (jobId) => {
       ? JSON.parse(fs.readFileSync(folderLookupPath, 'utf8'))
       : {};
 
-    // Get default root folder
     let rootFolder = await Folder.findOne({ parentFolderId: null });
     if (!rootFolder) {
       rootFolder = await Folder.findOne();
     }
 
-    // Step 6: Ingestion / Upload Loop
+    // 6. Ingestion & Upload Loop with Checkpointing
     job.status = 'UPLOADING';
     job.currentStage = 'Uploading documents to storage and updating library...';
     job.progressPercent = 70;
     await job.save();
 
     const importedDocIds = [];
-    let matchedCount = 0;
-    let uploadedCount = 0;
-    let duplicateCount = 0;
-    let failedCount = 0;
+    const processedHashSet = new Set(job.processedFileHashes || []);
+    let matchedCount = job.stats.matchedCount || 0;
+    let uploadedCount = job.stats.uploadedCount || 0;
+    let duplicateCount = job.stats.duplicateCount || 0;
+    let failedCount = job.stats.failedCount || 0;
 
     for (let idx = 0; idx < supportedFiles.length; idx++) {
       if (activeJobCancellations.has(jobId)) throw new Error('MIGRATION_CANCELLED');
+
+      // Yield to event loop on every file so background tasks and health checks remain smooth
+      await new Promise((r) => setImmediate(r));
 
       const fileInfo = supportedFiles[idx];
       const baseNameWithoutExt = path.basename(fileInfo.fileName, path.extname(fileInfo.fileName));
@@ -688,7 +1049,13 @@ const runJobProcess = async (jobId) => {
       try {
         const fileHash = await calculateSha256(fileInfo.fullPath);
 
-        // Check if already deduplicated in MigrationAsset or Document
+        // Check if hash already completed in this job checkpoint
+        if (processedHashSet.has(fileHash)) {
+          duplicateCount++;
+          continue;
+        }
+
+        // Deduplication against existing MigrationAsset or Document
         let existingAsset = await MigrationAsset.findOne({ sha256: fileHash });
         let existingDoc = await Document.findOne({
           $or: [
@@ -697,7 +1064,7 @@ const runJobProcess = async (jobId) => {
           ],
         });
 
-        // Match against catalogue
+        // Match against DOConCD catalogue
         const catalogueItem = catalogueList.find(
           (c) =>
             c.fileName?.toLowerCase() === baseNameWithoutExt.toLowerCase() ||
@@ -709,7 +1076,7 @@ const runJobProcess = async (jobId) => {
           matchedCount++;
         }
 
-        // Determine destination folder
+        // Determine target folder
         let targetFolderId = null;
         if (catalogueItem && catalogueItem.categoryPath) {
           const folderName = CATEGORY_TO_FOLDER_NAME[catalogueItem.categoryPath] || catalogueItem.category;
@@ -717,7 +1084,6 @@ const runJobProcess = async (jobId) => {
         }
 
         if (!targetFolderId) {
-          // Fallback to archive name folder
           const archiveSubfolderName = detectedFile.fileName.replace(/\.zip$/i, '');
           let subFolder = await Folder.findOne({ name: archiveSubfolderName });
           if (!subFolder && rootFolder) {
@@ -745,7 +1111,6 @@ const runJobProcess = async (jobId) => {
             bytes: fileInfo.size,
           };
         } else if (existingDoc && existingDoc.secureUrl) {
-          // Reuse existing document asset
           duplicateCount++;
           uploadResult = {
             asset_id: existingDoc.cloudinaryAssetId,
@@ -755,7 +1120,6 @@ const runJobProcess = async (jobId) => {
             format: existingDoc.fileExtension,
             bytes: existingDoc.fileSize,
           };
-          // Save in MigrationAsset for future imports
           await MigrationAsset.findOneAndUpdate(
             { sha256: fileHash },
             {
@@ -771,16 +1135,14 @@ const runJobProcess = async (jobId) => {
             { upsert: true }
           );
         } else {
-          // Upload to storage
-          const fileBuf = fs.readFileSync(fileInfo.fullPath);
+          // Stream upload to Cloudinary directly from file path (zero RAM buffer)
           uploadResult = await uploadToCloudinary(
-            fileBuf,
+            fileInfo.fullPath,
             fileInfo.fileName,
             `dms/${detectedFile.fileName.replace(/\.zip$/i, '')}`
           );
           uploadedCount++;
 
-          // Record in MigrationAsset
           await MigrationAsset.create({
             sha256: fileHash,
             fileName: fileInfo.fileName,
@@ -791,7 +1153,6 @@ const runJobProcess = async (jobId) => {
           });
         }
 
-        // Determine MIME Type
         let mimeType = 'application/octet-stream';
         if (fileInfo.ext === 'pdf') mimeType = 'application/pdf';
         else if (fileInfo.ext === 'doc') mimeType = 'application/msword';
@@ -803,7 +1164,6 @@ const runJobProcess = async (jobId) => {
         else if (fileInfo.ext === 'webp') mimeType = 'image/webp';
         else if (fileInfo.ext === 'gif') mimeType = 'image/gif';
 
-        // Upsert Document in MongoDB
         const docPayload = {
           displayName: catalogueItem?.title || baseNameWithoutExt,
           title: catalogueItem?.title || baseNameWithoutExt,
@@ -841,16 +1201,29 @@ const runJobProcess = async (jobId) => {
         }
 
         importedDocIds.push(savedDoc._id);
+        processedHashSet.add(fileHash);
+        if (!job.processedFileHashes.includes(fileHash)) {
+          job.processedFileHashes.push(fileHash);
+        }
 
-        // Update progress
-        const currentProgress = 70 + Math.round(((idx + 1) / supportedFiles.length) * 25);
-        if (currentProgress !== job.progressPercent) {
+        // Save persistent checkpoint every 5 files or on final file
+        if ((idx + 1) % 5 === 0 || idx === supportedFiles.length - 1) {
+          const currentProgress = 70 + Math.round(((idx + 1) / supportedFiles.length) * 25);
           job.progressPercent = currentProgress;
+          job.currentStage = `Ingesting documents (${idx + 1}/${supportedFiles.length}) - [Uploaded: ${uploadedCount}, Duplicates: ${duplicateCount}]`;
           job.stats.uploadedCount = uploadedCount;
           job.stats.duplicateCount = duplicateCount;
           job.stats.matchedCount = matchedCount;
           job.stats.failedCount = failedCount;
-          job.save().catch(() => {});
+          job.lastProcessedFile = fileInfo.fileName;
+          job.checkpoint = {
+            lastProcessedIndex: idx,
+            totalFilesCount: supportedFiles.length,
+            processedCount: idx + 1,
+            lastProcessedFile: fileInfo.fileName,
+            updatedAt: new Date(),
+          };
+          await job.save();
         }
       } catch (docErr) {
         failedCount++;
@@ -863,7 +1236,7 @@ const runJobProcess = async (jobId) => {
       }
     }
 
-    // Step 7: Completion & Report
+    // 7. Completion & Report
     job.stats.matchedCount = matchedCount;
     job.stats.uploadedCount = uploadedCount;
     job.stats.duplicateCount = duplicateCount;
@@ -890,7 +1263,6 @@ const runJobProcess = async (jobId) => {
     job.report = finalReport;
     await job.save();
 
-    // Update DetectedRepositoryFile
     detectedFile.importStatus = failedCount > 0 && uploadedCount === 0 ? 'FAILED' : 'COMPLETED';
     detectedFile.associatedJobId = job._id;
     detectedFile.importedDocumentIds = importedDocIds;
@@ -903,10 +1275,9 @@ const runJobProcess = async (jobId) => {
       `Migration completed. Imported: ${importedDocIds.length}, Uploaded: ${uploadedCount}, Duplicates: ${duplicateCount}, Failed: ${failedCount}`
     );
 
-    // Refresh GitHubSyncState aggregate counts
     await getGitHubSyncStatus();
 
-    // Clean up temporary workspace
+    // Clean up temporary extracted directory upon successful completion
     try {
       if (fs.existsSync(jobWorkDir)) {
         fs.rmSync(jobWorkDir, { recursive: true, force: true });
@@ -921,6 +1292,7 @@ const runJobProcess = async (jobId) => {
       await detectedFile.save();
     } else {
       job.status = 'FAILED';
+      job.errorMessage = err.message;
       job.currentStage = `Migration failed: ${err.message}`;
       job.errorLog.push({
         timestamp: new Date(),
@@ -935,14 +1307,9 @@ const runJobProcess = async (jobId) => {
     job.completedAt = new Date();
     await job.save();
 
-    // Refresh GitHubSyncState counts
     await getGitHubSyncStatus();
 
-    try {
-      if (fs.existsSync(jobWorkDir)) {
-        fs.rmSync(jobWorkDir, { recursive: true, force: true });
-      }
-    } catch {}
+    // Do NOT immediately delete jobWorkDir on failure if it contains valid files for resumption!
   } finally {
     activeJobCancellations.delete(jobId);
   }
@@ -976,7 +1343,6 @@ const createMigrationJob = async (fileId, adminUserId) => {
   file.associatedJobId = job._id;
   await file.save();
 
-  // Run in background without blocking response
   setImmediate(() => {
     runJobProcess(jobId).catch((err) => {
       console.error(`[Background Job Error ${jobId}]`, err);
@@ -1028,7 +1394,6 @@ const createBulkMigrationJob = async (fileIds, adminUserId) => {
     queuedJobs.push(job);
   }
 
-  // Process sequentially in background
   setImmediate(async () => {
     for (const job of queuedJobs) {
       try {
@@ -1075,12 +1440,61 @@ const cancelMigrationJob = async (jobId) => {
 };
 
 /**
- * Retry a failed migration job
+ * Resume an interrupted, failed, or paused migration job from its persistent checkpoint
+ */
+const resumeMigrationJob = async (jobId, adminUserId) => {
+  const job = await MigrationJob.findOne({ jobId });
+  if (!job) {
+    throw new Error('Migration job not found.');
+  }
+
+  if (job.status === 'COMPLETED') {
+    return {
+      success: false,
+      message: `Job ${jobId} has already completed successfully.`,
+      job,
+    };
+  }
+
+  job.status = 'QUEUED';
+  job.currentStage = 'Job queued for resumption from checkpoint...';
+  job.isResumable = true;
+  job.retryCount = (job.retryCount || 0) + 1;
+  job.errorMessage = '';
+  await job.save();
+
+  if (job.detectedFileId) {
+    await DetectedRepositoryFile.findByIdAndUpdate(job.detectedFileId, {
+      importStatus: 'PROCESSING',
+      lastError: '',
+    });
+  }
+
+  setImmediate(() => {
+    runJobProcess(jobId).catch((err) => {
+      console.error(`[Resume Job Error ${jobId}]`, err);
+    });
+  });
+
+  return {
+    success: true,
+    message: `Migration job ${jobId} resumed from checkpoint successfully.`,
+    job,
+  };
+};
+
+/**
+ * Retry a failed migration job (resumes if checkpoint exists, or restarts safely)
  */
 const retryMigrationJob = async (jobId, adminUserId) => {
   const oldJob = await MigrationJob.findOne({ jobId });
   if (!oldJob) {
     throw new Error('Migration job not found.');
+  }
+
+  // If the job already has checkpoint data, resume it directly
+  if (oldJob.checkpoint && oldJob.checkpoint.processedCount > 0) {
+    return await resumeMigrationJob(jobId, adminUserId);
   }
 
   const file = await DetectedRepositoryFile.findById(oldJob.detectedFileId);
@@ -1168,30 +1582,46 @@ const exportJobReport = async (jobId) => {
 };
 
 /**
- * Server boot hook to recover any interrupted jobs
+ * Server boot hook to automatically recover any in-progress jobs interrupted by a restart or deploy
  */
 const recoverInterruptedJobs = async () => {
   try {
     const interruptedJobs = await MigrationJob.find({
-      status: { $in: ['DOWNLOADING', 'EXTRACTING', 'SCANNING', 'MATCHING', 'UPLOADING'] },
+      status: { $in: ['DOWNLOADING', 'VERIFYING', 'EXTRACTING', 'SCANNING', 'MATCHING', 'UPLOADING'] },
     });
 
+    if (interruptedJobs.length === 0) {
+      console.log('[Job Recovery] No interrupted migration jobs found.');
+      return;
+    }
+
+    console.log(`[Job Recovery] Found ${interruptedJobs.length} interrupted job(s). Resuming from persistent checkpoints...`);
+
     for (const job of interruptedJobs) {
-      job.status = 'FAILED';
-      job.currentStage = 'Migration interrupted by server restart.';
-      job.errorLog.push({
-        timestamp: new Date(),
-        message: 'Job was interrupted due to server process shutdown or restart.',
-      });
-      job.completedAt = new Date();
+      job.status = 'QUEUED';
+      job.currentStage = 'Server restart detected. Auto-recovering and resuming job from checkpoint...';
+      job.isResumable = true;
+      job.retryCount = (job.retryCount || 0) + 1;
       await job.save();
 
       if (job.detectedFileId) {
         await DetectedRepositoryFile.findByIdAndUpdate(job.detectedFileId, {
-          importStatus: 'FAILED',
-          lastError: 'Interrupted by server restart',
+          importStatus: 'PROCESSING',
+          lastError: '',
         });
       }
+
+      await logJobEvent(
+        job,
+        'INFO',
+        `Server restart recovery triggered. Resuming from checkpoint (${job.checkpoint?.processedCount || 0} files previously processed).`
+      );
+
+      setImmediate(() => {
+        runJobProcess(job.jobId).catch((err) => {
+          console.error(`[Auto-Recovery Job Error ${job.jobId}]`, err);
+        });
+      });
     }
   } catch (err) {
     console.error('[Job Recovery Warning]', err.message);
@@ -1205,9 +1635,14 @@ module.exports = {
   createMigrationJob,
   createBulkMigrationJob,
   cancelMigrationJob,
+  resumeMigrationJob,
   retryMigrationJob,
   getMigrationJob,
   getMigrationJobs,
   exportJobReport,
   recoverInterruptedJobs,
+  verifyArchive,
+  downloadFileFromGitHub,
+  extractZipRecursivelyStreaming,
+  calculateSha256,
 };

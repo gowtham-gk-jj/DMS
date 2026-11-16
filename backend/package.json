@@ -26,6 +26,7 @@
     "mongoose": "^9.12.1",
     "morgan": "^1.12.1",
     "multer": "^2.5.0",
-    "nodemailer": "^10.5.0"
+    "nodemailer": "^10.5.0",
+    "yauzl": "^3.4.0"
   }
 }
