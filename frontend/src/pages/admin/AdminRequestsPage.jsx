@@ -139,12 +139,12 @@ export default function AdminRequestsPage() {
         </div>
 
         {/* Filter Bar */}
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs w-full sm:w-auto">
           {['PENDING', 'APPROVED', 'REJECTED', 'ALL'].map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 font-medium transition-colors cursor-pointer ${
+              className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
                 statusFilter === s
                   ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                   : 'bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--text-secondary)]'
@@ -159,20 +159,21 @@ export default function AdminRequestsPage() {
       {/* Search Input */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-3.5 sm:top-2.5 w-4 h-4 text-[var(--text-muted)]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search applicant name, email, organization..."
-            className="w-full pl-9 pr-3 py-2 border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
           />
         </div>
       </div>
 
       {/* Requests Table */}
       <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-        <div className="overflow-x-auto">
+        {/* Desktop Table View (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[760px]">
             <thead>
               <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -279,6 +280,91 @@ export default function AdminRequestsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Access Requests Card View (< md) */}
+        <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+          {loading ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              Loading access requests...
+            </div>
+          ) : requests.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              No access requests found matching &ldquo;{statusFilter}&rdquo;.
+            </div>
+          ) : (
+            requests.map((req, idx) => (
+              <div
+                key={`mob_req_${req._id}`}
+                className={`p-4 space-y-3 transition-colors ${
+                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                }`}
+              >
+                {/* Applicant & Status */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm text-[var(--text-primary)] leading-tight">{req.name}</div>
+                    <div className="font-mono text-xs text-[var(--text-muted)] break-all mt-0.5">{req.email}</div>
+                  </div>
+                  <span
+                    className={`font-mono text-[10px] font-bold px-2 py-0.5 border shrink-0 ${
+                      req.status === 'APPROVED'
+                        ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--text-primary)]'
+                        : req.status === 'REJECTED'
+                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                        : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)]'
+                    }`}
+                  >
+                    {req.status}
+                  </span>
+                </div>
+
+                {/* Organization & Dept */}
+                <div className="text-xs text-[var(--text-primary)]">
+                  <span className="font-medium">{req.organization}</span>
+                  {req.department && (
+                    <span className="text-[var(--text-muted)] text-[11px] ml-1.5">({req.department})</span>
+                  )}
+                </div>
+
+                {/* Reason & Purpose */}
+                <div className="p-2.5 border border-[var(--border-subtle)] bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] leading-relaxed break-words">
+                  {req.reason}
+                </div>
+
+                {/* Date */}
+                <div className="flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)] pt-1">
+                  <span>Submitted: {new Date(req.createdAt).toLocaleDateString()}</span>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-2 border-t border-[var(--border-subtle)]">
+                  {req.status === 'PENDING' ? (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => openApproveModal(req)}
+                        className="flex-1 min-h-[44px] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center space-x-1"
+                      >
+                        <Check className="w-4 h-4" />
+                        <span>Review & Approve</span>
+                      </button>
+                      <button
+                        onClick={() => openRejectModal(req)}
+                        className="min-h-[44px] px-4 py-2 border border-[var(--border-color)] hover:border-red-500 text-red-500 font-semibold text-xs uppercase tracking-wider hover:bg-red-500/10 transition-colors cursor-pointer flex items-center justify-center space-x-1"
+                      >
+                        <X className="w-4 h-4" />
+                        <span>Reject</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-center py-1 text-[11px] text-[var(--text-muted)] font-mono">
+                      Request already {req.status?.toLowerCase()}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

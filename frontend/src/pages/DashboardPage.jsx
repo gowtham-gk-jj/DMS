@@ -363,12 +363,12 @@ export default function DashboardPage() {
               Siemens DOConCD nested catalogues and technical archives
             </p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => loadDashboardData(true)}
               disabled={refreshing || foldersLoading}
               title="Refresh repository document counts from database"
-              className={`px-2.5 py-1.5 border text-xs font-medium flex items-center space-x-1.5 cursor-pointer transition-colors ${
+              className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] border text-xs font-medium flex items-center space-x-1.5 cursor-pointer transition-colors ${
                 isDark
                   ? 'bg-[#1e293b] border-[#334155] text-[#94a3b8] hover:text-[#f8fafc] hover:border-[#60a5fa]'
                   : 'bg-[#ffffff] border-[#e5e5e5] text-[#555555] hover:text-[#111111] hover:border-[#999999]'
@@ -379,7 +379,7 @@ export default function DashboardPage() {
             </button>
             <button
               onClick={() => navigate('/library')}
-              className={`text-xs font-medium hover:underline flex items-center space-x-1 cursor-pointer self-start sm:self-auto ${
+              className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] text-xs font-medium hover:underline flex items-center space-x-1 cursor-pointer ${
                 isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
               }`}
             >
@@ -468,7 +468,7 @@ export default function DashboardPage() {
                   </p>
 
                   <div
-                    className={`border-t mt-3 pt-2.5 flex items-center justify-between text-[11px] ${
+                    className={`border-t mt-3 pt-2.5 flex flex-wrap items-center justify-between gap-1.5 text-[11px] ${
                       isDark
                         ? 'border-[#1e293b] text-[#94a3b8]'
                         : 'border-[#f0f0f0] text-[#777777]'

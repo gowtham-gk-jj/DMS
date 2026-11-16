@@ -419,7 +419,7 @@ export default function UploadModal({ folderId, folderName, defaultSystem = '', 
               type="button"
               onClick={onClose}
               disabled={uploading}
-              className={`px-4 py-2 text-xs border rounded-none cursor-pointer transition-colors ${
+              className={`px-4 py-2.5 min-h-[44px] text-xs border rounded-none cursor-pointer transition-colors ${
                 isDark
                   ? 'border-[#334155] text-[#cbd5e1] hover:bg-[#1e293b]'
                   : 'border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
@@ -430,7 +430,7 @@ export default function UploadModal({ folderId, folderName, defaultSystem = '', 
             <button
               type="submit"
               disabled={uploading || files.length === 0}
-              className={`px-5 py-2 text-xs font-semibold rounded-none disabled:opacity-50 flex items-center space-x-1.5 cursor-pointer transition-colors ${
+              className={`px-5 py-2.5 min-h-[44px] text-xs font-semibold rounded-none disabled:opacity-50 flex items-center space-x-1.5 cursor-pointer transition-colors ${
                 isDark
                   ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
                   : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'

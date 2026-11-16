@@ -909,8 +909,8 @@ export default function AdminMigrationPage() {
             </div>
           </div>
 
-          {/* Desktop / Tablet Table View */}
-          <div className="overflow-x-auto">
+          {/* Desktop / Tablet Table View (>= md) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs min-w-[700px]">
               <thead>
                 <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -1039,6 +1039,101 @@ export default function AdminMigrationPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Detected Files Card View (< md) */}
+          <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+            {filesLoading ? (
+              <div className="py-8 text-center text-[var(--text-muted)] font-mono text-xs">
+                <RefreshCw className="w-4 h-4 animate-spin inline-block mr-2" />
+                Loading detected repository files...
+              </div>
+            ) : detectedFiles.length === 0 ? (
+              <div className="py-8 text-center text-[var(--text-muted)] font-mono text-xs p-4">
+                No files matching current filter. Click &quot;Check for New Files&quot; to query the repository.
+              </div>
+            ) : (
+              detectedFiles.map((file, idx) => {
+                const isSelected = selectedFileIds.has(file._id);
+                return (
+                  <div
+                    key={`mob_detected_${file._id || idx}`}
+                    className={`p-3.5 space-y-2.5 transition-colors ${
+                      isSelected
+                        ? 'bg-sky-500/10'
+                        : idx % 2 === 1
+                        ? 'bg-[var(--bg-hover)]'
+                        : 'bg-[var(--bg-card)]'
+                    }`}
+                  >
+                    {/* Checkbox, Filename & Status */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start space-x-2.5 min-w-0 flex-1">
+                        <button
+                          type="button"
+                          onClick={() => toggleSelectFile(file._id)}
+                          className="mt-0.5 cursor-pointer p-1"
+                        >
+                          {isSelected ? (
+                            <CheckSquare className="w-4 h-4 text-sky-500" />
+                          ) : (
+                            <Square className="w-4 h-4 text-[var(--text-muted)]" />
+                          )}
+                        </button>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-bold text-xs text-[var(--text-primary)] break-all leading-tight">
+                            {file.fileName}
+                          </div>
+                          <div className="text-[10px] font-mono text-[var(--text-muted)] break-all mt-0.5">
+                            {file.repoPath}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="shrink-0">
+                        {renderStatusBadge(file.importStatus)}
+                      </div>
+                    </div>
+
+                    {/* Metadata Badges: Type, Size, Detected Date */}
+                    <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono text-[var(--text-secondary)] pt-1 border-t border-[var(--border-subtle)]">
+                      <div className="flex items-center gap-1.5">
+                        <span className="border border-[var(--border-color)] px-1.5 py-0.5 font-bold">
+                          {file.fileTypeCategory}
+                        </span>
+                        <span className="font-bold text-[var(--text-primary)]">
+                          {formatBytes(file.fileSize)}
+                        </span>
+                      </div>
+                      <div className="text-[var(--text-muted)]">
+                        {formatRelativeTime(file.detectedDate)}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons: Details & Proceed (min-h-[44px]) */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setDetailsModal({ open: true, file })}
+                        className="min-h-[44px] px-3.5 py-2 border border-[var(--border-color)] hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-mono cursor-pointer flex items-center justify-center space-x-1"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                        <span>Details</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => triggerSingleImport(file)}
+                        disabled={actionLoading || file.importStatus === 'PROCESSING'}
+                        className="flex-1 min-h-[44px] px-4 py-2 bg-[var(--text-primary)] hover:opacity-90 text-[var(--bg-primary)] text-xs font-mono font-bold uppercase flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-40"
+                      >
+                        <span>Proceed</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
 
         {/* ==================================================== */}
@@ -1060,7 +1155,8 @@ export default function AdminMigrationPage() {
             </button>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Desktop Table View (>= md) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs min-w-[700px]">
               <thead>
                 <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -1182,6 +1278,109 @@ export default function AdminMigrationPage() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Migration Jobs Card View (< md) */}
+          <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+            {jobsLoading && migrationJobs.length === 0 ? (
+              <div className="py-8 text-center text-[var(--text-muted)] font-mono text-xs">
+                Loading job records...
+              </div>
+            ) : migrationJobs.length === 0 ? (
+              <div className="py-8 text-center text-[var(--text-muted)] font-mono text-xs p-4">
+                No migration jobs executed yet. Select a file above and click &quot;Proceed&quot;.
+              </div>
+            ) : (
+              migrationJobs.map((job, idx) => (
+                <div
+                  key={`mob_job_${job.jobId || idx}`}
+                  className={`p-3.5 space-y-2.5 transition-colors ${
+                    idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                  }`}
+                >
+                  {/* Job ID & Status */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-mono font-bold text-xs text-[var(--text-primary)]">
+                        {job.jobId}
+                      </div>
+                      <div className="font-medium text-xs text-[var(--text-primary)] break-all mt-0.5">
+                        {job.sourceFile}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      <div>{renderStatusBadge(job.status)}</div>
+                      {(job.status === 'FAILED' || job.errorMessage || job.errorLog?.length > 0) && (
+                        <button
+                          type="button"
+                          onClick={() => setErrorModal({ open: true, job })}
+                          className="text-[10px] text-red-500 hover:underline font-mono inline-flex items-center space-x-0.5 cursor-pointer"
+                        >
+                          <AlertTriangle className="w-2.5 h-2.5 mr-0.5" />
+                          <span>View Error</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Metadata: Commit, Started, Results */}
+                  <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono text-[var(--text-secondary)] pt-1 border-t border-[var(--border-subtle)]">
+                    <div>
+                      Commit: <span className="text-[var(--text-primary)]">{job.commitSha ? job.commitSha.slice(0, 7) : '—'}</span>
+                    </div>
+                    <div>
+                      {formatRelativeTime(job.startedAt || job.createdAt)}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] font-mono bg-[var(--bg-hover)] p-2 border border-[var(--border-subtle)]">
+                    <span className="text-[var(--text-muted)]">Import Results:</span>
+                    <div className="space-x-2">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                        {job.stats?.uploadedCount || 0} uploaded
+                      </span>
+                      <span>•</span>
+                      <span className="text-amber-600 dark:text-amber-400">
+                        {job.stats?.duplicateCount || 0} skipped
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons: min-h-[44px] */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setReportModal({ open: true, job })}
+                      className="flex-1 min-h-[44px] px-3.5 py-2 border border-[var(--border-color)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] text-xs font-mono font-medium flex items-center justify-center space-x-1.5 cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>View Report</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleExportJobReport(job.jobId)}
+                      className="min-h-[44px] px-3.5 py-2 border border-[var(--border-color)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] text-xs font-mono flex items-center justify-center space-x-1 cursor-pointer"
+                      title="Download JSON report"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+
+                    {['FAILED', 'CANCELLED', 'PAUSED'].includes(job.status) && (
+                      <button
+                        type="button"
+                        onClick={() => handleResumeJob(job.jobId)}
+                        disabled={actionLoading}
+                        className="min-h-[44px] px-3.5 py-2 bg-sky-600 text-white hover:bg-sky-700 text-xs font-mono font-bold uppercase flex items-center justify-center space-x-1 cursor-pointer disabled:opacity-40"
+                      >
+                        <Play className="w-3.5 h-3.5" />
+                        <span>Resume</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

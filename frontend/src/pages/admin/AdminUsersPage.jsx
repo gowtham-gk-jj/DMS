@@ -114,11 +114,11 @@ export default function AdminUsersPage() {
         </div>
 
         {/* Filter controls */}
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs w-full sm:w-auto">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="flex-1 sm:flex-initial min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
           >
             <option value="ALL">All Statuses</option>
             <option value="APPROVED">Approved</option>
@@ -130,7 +130,7 @@ export default function AdminUsersPage() {
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="flex-1 sm:flex-initial min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
           >
             <option value="ALL">All Roles</option>
             <option value="ADMIN">Admin</option>
@@ -143,20 +143,21 @@ export default function AdminUsersPage() {
       {/* Search Input */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-3.5 sm:top-2.5 w-4 h-4 text-[var(--text-muted)]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search users by name, email, department..."
-            className="w-full pl-9 pr-3 py-2 border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
           />
         </div>
       </div>
 
       {/* Users Table */}
       <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-        <div className="overflow-x-auto">
+        {/* Desktop Table View (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[700px]">
             <thead>
               <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -303,6 +304,133 @@ export default function AdminUsersPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Users Card View (< md) */}
+        <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+          {loading ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              Loading user records...
+            </div>
+          ) : users.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              No users found matching current filters.
+            </div>
+          ) : (
+            users.map((u, idx) => (
+              <div
+                key={`mob_user_${u._id}`}
+                className={`p-4 space-y-3 transition-colors ${
+                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                }`}
+              >
+                {/* User Name & Badges */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm text-[var(--text-primary)] leading-tight">{u.name}</div>
+                    <div className="font-mono text-xs text-[var(--text-muted)] break-all mt-0.5">{u.email}</div>
+                    {u.organization && (
+                      <div className="text-[11px] text-[var(--text-secondary)] mt-1">
+                        Org: {u.organization} {u.department ? `(${u.department})` : ''}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-end gap-1 shrink-0">
+                    <span className="bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-primary)] px-2 py-0.5 uppercase font-mono text-[10px] font-semibold">
+                      {u.role}
+                    </span>
+                    <span
+                      className={`font-mono text-[10px] font-bold px-2 py-0.5 border ${
+                        u.status === 'APPROVED'
+                          ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--text-primary)]'
+                          : u.status === 'SUSPENDED'
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                          : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)]'
+                      }`}
+                    >
+                      {u.status}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Permissions & Last Login */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-subtle)] text-[11px]">
+                  <div className="flex flex-wrap gap-1 font-mono">
+                    <span
+                      className={`px-1.5 py-0.5 border text-[9px] ${
+                        u.permissions?.read
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                          : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)] opacity-60'
+                      }`}
+                    >
+                      READ
+                    </span>
+                    <span
+                      className={`px-1.5 py-0.5 border text-[9px] ${
+                        u.permissions?.upload
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                          : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)] opacity-60'
+                      }`}
+                    >
+                      UPLOAD
+                    </span>
+                    <span
+                      className={`px-1.5 py-0.5 border text-[9px] ${
+                        u.permissions?.download
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                          : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)] opacity-60'
+                      }`}
+                    >
+                      DOWNLOAD
+                    </span>
+                    <span
+                      className={`px-1.5 py-0.5 border text-[9px] ${
+                        u.permissions?.manage
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                          : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)] opacity-60'
+                      }`}
+                    >
+                      MANAGE
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] text-[var(--text-muted)]">
+                    Last: {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString() : 'Never'}
+                  </div>
+                </div>
+
+                {/* Mobile Action Buttons (Touch Friendly: min-h-[44px]) */}
+                <div className="flex items-center gap-2 pt-2">
+                  <button
+                    onClick={() => openEditModal(u)}
+                    className="flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] cursor-pointer"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    <span>Edit Permissions</span>
+                  </button>
+                  <button
+                    onClick={() => handleToggleSuspend(u)}
+                    className={`min-h-[44px] px-4 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 border border-[var(--border-color)] cursor-pointer ${
+                      u.status === 'SUSPENDED'
+                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                        : 'bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    }`}
+                  >
+                    {u.status === 'SUSPENDED' ? (
+                      <>
+                        <UserCheck className="w-3.5 h-3.5" />
+                        <span>Unsuspend</span>
+                      </>
+                    ) : (
+                      <>
+                        <UserX className="w-3.5 h-3.5" />
+                        <span>Suspend</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

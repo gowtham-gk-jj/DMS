@@ -272,7 +272,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               onClick={() => setActiveTab(activeTab === 'preview' ? 'metadata' : 'preview')}
               title={activeTab === 'preview' ? 'View Document Metadata' : 'Back to Preview'}
               aria-label="Toggle Document Metadata"
-              className={`p-1.5 sm:px-2.5 sm:py-1 text-xs border transition-colors cursor-pointer flex items-center space-x-1 ${
+              className={`p-2 sm:px-2.5 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] text-xs border transition-colors cursor-pointer flex items-center justify-center space-x-1 ${
                 activeTab === 'metadata'
                   ? 'bg-[#0284c7] text-[#ffffff] border-[#0284c7]'
                   : isDark
@@ -280,7 +280,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   : 'bg-[#222222] text-[#cccccc] border-[#333333] hover:text-[#ffffff]'
               }`}
             >
-              <Info className="w-3.5 h-3.5" />
+              <Info className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               <span className="hidden sm:inline">Info</span>
             </button>
 
@@ -292,13 +292,13 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 disabled={downloading}
                 title="Download original document"
                 aria-label="Download original document"
-                className={`p-1.5 sm:px-3 sm:py-1 text-xs font-medium flex items-center space-x-1 transition-colors disabled:opacity-50 cursor-pointer ${
+                className={`p-2 sm:px-3 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] text-xs font-medium flex items-center justify-center space-x-1 transition-colors disabled:opacity-50 cursor-pointer ${
                   isDark
                     ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
                     : 'bg-[#ffffff] text-[#111111] hover:bg-[#eeeeee]'
                 }`}
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden sm:inline">{downloading ? 'Saving...' : 'Download'}</span>
               </button>
             ) : (
@@ -321,7 +321,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               onClick={toggleFullscreen}
               title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
               aria-label={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-              className="p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+              className="p-2 sm:p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] flex items-center justify-center"
             >
               {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
@@ -332,7 +332,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               onClick={onClose}
               title="Close Viewer (Esc)"
               aria-label="Close Viewer"
-              className="p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors ml-1 cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+              className="p-2 sm:p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors ml-1 cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] flex items-center justify-center"
             >
               <X className="w-4 h-4" />
             </button>
@@ -341,7 +341,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
         {/* Row 2: Secondary Toolbar for Zoom and Page Navigation */}
         {activeTab === 'preview' && (isPdf || isImage) && (
-          <div className="flex items-center justify-between gap-2 border-t pt-1.5 border-white/10 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-1.5 border-white/10 text-xs">
             {/* Zoom Controls */}
             <div
               className={`flex items-center space-x-1 border px-1.5 py-0.5 ${
@@ -353,16 +353,16 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 onClick={handleZoomOut}
                 title="Zoom Out"
                 aria-label="Zoom Out"
-                className="p-1 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
+                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
-                <ZoomOut className="w-3.5 h-3.5" />
+                <ZoomOut className="w-4 h-4" />
               </button>
 
               <button
                 type="button"
                 onClick={handleResetZoom}
                 title="Reset Zoom / Fit Width"
-                className="text-[11px] font-mono text-[#cccccc] hover:text-[#ffffff] px-1 cursor-pointer"
+                className="text-[11px] font-mono text-[#cccccc] hover:text-[#ffffff] px-1.5 py-1 min-h-[32px] flex items-center justify-center cursor-pointer"
               >
                 {zoom}%
               </button>
@@ -372,9 +372,9 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 onClick={handleZoomIn}
                 title="Zoom In"
                 aria-label="Zoom In"
-                className="p-1 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
+                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
+                <ZoomIn className="w-4 h-4" />
               </button>
 
               {/* Rotate button for Images & PDFs */}
@@ -383,9 +383,9 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 onClick={handleRotate}
                 title="Rotate 90 degrees"
                 aria-label="Rotate 90 degrees"
-                className="p-1 text-[#cccccc] hover:text-[#ffffff] ml-1 border-l border-[#444444] cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
+                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] ml-1 border-l border-[#444444] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
-                <RotateCw className="w-3.5 h-3.5" />
+                <RotateCw className="w-4 h-4" />
               </button>
             </div>
 
@@ -406,11 +406,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   disabled={currentPage <= 1}
                   title="Previous Page"
                   aria-label="Previous Page"
-                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer"
+                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
                 >
-                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="text-[#cccccc]">
+                <span className="text-[#cccccc] px-1">
                   {currentPage} / {totalPages}
                 </span>
                 <button
@@ -423,9 +423,9 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   disabled={currentPage >= totalPages}
                   title="Next Page"
                   aria-label="Next Page"
-                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer"
+                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
                 >
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             )}

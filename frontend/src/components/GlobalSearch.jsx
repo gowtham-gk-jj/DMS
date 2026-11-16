@@ -90,7 +90,7 @@ export default function GlobalSearch({ onSelectDocument }) {
     <div className="relative w-full max-w-xl" ref={searchRef}>
       <div className="relative flex items-center">
         <Search
-          className={`absolute left-2.5 sm:left-3 w-4 h-4 pointer-events-none ${
+          className={`absolute left-3 w-4 h-4 pointer-events-none ${
             isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
           }`}
         />
@@ -102,14 +102,14 @@ export default function GlobalSearch({ onSelectDocument }) {
             if (results) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search catalogue (Ctrl+K)..."
-          className={`w-full text-xs sm:text-sm pl-8 sm:pl-9 pr-12 sm:pr-16 py-1.5 sm:py-2 border rounded-none transition-colors focus:outline-none ${
+          placeholder="Search documents, folders..."
+          className={`w-full text-xs sm:text-sm pl-9 pr-10 sm:pr-16 py-2.5 sm:py-2 min-h-[44px] sm:min-h-[38px] border rounded-none transition-colors focus:outline-none ${
             isDark
               ? 'bg-[#0f172a] text-[#f8fafc] placeholder-[#64748b] border-[#334155] focus:border-[#60a5fa]'
               : 'bg-[#ffffff] text-[#111111] placeholder-[#777777] border-[#cccccc] focus:border-[#111111]'
           }`}
         />
-        <div className="absolute right-2 flex items-center space-x-1">
+        <div className="absolute right-1.5 sm:right-2 flex items-center space-x-1">
           {query && (
             <button
               type="button"
@@ -119,11 +119,11 @@ export default function GlobalSearch({ onSelectDocument }) {
                 setIsOpen(false);
               }}
               aria-label="Clear search input"
-              className={`p-1 cursor-pointer transition-colors ${
+              className={`p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center cursor-pointer transition-colors ${
                 isDark ? 'text-[#94a3b8] hover:text-[#f8fafc]' : 'text-[#777777] hover:text-[#111111]'
               }`}
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
           )}
           <span
@@ -141,7 +141,7 @@ export default function GlobalSearch({ onSelectDocument }) {
       {/* Instant Search Results Dropdown */}
       {isOpen && results && (
         <div
-          className={`absolute left-0 right-0 sm:left-auto sm:right-auto sm:w-[480px] md:w-[560px] max-w-[95vw] top-full mt-1 border shadow-2xl z-50 max-h-[480px] overflow-y-auto ${
+          className={`fixed sm:absolute left-2 right-2 sm:left-0 sm:right-auto top-[58px] sm:top-full mt-1 sm:w-[480px] md:w-[560px] max-w-[calc(100vw-16px)] sm:max-w-[95vw] border shadow-2xl z-50 max-h-[75vh] sm:max-h-[480px] overflow-y-auto ${
             isDark
               ? 'bg-[#141c2b] border-[#334155] text-[#f8fafc]'
               : 'bg-[#ffffff] border-[#111111] text-[#111111]'

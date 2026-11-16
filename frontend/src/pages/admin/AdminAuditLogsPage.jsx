@@ -71,7 +71,7 @@ export default function AdminAuditLogsPage() {
       {/* Search Input */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-3.5 sm:top-2.5 w-4 h-4 text-[var(--text-muted)]" />
           <input
             type="text"
             value={search}
@@ -80,14 +80,15 @@ export default function AdminAuditLogsPage() {
               setPage(1);
             }}
             placeholder="Search email, username, target document or folder..."
-            className="w-full pl-9 pr-3 py-2 border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
           />
         </div>
       </div>
 
       {/* Logs Table */}
       <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-        <div className="overflow-x-auto">
+        {/* Desktop Table View (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[760px]">
             <thead>
               <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -161,6 +162,57 @@ export default function AdminAuditLogsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Audit Logs Card View (< md) */}
+        <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+          {loading ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              Loading audit trail...
+            </div>
+          ) : logs.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              No audit records match the current filter.
+            </div>
+          ) : (
+            logs.map((log, idx) => (
+              <div
+                key={`mob_log_${log._id}`}
+                className={`p-3.5 space-y-2 transition-colors ${
+                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="bg-[var(--badge-bg)] border border-[var(--border-color)] px-2 py-0.5 text-[10px] font-bold text-[var(--text-primary)] font-mono">
+                    {log.action}
+                  </span>
+                  <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                    {new Date(log.createdAt).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="text-xs">
+                  <div className="font-semibold text-[var(--text-primary)]">{log.userName || 'System'}</div>
+                  <div className="font-mono text-[11px] text-[var(--text-muted)] break-all">{log.userEmail}</div>
+                </div>
+
+                {(log.targetName || log.targetType) && (
+                  <div className="text-[11px] font-mono text-[var(--text-secondary)] bg-[var(--bg-hover)] p-2 border border-[var(--border-subtle)]">
+                    <span className="opacity-75">Target:</span> <strong>{log.targetName || '—'}</strong>
+                    {log.targetType && (
+                      <span className="text-[10px] opacity-75 ml-1">({log.targetType})</span>
+                    )}
+                  </div>
+                )}
+
+                {log.details && Object.keys(log.details).length > 0 && (
+                  <div className="text-[10px] font-mono text-[var(--text-muted)] break-all bg-[var(--bg-hover)]/50 p-1.5 border border-[var(--border-subtle)]">
+                    {JSON.stringify(log.details)}
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
 
         {/* Pagination */}

@@ -166,7 +166,7 @@ export default function DOConCDTable({
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             aria-label="Filter by Category"
-            className={`px-2.5 py-1.5 sm:py-1 text-xs border rounded-none focus:outline-none transition-colors ${
+            className={`px-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs border rounded-none focus:outline-none transition-colors ${
               isDark
                 ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155] focus:border-[#60a5fa]'
                 : 'bg-[#ffffff] text-[#111111] border-[#cccccc] focus:border-[#111111]'
@@ -186,7 +186,7 @@ export default function DOConCDTable({
               value={selectedSystem}
               onChange={(e) => setSelectedSystem(e.target.value)}
               aria-label="Filter by System"
-              className={`px-2.5 py-1.5 sm:py-1 text-xs border rounded-none focus:outline-none transition-colors ${
+              className={`px-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs border rounded-none focus:outline-none transition-colors ${
                 isDark
                   ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155] focus:border-[#60a5fa]'
                   : 'bg-[#ffffff] text-[#111111] border-[#cccccc] focus:border-[#111111]'
@@ -204,7 +204,7 @@ export default function DOConCDTable({
           {/* In-table Quick Search */}
           <div className="relative flex-1 sm:flex-initial">
             <Search
-              className={`w-3.5 h-3.5 absolute left-2.5 top-2.5 sm:top-2 pointer-events-none ${
+              className={`w-3.5 h-3.5 absolute left-2.5 top-3.5 sm:top-2.5 pointer-events-none ${
                 isDark ? 'text-[#64748b]' : 'text-[#777777]'
               }`}
             />
@@ -213,7 +213,7 @@ export default function DOConCDTable({
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Filter title, order no, code..."
-              className={`pl-8 pr-2.5 py-1.5 sm:py-1 text-xs w-full sm:w-56 border rounded-none focus:outline-none transition-colors ${
+              className={`pl-8 pr-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs w-full sm:w-56 border rounded-none focus:outline-none transition-colors ${
                 isDark
                   ? 'bg-[#0f172a] text-[#f8fafc] placeholder-[#64748b] border-[#334155] focus:border-[#60a5fa]'
                   : 'bg-[#ffffff] text-[#111111] placeholder-[#888888] border-[#cccccc] focus:border-[#111111]'
@@ -267,8 +267,8 @@ export default function DOConCDTable({
         </div>
       </div>
 
-      {/* COMPACT SIEMENS-STYLE CATALOGUE TABLE (Scrollable container on mobile) */}
-      <div className="overflow-x-auto w-full">
+      {/* COMPACT SIEMENS-STYLE CATALOGUE TABLE (Desktop View >= md) */}
+      <div className="hidden md:block overflow-x-auto w-full">
         <table className="w-full text-left border-collapse text-xs min-w-[720px]">
           <thead>
             <tr
@@ -647,6 +647,262 @@ export default function DOConCDTable({
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* MOBILE RESPONSIVE CARD VIEW (< md) */}
+      <div className="block md:hidden p-2.5 space-y-3">
+        {categoriesToRender.length === 0 ? (
+          <div className={`p-8 text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <FileText className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-[#334155]' : 'text-[#cccccc]'}`} />
+            <p className={`font-semibold text-sm ${isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}`}>
+              No catalogue entries match the current filter.
+            </p>
+            <p className="text-xs mt-1">Try resetting the search or category filters.</p>
+          </div>
+        ) : (
+          categoriesToRender.map((category) => {
+            const categoryDocs = filteredGrouped[category] || [];
+            const isCollapsed = collapsedCategories[category];
+            const currentPage = categoryPages[category] || 1;
+            const totalCategoryPages = Math.ceil(categoryDocs.length / pageSize);
+            const paginatedDocs = categoryDocs.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+            return (
+              <div
+                key={`mob_cat_${category}`}
+                className={`border ${
+                  isDark ? 'border-[#243042] bg-[#0f172a]' : 'border-[#e5e5e5] bg-[#ffffff]'
+                }`}
+              >
+                {/* Mobile Category Accordion Header */}
+                <button
+                  type="button"
+                  onClick={() => toggleCategory(category)}
+                  className={`w-full p-3 flex items-center justify-between text-left transition-colors cursor-pointer ${
+                    isDark ? 'bg-[#111827] hover:bg-[#162032]' : 'bg-[#f5f5f5] hover:bg-[#eaeaea]'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 min-w-0 pr-2">
+                    {isCollapsed ? (
+                      <ChevronRight className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`} />
+                    ) : (
+                      <ChevronDown className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`} />
+                    )}
+                    <div className="min-w-0">
+                      <div
+                        className={`text-xs font-bold uppercase tracking-wide truncate ${
+                          isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
+                        }`}
+                      >
+                        {category}
+                      </div>
+                      <div className={`text-[10px] font-mono ${isDark ? 'text-[#94a3b8]' : 'text-[#666666]'}`}>
+                        {categoryDocs.length} {categoryDocs.length === 1 ? 'doc' : 'docs'}
+                      </div>
+                    </div>
+                  </div>
+                  <span
+                    className={`text-[9px] font-mono px-1.5 py-0.5 border shrink-0 ${
+                      isDark ? 'border-[#334155] text-[#94a3b8]' : 'border-[#cccccc] text-[#666666]'
+                    }`}
+                  >
+                    {isCollapsed ? 'EXPAND' : 'COLLAPSE'}
+                  </span>
+                </button>
+
+                {/* Mobile Document Cards List */}
+                {!isCollapsed && (
+                  <div className={`divide-y ${isDark ? 'divide-[#1e293b]' : 'divide-[#e5e5e5]'}`}>
+                    {paginatedDocs.map((doc, idx) => {
+                      const isAvailable = doc.availabilityStatus === 'AVAILABLE' && Boolean(doc.secureUrl);
+
+                      return (
+                        <div
+                          key={`mob_doc_${doc._id || idx}`}
+                          className={`p-3 space-y-2.5 transition-colors ${
+                            idx % 2 === 1
+                              ? isDark ? 'bg-[#141c2b]' : 'bg-[#fafafa]'
+                              : isDark ? 'bg-[#0f172a]' : 'bg-[#ffffff]'
+                          }`}
+                        >
+                          {/* Badges: System, Edition, Availability */}
+                          <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-mono">
+                            <span
+                              className={`border px-1.5 py-0.5 font-semibold ${
+                                isDark
+                                  ? 'bg-[#1e293b] border-[#334155] text-[#f8fafc]'
+                                  : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
+                              }`}
+                            >
+                              {doc.system || 'Universal'}
+                            </span>
+                            {doc.softwareVersion && (
+                              <span
+                                className={`border px-1.5 py-0.5 ${
+                                  isDark
+                                    ? 'bg-[#111827] border-[#243042] text-[#94a3b8]'
+                                    : 'bg-[#f0f0f0] border-[#dddddd] text-[#666666]'
+                                }`}
+                              >
+                                SW {doc.softwareVersion}
+                              </span>
+                            )}
+                            {doc.edition && (
+                              <span
+                                className={`border px-1.5 py-0.5 ${
+                                  isDark
+                                    ? 'bg-[#111827] border-[#243042] text-[#94a3b8]'
+                                    : 'bg-[#f0f0f0] border-[#dddddd] text-[#666666]'
+                                }`}
+                              >
+                                Ed: {doc.edition}
+                              </span>
+                            )}
+                            <span
+                              className={`ml-auto border px-1.5 py-0.5 font-semibold text-[9px] ${
+                                isAvailable
+                                  ? isDark
+                                    ? 'bg-[#064e3b] text-[#6ee7b7] border-[#047857]'
+                                    : 'bg-[#ecfdf5] text-[#065f46] border-[#a7f3d0]'
+                                  : isDark
+                                  ? 'bg-[#1e293b] text-[#94a3b8] border-[#334155]'
+                                  : 'bg-[#f3f4f6] text-[#6b7280] border-[#e5e7eb]'
+                              }`}
+                            >
+                              {isAvailable ? 'AVAILABLE' : 'PENDING'}
+                            </span>
+                          </div>
+
+                          {/* Document Title */}
+                          <div
+                            onClick={() => handleRowClick(doc)}
+                            className="cursor-pointer group"
+                          >
+                            <h4
+                              className={`text-xs font-semibold leading-snug break-words ${
+                                isAvailable
+                                  ? isDark
+                                    ? 'text-[#f8fafc] group-hover:text-[#60a5fa]'
+                                    : 'text-[#111111] group-hover:underline'
+                                  : isDark
+                                  ? 'text-[#94a3b8]'
+                                  : 'text-[#777777]'
+                              }`}
+                            >
+                              {doc.title}
+                            </h4>
+                          </div>
+
+                          {/* Order No & File Name */}
+                          <div
+                            className={`flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono ${
+                              isDark ? 'text-[#94a3b8]' : 'text-[#666666]'
+                            }`}
+                          >
+                            {doc.orderNumber && (
+                              <div className="truncate">
+                                <span className="opacity-70">Order:</span>{' '}
+                                <span className="font-semibold">{doc.orderNumber}</span>
+                              </div>
+                            )}
+                            {doc.fileName && (
+                              <div className="truncate">
+                                <span className="opacity-70">File:</span>{' '}
+                                <span>{doc.fileName}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Action Buttons (Touch Friendly: min-h-[44px]) */}
+                          <div className="flex items-center gap-2 pt-1 border-t border-[var(--border-subtle)]">
+                            {isAvailable ? (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => onSelectDocument && onSelectDocument(doc)}
+                                  className={`flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 border cursor-pointer transition-colors ${
+                                    isDark
+                                      ? 'bg-[#1e293b] hover:bg-[#334155] border-[#334155] text-[#f8fafc]'
+                                      : 'bg-[#fafafa] hover:bg-[#f0f0f0] border-[#cccccc] text-[#111111]'
+                                  }`}
+                                >
+                                  <Eye className="w-4 h-4 text-[#60a5fa]" />
+                                  <span>Preview</span>
+                                </button>
+                                {userPermissions?.download !== false && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      onDownloadDocument
+                                        ? onDownloadDocument(doc)
+                                        : window.open(doc.secureUrl, '_blank')
+                                    }
+                                    className={`flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 cursor-pointer transition-colors ${
+                                      isDark
+                                        ? 'bg-[#f8fafc] hover:bg-[#e2e8f0] text-[#0b0f17]'
+                                        : 'bg-[#111111] hover:bg-[#333333] text-[#ffffff]'
+                                    }`}
+                                  >
+                                    <Download className="w-4 h-4" />
+                                    <span>Download</span>
+                                  </button>
+                                )}
+                              </>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setUnavailableModalDoc(doc)}
+                                className={`w-full min-h-[44px] px-3 py-2 text-xs flex items-center justify-center space-x-1.5 border cursor-pointer ${
+                                  isDark
+                                    ? 'border-[#334155] text-[#94a3b8] bg-[#111827]'
+                                    : 'border-[#cccccc] text-[#666666] bg-[#f9f9f9]'
+                                }`}
+                              >
+                                <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                                <span>Pending DOConCD Physical Asset</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Mobile Pagination for Category */}
+                {!isCollapsed && totalCategoryPages > 1 && (
+                  <div
+                    className={`p-2.5 border-t flex items-center justify-between text-xs font-mono ${
+                      isDark
+                        ? 'bg-[#111827] border-[#243042] text-[#94a3b8]'
+                        : 'bg-[#f5f5f5] border-[#e5e5e5] text-[#666666]'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      disabled={currentPage <= 1}
+                      onClick={() => handlePageChange(category, currentPage - 1)}
+                      className="min-h-[40px] px-3 py-1.5 border border-[var(--border-color)] disabled:opacity-30 cursor-pointer"
+                    >
+                      Prev
+                    </button>
+                    <span>
+                      {currentPage} / {totalCategoryPages}
+                    </span>
+                    <button
+                      type="button"
+                      disabled={currentPage >= totalCategoryPages}
+                      onClick={() => handlePageChange(category, currentPage + 1)}
+                      className="min-h-[40px] px-3 py-1.5 border border-[var(--border-color)] disabled:opacity-30 cursor-pointer"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* DOConCD Table Footer */}

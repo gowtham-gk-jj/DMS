@@ -136,7 +136,7 @@ export default function ResetPasswordPage() {
                   placeholder="Enter new secure password"
                   required
                   minLength={8}
-                  className={`w-full px-3 py-2 pr-10 text-xs border rounded-none focus:outline-none transition-colors ${
+                  className={`w-full px-3 py-2.5 sm:py-2 pr-11 min-h-[44px] sm:min-h-[38px] text-xs border rounded-none focus:outline-none transition-colors ${
                     isDark
                       ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
                       : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
@@ -145,7 +145,7 @@ export default function ResetPasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute right-2.5 top-2.5 transition-colors cursor-pointer ${
+                  className={`absolute right-1 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] flex items-center justify-center transition-colors cursor-pointer ${
                     isDark ? 'text-[#94a3b8] hover:text-[#f8fafc]' : 'text-[#777777] hover:text-[#111111]'
                   }`}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
@@ -170,7 +170,7 @@ export default function ResetPasswordPage() {
                 placeholder="Re-enter new secure password"
                 required
                 minLength={8}
-                className={`w-full px-3 py-2 text-xs border rounded-none focus:outline-none transition-colors ${
+                className={`w-full px-3 py-2.5 sm:py-2 min-h-[44px] sm:min-h-[38px] text-xs border rounded-none focus:outline-none transition-colors ${
                   isDark
                     ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
                     : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
@@ -181,7 +181,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer ${
+              className={`w-full py-3 min-h-[44px] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer ${
                 isDark
                   ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
                   : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'

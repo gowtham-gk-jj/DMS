@@ -240,7 +240,7 @@ export default function LibraryPage() {
                   if (parentId) navigate(`/library/${parentId}`);
                   else navigate('/library');
                 }}
-                className={`px-3 py-2 border text-xs flex items-center space-x-1 cursor-pointer transition-colors ${
+                className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] border text-xs flex items-center space-x-1 cursor-pointer transition-colors ${
                   isDark
                     ? 'border-[#334155] text-[#cbd5e1] hover:bg-[#1e293b]'
                     : 'border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
@@ -255,7 +255,7 @@ export default function LibraryPage() {
               <button
                 type="button"
                 onClick={() => setShowCreateFolderModal(true)}
-                className={`px-3 py-2 border text-xs flex items-center space-x-1.5 font-medium cursor-pointer transition-colors ${
+                className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] border text-xs flex items-center space-x-1.5 font-medium cursor-pointer transition-colors ${
                   isDark
                     ? 'border-[#334155] text-[#f8fafc] bg-[#1e293b] hover:bg-[#334155]'
                     : 'border-[#111111] text-[#111111] bg-[#ffffff] hover:bg-[#f5f5f5]'
@@ -270,7 +270,7 @@ export default function LibraryPage() {
               <button
                 type="button"
                 onClick={() => setShowUploadModal(true)}
-                className={`px-3.5 sm:px-4 py-2 text-xs flex items-center space-x-1.5 font-semibold uppercase tracking-wider cursor-pointer transition-colors ${
+                className={`px-3.5 sm:px-4 py-2 min-h-[44px] sm:min-h-[36px] text-xs flex items-center space-x-1.5 font-semibold uppercase tracking-wider cursor-pointer transition-colors ${
                   isDark
                     ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
                     : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'

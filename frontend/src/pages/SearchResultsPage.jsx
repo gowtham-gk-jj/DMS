@@ -56,17 +56,17 @@ export default function SearchResultsPage() {
         <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-[var(--border-subtle)] text-xs">
           <button
             onClick={() => setFilterType('ALL')}
-            className={`px-3 py-1 font-medium transition-colors cursor-pointer ${
+            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
               filterType === 'ALL'
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'
             }`}
           >
-            All Matches ({results?.total || 0})
+            All ({results?.total || 0})
           </button>
           <button
             onClick={() => setFilterType('DOCS')}
-            className={`px-3 py-1 font-medium transition-colors cursor-pointer ${
+            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
               filterType === 'DOCS'
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'
@@ -76,7 +76,7 @@ export default function SearchResultsPage() {
           </button>
           <button
             onClick={() => setFilterType('FOLDERS')}
-            className={`px-3 py-1 font-medium transition-colors cursor-pointer ${
+            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
               filterType === 'FOLDERS'
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'

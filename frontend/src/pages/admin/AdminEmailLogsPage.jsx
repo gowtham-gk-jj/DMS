@@ -54,7 +54,8 @@ export default function AdminEmailLogsPage() {
 
       {/* Logs Table */}
       <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-        <div className="overflow-x-auto">
+        {/* Desktop Table View (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[700px]">
             <thead>
               <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
@@ -117,6 +118,57 @@ export default function AdminEmailLogsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Email Logs Card View (< md) */}
+        <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+          {loading ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              Loading email dispatch logs...
+            </div>
+          ) : logs.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+              No email notification logs found.
+            </div>
+          ) : (
+            logs.map((log, idx) => (
+              <div
+                key={`mob_email_${log._id}`}
+                className={`p-3.5 space-y-2 transition-colors ${
+                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span
+                    className={`font-mono text-[10px] font-bold px-2 py-0.5 border ${
+                      log.status === 'SENT'
+                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                        : log.status === 'SIMULATED'
+                        ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--border-color)]'
+                        : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)]'
+                    }`}
+                  >
+                    {log.status}
+                  </span>
+                  <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                    {new Date(log.createdAt).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="text-xs font-semibold text-[var(--text-primary)]">
+                  {log.subject}
+                </div>
+
+                <div className="text-[11px] font-mono text-[var(--text-muted)] break-all">
+                  To: {log.recipient}
+                </div>
+
+                <div className="text-[10px] font-mono text-[var(--text-secondary)]">
+                  Template: {log.template}
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {totalPages > 1 && (

@@ -26,7 +26,7 @@ export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMob
           type="button"
           onClick={onToggleMobileDrawer}
           aria-label="Open navigation menu"
-          className={`lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 ${
+          className={`lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] sm:min-w-[38px] sm:min-h-[38px] flex items-center justify-center ${
             isDark
               ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
               : 'bg-[#fafafa] text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0]'
@@ -35,10 +35,10 @@ export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMob
           <Menu className="w-4 h-4" />
         </button>
 
-        {/* Breadcrumb Navigation */}
+        {/* Breadcrumb Navigation - hidden on mobile (< md) to give search maximum space */}
         <nav
           aria-label="Breadcrumb"
-          className={`flex items-center space-x-1.5 text-xs min-w-0 shrink ${
+          className={`hidden md:flex items-center space-x-1.5 text-xs min-w-0 shrink ${
             isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
           }`}
         >
@@ -149,7 +149,7 @@ export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMob
 
           {/* Compact User Initial on Mobile */}
           <div
-            className={`sm:hidden w-7 h-7 flex items-center justify-center font-bold text-xs border ${
+            className={`sm:hidden w-8 h-8 flex items-center justify-center font-bold text-xs border shrink-0 ${
               isAdmin
                 ? isDark
                   ? 'bg-[#f8fafc] text-[#0b0f17] border-[#f8fafc]'

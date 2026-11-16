@@ -11,7 +11,7 @@ export default function ThemeToggle({ className = '', showLabel = false }) {
       onClick={toggleTheme}
       aria-label={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
       title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
-      className={`inline-flex items-center justify-center p-2 rounded-none transition-colors border focus:outline-none focus:ring-1 focus:ring-offset-1 select-none min-h-[38px] min-w-[38px] cursor-pointer ${
+      className={`inline-flex items-center justify-center p-2 rounded-none transition-colors border focus:outline-none focus:ring-1 focus:ring-offset-1 select-none min-h-[44px] min-w-[44px] sm:min-h-[38px] sm:min-w-[38px] cursor-pointer ${
         isDark
           ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155] hover:bg-[#334155] focus:ring-[#64748b]'
           : 'bg-[#fafafa] text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0] focus:ring-[#111111]'
