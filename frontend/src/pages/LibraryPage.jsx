@@ -178,43 +178,25 @@ export default function LibraryPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-5 max-w-7xl mx-auto">
       {/* Top Header & Breadcrumb Path */}
-      <div
-        className={`border p-4 sm:p-5 shadow-xs transition-colors duration-150 ${
-          isDark
-            ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-            : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-        }`}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+      <div className="dms-card p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             {/* Breadcrumb Trail */}
-            <div
-              className={`flex flex-wrap items-center gap-1.5 text-xs mb-1 font-mono ${
-                isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-              }`}
-            >
+            <div className="flex flex-wrap items-center gap-1.5 text-xs mb-1.5 font-mono text-[var(--text-muted)]">
               <button
                 onClick={() => navigate('/library')}
-                className={`hover:underline cursor-pointer ${
-                  isDark ? 'hover:text-[#f8fafc]' : 'hover:text-[#111111]'
-                }`}
+                className="hover:underline cursor-pointer hover:text-[var(--text-primary)] transition-colors"
               >
                 DOCUMENT LIBRARY
               </button>
               {breadcrumbs.map((b) => (
                 <React.Fragment key={b.id || b.name}>
-                  <ChevronRight
-                    className={`w-3.5 h-3.5 shrink-0 ${
-                      isDark ? 'text-[#475569]' : 'text-[#cccccc]'
-                    }`}
-                  />
+                  <ChevronRight className="w-3.5 h-3.5 shrink-0 text-[var(--border-strong)]" />
                   <button
                     onClick={() => navigate(`/library/${b.id}`)}
-                    className={`hover:underline cursor-pointer truncate max-w-[150px] ${
-                      isDark ? 'hover:text-[#f8fafc]' : 'hover:text-[#111111]'
-                    }`}
+                    className="hover:underline cursor-pointer truncate max-w-[150px] hover:text-[var(--text-primary)] transition-colors"
                   >
                     {b.name}
                   </button>
@@ -222,25 +204,17 @@ export default function LibraryPage() {
               ))}
             </div>
 
-            <h1
-              className={`text-lg sm:text-xl font-bold tracking-tight ${
-                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-              }`}
-            >
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
               {currentFolder ? currentFolder.name : 'Engineering Document Library'}
             </h1>
-            <p
-              className={`text-xs mt-0.5 ${
-                isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-              }`}
-            >
+            <p className="text-xs sm:text-[13px] text-[var(--text-secondary)] mt-1 max-w-2xl leading-relaxed">
               {currentFolder?.description ||
                 'Browse root document catalogues, nested subcategories, and DOConCD technical manuals.'}
             </p>
           </div>
 
           {/* Action Buttons: Upload & New Subfolder */}
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {folderId && folderId !== 'root' && (
               <button
                 type="button"
@@ -249,11 +223,7 @@ export default function LibraryPage() {
                   if (parentId) navigate(`/library/${parentId}`);
                   else navigate('/library');
                 }}
-                className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] border text-xs flex items-center space-x-1 cursor-pointer transition-colors ${
-                  isDark
-                    ? 'border-[#334155] text-[#cbd5e1] hover:bg-[#1e293b]'
-                    : 'border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
-                }`}
+                className="dms-btn-secondary px-3 py-2 text-xs"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Up Level</span>
@@ -264,13 +234,9 @@ export default function LibraryPage() {
               <button
                 type="button"
                 onClick={() => setShowCreateFolderModal(true)}
-                className={`px-3 py-2 min-h-[44px] sm:min-h-[36px] border text-xs flex items-center space-x-1.5 font-medium cursor-pointer transition-colors ${
-                  isDark
-                    ? 'border-[#334155] text-[#f8fafc] bg-[#1e293b] hover:bg-[#334155]'
-                    : 'border-[#111111] text-[#111111] bg-[#ffffff] hover:bg-[#f5f5f5]'
-                }`}
+                className="dms-btn-secondary px-3.5 py-2 text-xs font-medium"
               >
-                <FolderPlus className="w-3.5 h-3.5" />
+                <FolderPlus className="w-3.5 h-3.5 text-[var(--primary-blue)]" />
                 <span>New Folder</span>
               </button>
             )}
@@ -279,11 +245,7 @@ export default function LibraryPage() {
               <button
                 type="button"
                 onClick={() => setShowUploadModal(true)}
-                className={`px-3.5 sm:px-4 py-2 min-h-[44px] sm:min-h-[36px] text-xs flex items-center space-x-1.5 font-semibold uppercase tracking-wider cursor-pointer transition-colors ${
-                  isDark
-                    ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                    : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                }`}
+                className="dms-btn-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Upload</span>
@@ -294,13 +256,7 @@ export default function LibraryPage() {
       </div>
 
       {error && (
-        <div
-          className={`p-4 border text-xs flex items-center space-x-2 ${
-            isDark
-              ? 'bg-[#451a1a] border-[#b91c1c] text-[#fca5a5]'
-              : 'bg-[#fafafa] border-[#111111] text-[#111111]'
-          }`}
-        >
+        <div className="p-4 rounded-lg border border-[var(--color-error-border)] bg-[var(--color-error-bg)] text-[var(--color-error-text)] text-xs flex items-center space-x-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -308,24 +264,14 @@ export default function LibraryPage() {
 
       {/* Content Area */}
       {loading ? (
-        <div
-          className={`p-8 sm:p-12 text-center text-xs font-mono border transition-colors ${
-            isDark
-              ? 'bg-[#141c2b] border-[#243042] text-[#94a3b8]'
-              : 'bg-[#ffffff] border-[#e5e5e5] text-[#777777]'
-          }`}
-        >
+        <div className="p-12 text-center text-xs font-mono text-[var(--text-muted)] dms-card">
           Retrieving repository directory structure and DOConCD catalogue records...
         </div>
       ) : (
         <>
           {/* Collapsible Subfolders & Categories Section */}
           {subfolders.length > 0 && (
-            <div
-              className={`border transition-colors ${
-                isDark ? 'bg-[#141c2b] border-[#243042]' : 'bg-[#ffffff] border-[#e5e5e5]'
-              }`}
-            >
+            <div className="dms-card overflow-hidden">
               {/* Collapsible Accordion Header */}
               <button
                 type="button"
@@ -333,58 +279,26 @@ export default function LibraryPage() {
                 aria-expanded={isFoldersExpanded}
                 aria-controls="subfolders-accordion-content"
                 onClick={() => setIsFoldersExpanded((prev) => !prev)}
-                className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between text-xs cursor-pointer transition-colors text-left focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 select-none group ${
-                  isDark
-                    ? 'bg-[#111827] text-[#f8fafc] hover:bg-[#162032]'
-                    : 'bg-[#fafafa] text-[#111111] hover:bg-[#f0f0f0]'
-                } ${
-                  isFoldersExpanded
-                    ? 'border-b ' + (isDark ? 'border-[#243042]' : 'border-[#e5e5e5]')
-                    : ''
-                }`}
+                className="w-full px-4 sm:px-5 py-3 flex items-center justify-between text-xs cursor-pointer transition-colors text-left bg-[var(--bg-elevated)] hover:bg-[var(--bg-hover)] select-none group border-b border-[var(--border-subtle)]"
               >
-                <div className="flex items-center space-x-2 truncate min-w-0 mr-2">
-                  <Folder
-                    className={`w-4 h-4 shrink-0 transition-colors ${
-                      isFoldersExpanded
-                        ? isDark
-                          ? 'text-[#60a5fa]'
-                          : 'text-sky-600'
-                        : isDark
-                        ? 'text-[#94a3b8]'
-                        : 'text-[#64748b]'
-                    }`}
-                  />
-                  <span className="font-semibold uppercase tracking-wider text-xs sm:text-xs truncate">
+                <div className="flex items-center space-x-2.5 truncate min-w-0 mr-2">
+                  <Folder className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
+                  <span className="font-semibold uppercase tracking-wider text-xs truncate text-[var(--text-primary)] font-mono">
                     Subfolders & Categories ({subfolders.length})
                   </span>
-                  <span
-                    className={`text-[11px] hidden md:inline transition-opacity duration-150 ${
-                      isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                    }`}
-                  >
-                    • {isFoldersExpanded ? 'Click to collapse folders' : 'Click to show folders'}
+                  <span className="text-[11px] hidden md:inline text-[var(--text-muted)]">
+                    • {isFoldersExpanded ? 'Click to collapse' : 'Click to expand'}
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-2 shrink-0">
-                  <span
-                    className={`text-[10px] font-mono uppercase tracking-wider hidden sm:inline ${
-                      isDark ? 'text-[#64748b]' : 'text-[#94a3b8]'
-                    }`}
-                  >
+                  <span className="text-[10px] font-mono uppercase tracking-wider hidden sm:inline text-[var(--text-muted)]">
                     {isFoldersExpanded ? 'Hide' : 'Show'}
                   </span>
-                  <div
-                    className={`w-7 h-7 rounded flex items-center justify-center transition-colors ${
-                      isDark
-                        ? 'group-hover:bg-[#1e293b] text-[#cbd5e1]'
-                        : 'group-hover:bg-[#e2e8f0] text-[#475569]'
-                    }`}
-                  >
+                  <div className="w-6 h-6 rounded flex items-center justify-center text-[var(--text-secondary)]">
                     <ChevronDown
-                      className={`w-4 h-4 shrink-0 transition-transform duration-300 ease-in-out ${
-                        isFoldersExpanded ? 'rotate-180 text-sky-400' : ''
+                      className={`w-4 h-4 shrink-0 transition-transform duration-250 ease-in-out ${
+                        isFoldersExpanded ? 'rotate-180 text-[var(--primary-blue)]' : ''
                       }`}
                     />
                   </div>
@@ -398,11 +312,11 @@ export default function LibraryPage() {
                 aria-labelledby="subfolders-accordion-header"
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${
                   isFoldersExpanded
-                    ? 'max-h-[3000px] opacity-100 p-3 sm:p-4'
+                    ? 'max-h-[3000px] opacity-100 p-4 sm:p-5'
                     : 'max-h-0 opacity-0 p-0 pointer-events-none'
                 }`}
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {subfolders.map((sf) => (
                     <div
                       key={sf._id}
@@ -415,42 +329,20 @@ export default function LibraryPage() {
                           navigate(`/library/${sf._id}`);
                         }
                       }}
-                      className={`border p-3 cursor-pointer transition-colors flex items-center justify-between group focus:outline-hidden focus-visible:ring-1 focus-visible:ring-sky-500 ${
-                        isDark
-                          ? 'bg-[#0f172a] border-[#243042] hover:border-[#60a5fa] hover:bg-[#162032]'
-                          : 'bg-[#ffffff] border-[#e5e5e5] hover:border-[#111111] hover:bg-[#fafafa]'
-                      }`}
+                      className="dms-card-interactive p-3.5 cursor-pointer flex items-center justify-between group"
                     >
                       <div className="flex items-center space-x-2.5 truncate mr-2 min-w-0">
-                        <Folder
-                          className={`w-4 h-4 shrink-0 ${
-                            isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                          }`}
-                        />
+                        <Folder className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
                         <div className="truncate min-w-0">
-                          <div
-                            className={`font-medium text-xs truncate group-hover:underline ${
-                              isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                            }`}
-                          >
+                          <div className="font-semibold text-xs truncate text-[var(--text-primary)] group-hover:text-[var(--primary-blue)] transition-colors">
                             {sf.name}
                           </div>
-                          <div
-                            className={`text-[10px] ${
-                              isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                            }`}
-                          >
-                            {(sf.totalDocumentsCount ?? sf.documentsCount) || 0} docs • {(sf.totalSubfoldersCount ?? sf.subfoldersCount) || 0} subfolders
+                          <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">
+                            {(sf.totalDocumentsCount ?? sf.documentsCount) || 0} docs • {(sf.totalSubfoldersCount ?? sf.subfoldersCount) || 0} folders
                           </div>
                         </div>
                       </div>
-                      <ChevronRight
-                        className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                          isDark
-                            ? 'text-[#64748b] group-hover:text-[#f8fafc]'
-                            : 'text-[#cccccc] group-hover:text-[#111111]'
-                        }`}
-                      />
+                      <ChevronRight className="w-3.5 h-3.5 shrink-0 text-[var(--text-muted)] group-hover:text-[var(--primary-blue)] group-hover:translate-x-0.5 transition-all" />
                     </div>
                   ))}
                 </div>
@@ -460,25 +352,17 @@ export default function LibraryPage() {
 
           {/* DOConCD-STYLE DOCUMENT BROWSER TABLE */}
           {folderId && folderId !== 'root' ? (
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs px-1 gap-1">
-                <div
-                  className={`font-bold uppercase tracking-wider flex items-center space-x-1.5 ${
-                    isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                  }`}
-                >
-                  <FileText className="w-3.5 h-3.5 text-sky-400" />
+                <div className="font-bold uppercase tracking-wider flex items-center space-x-2 text-[var(--text-primary)] font-mono">
+                  <FileText className="w-4 h-4 text-[var(--primary-blue)]" />
                   <span>
                     {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
                       ? 'Siemens SINUMERIK / SIMODRIVE Technical Document Catalogue'
                       : 'DOConCD Technical Document Catalogue'}
                   </span>
                 </div>
-                <div
-                  className={`text-[11px] font-mono ${
-                    isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                  }`}
-                >
+                <div className="text-[11px] font-mono text-[var(--text-muted)]">
                   {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
                     ? 'DOConCD SINUMERIK / SIMODRIVE 09/2011 Table of Contents Reference'
                     : 'Siemens SINUMERIK / SINAMICS Table-of-Contents Specification'}
@@ -502,36 +386,20 @@ export default function LibraryPage() {
             </div>
           ) : (
             /* Root View: Prompt to select a repository */
-            <div
-              className={`border p-8 text-center text-xs transition-colors ${
-                isDark
-                  ? 'bg-[#141c2b] border-[#243042] text-[#94a3b8]'
-                  : 'bg-[#ffffff] border-[#e5e5e5] text-[#777777]'
-              }`}
-            >
-              <FolderTree
-                className={`w-10 h-10 mx-auto mb-3 ${
-                  isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                }`}
-              />
-              <h3
-                className={`font-bold text-sm mb-1 ${
-                  isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                }`}
-              >
+            <div className="dms-card p-10 text-center text-xs">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+                <FolderTree className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-sm text-[var(--text-primary)] mb-1">
                 Select a Root Document Repository Above
               </h3>
-              <p
-                className={`max-w-md mx-auto leading-relaxed ${
-                  isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                }`}
-              >
+              <p className="max-w-md mx-auto leading-relaxed text-[var(--text-secondary)] text-xs">
                 Click any repository folder above such as{' '}
-                <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
+                <strong className="text-[var(--text-primary)] font-semibold">
                   DOConCD_SINUMERIK_SIMODRIVE
                 </strong>{' '}
                 or{' '}
-                <strong className={isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}>
+                <strong className="text-[var(--text-primary)] font-semibold">
                   DOConCD SINUMERIK - SINAMICS 09/2011 English
                 </strong>{' '}
                 to open the official DOConCD catalogue table.

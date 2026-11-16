@@ -38,48 +38,48 @@ export default function SearchResultsPage() {
   }, [query]);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-0">
+    <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-0 pb-16">
       {/* Header Banner */}
-      <div className="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 sm:p-6 shadow-xs transition-colors">
-        <div className="flex items-center space-x-2 text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1">
-          <Search className="w-3.5 h-3.5" />
+      <div className="dms-card p-5 sm:p-6">
+        <div className="flex items-center space-x-2 text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1.5 font-medium">
+          <Search className="w-3.5 h-3.5 text-blue-500" />
           <span>GLOBAL REPOSITORY SEARCH</span>
         </div>
-        <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)] break-words">
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)] break-words">
           Search Results for &ldquo;{query}&rdquo;
         </h1>
         <p className="text-xs text-[var(--text-secondary)] mt-1">
-          Found <strong className="text-[var(--text-primary)]">{results?.total || 0}</strong> matches across authorized folders, titles, systems, order numbers, and catalogue codes.
+          Found <strong className="text-[var(--text-primary)] font-semibold">{results?.total || 0}</strong> matches across authorized folders, titles, systems, order numbers, and catalogue codes.
         </p>
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-[var(--border-subtle)] text-xs">
           <button
             onClick={() => setFilterType('ALL')}
-            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-md font-medium text-xs transition-colors cursor-pointer text-center ${
               filterType === 'ALL'
-                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'
+                ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                : 'dms-btn-secondary'
             }`}
           >
             All ({results?.total || 0})
           </button>
           <button
             onClick={() => setFilterType('DOCS')}
-            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-md font-medium text-xs transition-colors cursor-pointer text-center ${
               filterType === 'DOCS'
-                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'
+                ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                : 'dms-btn-secondary'
             }`}
           >
             Documents ({results?.documents?.length || 0})
           </button>
           <button
             onClick={() => setFilterType('FOLDERS')}
-            className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-md font-medium text-xs transition-colors cursor-pointer text-center ${
               filterType === 'FOLDERS'
-                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                : 'bg-[var(--bg-hover)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-secondary)]'
+                ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                : 'dms-btn-secondary'
             }`}
           >
             Folders ({results?.folders?.length || 0})
@@ -88,12 +88,13 @@ export default function SearchResultsPage() {
       </div>
 
       {loading ? (
-        <div className="p-12 text-center text-xs text-[var(--text-muted)] border border-[var(--border-color)] bg-[var(--bg-card)]">
+        <div className="dms-card p-12 text-center text-xs text-[var(--text-muted)] font-mono">
+          <Search className="w-6 h-6 mx-auto mb-2 text-blue-500 animate-pulse" />
           Searching documents, order numbers, and systems...
         </div>
       ) : results?.total === 0 ? (
-        <div className="p-12 text-center text-xs text-[var(--text-muted)] border border-[var(--border-color)] bg-[var(--bg-card)]">
-          <Search className="w-8 h-8 mx-auto mb-2 text-[var(--text-muted)] opacity-50" />
+        <div className="dms-card p-12 text-center text-xs text-[var(--text-muted)]">
+          <Search className="w-8 h-8 mx-auto mb-2 text-[var(--text-muted)] opacity-40" />
           <h3 className="font-semibold text-sm text-[var(--text-primary)]">No matching records found</h3>
           <p className="mt-1 text-[var(--text-secondary)]">Try searching for Siemens model numbers (e.g. 840D, S120), order numbers, or file codes.</p>
         </div>
@@ -101,10 +102,10 @@ export default function SearchResultsPage() {
         <div className="space-y-6">
           {/* Folders List */}
           {(filterType === 'ALL' || filterType === 'FOLDERS') && results?.folders?.length > 0 && (
-            <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-              <div className="border-b border-[var(--border-color)] px-4 py-2.5 bg-[var(--bg-hover)] text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)] flex items-center justify-between">
+            <div className="dms-card overflow-hidden">
+              <div className="border-b border-[var(--border-color)] px-4 py-3 bg-[var(--bg-elevated)] text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)] flex items-center justify-between">
                 <span>Matching Folders ({results.folders.length})</span>
-                <span className="text-[11px] text-[var(--text-muted)] hidden sm:inline">Click to open repository</span>
+                <span className="text-[11px] text-[var(--text-muted)] font-normal hidden sm:inline font-mono">Click to open repository</span>
               </div>
               <div className="divide-y divide-[var(--border-subtle)]">
                 {results.folders.map((folder) => (
@@ -114,9 +115,9 @@ export default function SearchResultsPage() {
                     className="p-3.5 hover:bg-[var(--bg-hover)] cursor-pointer flex items-center justify-between transition-colors text-xs group"
                   >
                     <div className="flex items-center space-x-3 truncate mr-4 min-w-0">
-                      <Folder className="w-4 h-4 text-[var(--text-primary)] shrink-0" />
+                      <Folder className="w-4 h-4 text-blue-500 shrink-0" />
                       <div className="truncate min-w-0">
-                        <div className="font-semibold text-[var(--text-primary)] group-hover:underline truncate">
+                        <div className="font-semibold text-[var(--text-primary)] group-hover:text-blue-500 transition-colors truncate">
                           {folder.name}
                         </div>
                         <div className="text-[11px] text-[var(--text-muted)] font-mono mt-0.5 truncate">
@@ -124,7 +125,7 @@ export default function SearchResultsPage() {
                         </div>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-blue-500 transition-colors shrink-0" />
                   </div>
                 ))}
               </div>
@@ -133,10 +134,10 @@ export default function SearchResultsPage() {
 
           {/* Documents Table */}
           {(filterType === 'ALL' || filterType === 'DOCS') && results?.documents?.length > 0 && (
-            <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
-              <div className="border-b border-[var(--border-color)] px-4 py-2.5 bg-[var(--bg-hover)] text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)] flex items-center justify-between">
+            <div className="dms-card overflow-hidden">
+              <div className="border-b border-[var(--border-color)] px-4 py-3 bg-[var(--bg-elevated)] text-xs font-semibold uppercase tracking-wider text-[var(--text-primary)] flex items-center justify-between">
                 <span>Matching Catalogue Documents ({results.documents.length})</span>
-                <span className="text-[11px] text-[var(--text-muted)] hidden sm:inline">Click to preview document</span>
+                <span className="text-[11px] text-[var(--text-muted)] font-normal hidden sm:inline font-mono">Click to preview document</span>
               </div>
 
               {/* Mobile Card View (visible on screens < 640px) */}
@@ -148,14 +149,14 @@ export default function SearchResultsPage() {
                     className="p-3.5 hover:bg-[var(--bg-hover)] cursor-pointer transition-colors space-y-2"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)]">
+                      <span className="dms-badge dms-badge-neutral text-[10px] font-mono">
                         {doc.system || 'SIEMENS'}
                       </span>
-                      <span className="px-1.5 py-0.5 text-[10px] font-mono bg-[var(--badge-bg)] text-[var(--text-muted)]">
+                      <span className="dms-badge dms-badge-info text-[10px] font-mono">
                         {doc.documentCode || doc.originalFileName?.slice(0, 6) || 'PDF'}
                       </span>
                     </div>
-                    <div className="font-medium text-xs text-[var(--text-primary)] hover:underline leading-snug">
+                    <div className="font-medium text-xs text-[var(--text-primary)] leading-snug">
                       {doc.title}
                     </div>
                     {doc.orderNumber && (
@@ -164,9 +165,9 @@ export default function SearchResultsPage() {
                       </div>
                     )}
                     <div className="flex items-center justify-between pt-1 text-[11px] text-[var(--text-muted)]">
-                      <span>Ed: {doc.edition || '—'}</span>
-                      <span className="inline-flex items-center space-x-1 text-[var(--text-primary)] font-semibold">
-                        <Eye className="w-3 h-3" />
+                      <span className="font-mono">Ed: {doc.edition || '—'}</span>
+                      <span className="inline-flex items-center space-x-1 text-blue-500 font-semibold font-mono">
+                        <Eye className="w-3.5 h-3.5" />
                         <span>Preview</span>
                       </span>
                     </div>
@@ -178,7 +179,7 @@ export default function SearchResultsPage() {
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs min-w-[760px]">
                   <thead>
-                    <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
+                    <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider border-b border-[var(--border-color)]">
                       <th className="py-2.5 px-3 border-r border-[var(--border-subtle)]">System</th>
                       <th className="py-2.5 px-4 border-r border-[var(--border-subtle)]">Document Title</th>
                       <th className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] text-center">SW</th>
@@ -195,16 +196,16 @@ export default function SearchResultsPage() {
                         key={doc._id}
                         onClick={() => openDocument && openDocument(doc)}
                         className={`hover:bg-[var(--table-row-hover)] cursor-pointer transition-colors ${
-                          idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                          idx % 2 === 1 ? 'bg-[var(--bg-elevated)]' : 'bg-[var(--bg-card)]'
                         }`}
                       >
                         <td className="py-2 px-3 border-r border-[var(--border-subtle)] font-mono text-[11px]">
-                          <span className="bg-[var(--bg-card)] border border-[var(--border-color)] px-1 py-0.5 text-[var(--text-primary)]">
+                          <span className="dms-badge dms-badge-neutral text-[10px]">
                             {doc.system || '—'}
                           </span>
                         </td>
                         <td className="py-2 px-4 border-r border-[var(--border-subtle)] text-[var(--text-primary)]">
-                          <div className="font-medium hover:underline">
+                          <div className="font-medium hover:text-blue-500 transition-colors">
                             {doc.title}
                           </div>
                           {doc.description && (
@@ -223,7 +224,7 @@ export default function SearchResultsPage() {
                           {doc.orderNumber || '—'}
                         </td>
                         <td className="py-2 px-3 border-r border-[var(--border-subtle)] text-center font-mono font-bold text-[11px]">
-                          <span className="bg-[var(--badge-bg)] px-1 py-0.5 border border-[var(--border-color)] text-[var(--text-primary)]">
+                          <span className="dms-badge dms-badge-info text-[10px]">
                             {doc.documentCode || doc.originalFileName?.slice(0, 6)}
                           </span>
                         </td>
@@ -231,7 +232,7 @@ export default function SearchResultsPage() {
                           {doc.folderId?.name || 'Library'}
                         </td>
                         <td className="py-2 px-3 text-center">
-                          <span className="border border-[var(--border-color)] px-2 py-0.5 text-[10px] font-semibold text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors inline-block">
+                          <span className="dms-btn-secondary px-2.5 py-1 text-[11px] font-semibold text-blue-500 hover:text-white hover:bg-blue-600 transition-colors inline-block rounded-md">
                             Preview
                           </span>
                         </td>

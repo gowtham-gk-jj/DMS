@@ -143,13 +143,10 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
     };
   }, [fetchDocument]);
 
-  const canDownload = userPermissions.download;
+  const canDownload = userPermissions.download !== false;
 
   const handleDownload = async () => {
-    if (!canDownload) {
-      alert('You do not have permission to download this technical document.');
-      return;
-    }
+    if (!canDownload) return;
     try {
       setDownloading(true);
       const res = await api.get(`/documents/${doc._id}/download?stream=true`, {
@@ -167,36 +164,31 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
       window.document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error('Download failed:', err);
-      alert(err.response?.data?.message || 'Download failed');
+      console.error('Download error:', err);
+      alert(err.response?.data?.message || 'Download failed or permission denied.');
     } finally {
       setDownloading(false);
     }
   };
 
-  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 20, 260));
-  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 20, 40));
-  const handleResetZoom = () => {
-    setZoom(100);
-    setRotation(0);
-  };
+  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 300));
+  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
+  const handleResetZoom = () => setZoom(100);
   const handleRotate = () => setRotation((prev) => (prev + 90) % 360);
 
   const toggleFullscreen = () => {
-    if (!modalRef.current) return;
     if (!document.fullscreenElement) {
-      modalRef.current.requestFullscreen?.().catch((err) => {
-        console.warn('Fullscreen request failed:', err);
+      modalRef.current?.requestFullscreen().catch((err) => {
+        console.error('Error attempting to enable fullscreen:', err);
       });
     } else {
-      document.exitFullscreen?.().catch((err) => {
-        console.warn('Exit fullscreen failed:', err);
+      document.exitFullscreen().catch((err) => {
+        console.error('Error attempting to exit fullscreen:', err);
       });
     }
   };
 
   const copyTextToClipboard = () => {
-    if (!textContent) return;
     navigator.clipboard.writeText(textContent).then(() => {
       setCopiedText(true);
       setTimeout(() => setCopiedText(false), 2000);
@@ -213,51 +205,35 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xs flex flex-col w-screen h-screen overflow-hidden select-none"
+      className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xs flex flex-col w-screen h-screen overflow-hidden select-none"
     >
       {/* Top Header Bar */}
-      <header
-        className={`border-b px-2.5 sm:px-4 py-2 shrink-0 flex flex-col gap-1.5 ${
-          isDark
-            ? 'bg-[#0f172a] border-[#243042] text-[#f8fafc]'
-            : 'bg-[#111111] border-[#333333] text-[#ffffff]'
-        }`}
-      >
-        {/* Row 1: File Title & Meta + Action Buttons (Close, Fullscreen) */}
+      <header className="border-b border-[var(--border-color)] px-3 sm:px-5 py-2.5 shrink-0 flex flex-col gap-2 bg-[var(--bg-header)] text-[var(--text-primary)]">
+        {/* Row 1: File Title & Meta + Action Buttons */}
         <div className="flex items-center justify-between gap-2 min-w-0">
-          <div className="flex items-center space-x-2 truncate min-w-0 flex-1">
-            <FileText
-              className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#60a5fa]'}`}
-            />
+          <div className="flex items-center space-x-3 truncate min-w-0 flex-1">
+            <div className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+              <FileText className="w-4 h-4" />
+            </div>
             <div className="truncate min-w-0">
-              <div className="font-semibold text-xs sm:text-sm truncate flex items-center space-x-2">
+              <div className="font-semibold text-xs sm:text-sm truncate flex items-center space-x-2 text-[var(--text-primary)]">
                 <span className="truncate max-w-[180px] sm:max-w-md md:max-w-xl" title={doc.title}>
                   {doc.title}
                 </span>
                 {doc.documentCode && (
-                  <span
-                    className={`border px-1.5 py-0.2 font-mono text-[9px] sm:text-[10px] hidden sm:inline-block ${
-                      isDark
-                        ? 'bg-[#1e293b] border-[#334155] text-[#f8fafc]'
-                        : 'bg-[#222222] border-[#444444] text-[#ffffff]'
-                    }`}
-                  >
+                  <span className="border border-[var(--border-color)] px-1.5 py-0.2 rounded-xs font-mono text-[9px] sm:text-[10px] hidden sm:inline-block bg-[var(--bg-elevated)] text-[var(--text-secondary)]">
                     {doc.documentCode}
                   </span>
                 )}
               </div>
-              <div
-                className={`text-[10px] sm:text-[11px] truncate flex items-center space-x-1.5 ${
-                  isDark ? 'text-[#94a3b8]' : 'text-[#aaaaaa]'
-                }`}
-              >
+              <div className="text-[10px] sm:text-[11px] font-mono truncate flex items-center space-x-1.5 text-[var(--text-muted)] mt-0.5">
                 <span className="truncate max-w-[140px] sm:max-w-xs">{doc.originalFileName}</span>
                 <span>•</span>
                 <span>{formatFileSize(doc.fileSize)}</span>
                 {doc.system && (
                   <>
                     <span className="hidden sm:inline">•</span>
-                    <span className="hidden sm:inline font-mono">{doc.system}</span>
+                    <span className="hidden sm:inline text-[var(--text-secondary)]">{doc.system}</span>
                   </>
                 )}
               </div>
@@ -265,23 +241,21 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
           </div>
 
           {/* Quick Header Actions: Info, Download, Fullscreen, Close */}
-          <div className="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <div className="flex items-center space-x-1.5 shrink-0">
             {/* Info / Metadata Tab Toggle */}
             <button
               type="button"
               onClick={() => setActiveTab(activeTab === 'preview' ? 'metadata' : 'preview')}
               title={activeTab === 'preview' ? 'View Document Metadata' : 'Back to Preview'}
               aria-label="Toggle Document Metadata"
-              className={`p-2 sm:px-2.5 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] text-xs border transition-colors cursor-pointer flex items-center justify-center space-x-1 ${
+              className={`p-2 sm:px-2.5 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[34px] sm:min-w-[34px] text-xs rounded-md border transition-colors cursor-pointer flex items-center justify-center space-x-1 ${
                 activeTab === 'metadata'
-                  ? 'bg-[#0284c7] text-[#ffffff] border-[#0284c7]'
-                  : isDark
-                  ? 'bg-[#1e293b] text-[#cbd5e1] border-[#334155] hover:text-[#ffffff]'
-                  : 'bg-[#222222] text-[#cccccc] border-[#333333] hover:text-[#ffffff]'
+                  ? 'bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]'
+                  : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-color)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
               }`}
             >
               <Info className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
-              <span className="hidden sm:inline">Info</span>
+              <span className="hidden sm:inline font-medium">Info</span>
             </button>
 
             {/* Download Button */}
@@ -292,11 +266,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 disabled={downloading}
                 title="Download original document"
                 aria-label="Download original document"
-                className={`p-2 sm:px-3 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] text-xs font-medium flex items-center justify-center space-x-1 transition-colors disabled:opacity-50 cursor-pointer ${
-                  isDark
-                    ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                    : 'bg-[#ffffff] text-[#111111] hover:bg-[#eeeeee]'
-                }`}
+                className="dms-btn-primary p-2 sm:px-3 sm:py-1 min-h-[44px] min-w-[44px] sm:min-h-[34px] text-xs font-medium"
               >
                 <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden sm:inline">{downloading ? 'Saving...' : 'Download'}</span>
@@ -304,11 +274,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
             ) : (
               <div
                 title="Download restricted by administrator"
-                className={`flex items-center space-x-1 text-[10px] border px-2 py-1 select-none ${
-                  isDark
-                    ? 'bg-[#1e293b] text-[#94a3b8] border-[#334155]'
-                    : 'bg-[#222222] text-[#888888] border-[#333333]'
-                }`}
+                className="flex items-center space-x-1 text-[10px] font-mono border border-[var(--border-color)] px-2 py-1 rounded-md bg-[var(--bg-elevated)] text-[var(--text-muted)] select-none"
               >
                 <Lock className="w-3 h-3" />
                 <span className="hidden sm:inline">Read-Only</span>
@@ -321,18 +287,18 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               onClick={toggleFullscreen}
               title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
               aria-label={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-              className="p-2 sm:p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] flex items-center justify-center"
+              className="p-2 sm:p-1.5 rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[34px] sm:min-h-[34px] flex items-center justify-center"
             >
               {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
 
-            {/* Close Button (Always visible & touch friendly) */}
+            {/* Close Button */}
             <button
               type="button"
               onClick={onClose}
               title="Close Viewer (Esc)"
               aria-label="Close Viewer"
-              className="p-2 sm:p-1.5 text-[#cccccc] hover:text-[#ffffff] hover:bg-white/10 transition-colors ml-1 cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] flex items-center justify-center"
+              className="p-2 sm:p-1.5 rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors ml-1 cursor-pointer min-w-[44px] min-h-[44px] sm:min-w-[34px] sm:min-h-[34px] flex items-center justify-center"
             >
               <X className="w-4 h-4" />
             </button>
@@ -341,19 +307,15 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
         {/* Row 2: Secondary Toolbar for Zoom and Page Navigation */}
         {activeTab === 'preview' && (isPdf || isImage) && (
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-1.5 border-white/10 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-2 border-[var(--border-subtle)] text-xs">
             {/* Zoom Controls */}
-            <div
-              className={`flex items-center space-x-1 border px-1.5 py-0.5 ${
-                isDark ? 'bg-[#1e293b] border-[#334155]' : 'bg-[#222222] border-[#333333]'
-              }`}
-            >
+            <div className="flex items-center space-x-1 border border-[var(--border-color)] rounded-md px-1.5 py-0.5 bg-[var(--bg-card)]">
               <button
                 type="button"
                 onClick={handleZoomOut}
                 title="Zoom Out"
                 aria-label="Zoom Out"
-                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
+                className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
                 <ZoomOut className="w-4 h-4" />
               </button>
@@ -362,7 +324,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 type="button"
                 onClick={handleResetZoom}
                 title="Reset Zoom / Fit Width"
-                className="text-[11px] font-mono text-[#cccccc] hover:text-[#ffffff] px-1.5 py-1 min-h-[32px] flex items-center justify-center cursor-pointer"
+                className="text-[11px] font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2 py-1 min-h-[32px] flex items-center justify-center cursor-pointer"
               >
                 {zoom}%
               </button>
@@ -372,7 +334,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 onClick={handleZoomIn}
                 title="Zoom In"
                 aria-label="Zoom In"
-                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
+                className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
                 <ZoomIn className="w-4 h-4" />
               </button>
@@ -383,7 +345,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 onClick={handleRotate}
                 title="Rotate 90 degrees"
                 aria-label="Rotate 90 degrees"
-                className="p-1.5 text-[#cccccc] hover:text-[#ffffff] ml-1 border-l border-[#444444] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
+                className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] ml-1 border-l border-[var(--border-color)] cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
               >
                 <RotateCw className="w-4 h-4" />
               </button>
@@ -391,11 +353,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
             {/* PDF Page Navigation */}
             {isPdf && totalPages > 1 && (
-              <div
-                className={`flex items-center space-x-1 border px-2 py-0.5 text-xs font-mono ${
-                  isDark ? 'bg-[#1e293b] border-[#334155]' : 'bg-[#222222] border-[#333333]'
-                }`}
-              >
+              <div className="flex items-center space-x-1 border border-[var(--border-color)] rounded-md px-2 py-0.5 text-xs font-mono bg-[var(--bg-card)] text-[var(--text-secondary)]">
                 <button
                   type="button"
                   onClick={() => {
@@ -406,11 +364,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   disabled={currentPage <= 1}
                   title="Previous Page"
                   aria-label="Previous Page"
-                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
+                  className="p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="text-[#cccccc] px-1">
+                <span className="text-[var(--text-primary)] px-1.5 font-semibold">
                   {currentPage} / {totalPages}
                 </span>
                 <button
@@ -423,7 +381,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   disabled={currentPage >= totalPages}
                   title="Next Page"
                   aria-label="Next Page"
-                  className="p-1 text-[#cccccc] hover:text-[#ffffff] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
+                  className="p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] disabled:opacity-30 cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -434,108 +392,86 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
       </header>
 
       {/* Main Content Area */}
-      <main
-        className={`flex-1 overflow-hidden relative flex flex-col ${
-          isDark ? 'bg-[#090d16]' : 'bg-[#1a1a1a]'
-        }`}
-      >
+      <main className="flex-1 overflow-hidden relative flex flex-col bg-[var(--bg-main)]">
         {activeTab === 'metadata' ? (
           /* Catalogue Document Metadata Inspector */
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex items-start justify-center">
-            <div
-              className={`max-w-2xl w-full p-4 sm:p-6 border shadow-xl ${
-                isDark
-                  ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-                  : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-              }`}
-            >
-              <h3
-                className={`font-bold text-sm uppercase tracking-wide border-b pb-2 mb-4 ${
-                  isDark ? 'border-[#243042] text-[#f8fafc]' : 'border-[#e5e5e5] text-[#111111]'
-                }`}
-              >
+            <div className="dms-card max-w-2xl w-full p-5 sm:p-7">
+              <h3 className="font-bold text-sm uppercase tracking-wide border-b border-[var(--border-color)] pb-3 mb-4 font-mono text-[var(--text-primary)]">
                 Catalogue Document Metadata
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     System Platform:
                   </span>
-                  <span className="font-semibold text-sm">{doc.system || 'N/A'}</span>
+                  <span className="font-semibold text-sm text-[var(--text-primary)]">{doc.system || 'N/A'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Document Code:
                   </span>
-                  <span className="font-mono font-semibold">{doc.documentCode || doc.fileName || 'N/A'}</span>
+                  <span className="font-mono font-semibold text-[var(--primary-blue)]">{doc.documentCode || doc.fileName || 'N/A'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Title:
                   </span>
-                  <span className="font-medium">{doc.title}</span>
+                  <span className="font-medium text-[var(--text-primary)]">{doc.title}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Category:
                   </span>
-                  <span className="font-medium">{doc.category || 'General'}</span>
+                  <span className="font-medium text-[var(--text-primary)]">{doc.category || 'General'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Software Version:
                   </span>
-                  <span className="font-mono">{doc.softwareVersion || '—'}</span>
+                  <span className="font-mono text-[var(--text-secondary)]">{doc.softwareVersion || '—'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Edition:
                   </span>
-                  <span className="font-mono">{doc.edition || '—'}</span>
+                  <span className="font-mono text-[var(--text-secondary)]">{doc.edition || '—'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Siemens Order No:
                   </span>
-                  <span className="font-mono">{doc.orderNumber || '—'}</span>
+                  <span className="font-mono text-[var(--text-secondary)]">{doc.orderNumber || '—'}</span>
                 </div>
                 <div>
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     File Format / Size:
                   </span>
-                  <span>
+                  <span className="text-[var(--text-secondary)]">
                     {doc.fileExtension?.toUpperCase()} ({formatFileSize(doc.fileSize)})
                   </span>
                 </div>
                 <div className="col-span-1 sm:col-span-2">
-                  <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                  <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                     Original File Name:
                   </span>
-                  <span className="font-mono text-xs">{doc.originalFileName}</span>
+                  <span className="font-mono text-xs text-[var(--text-primary)]">{doc.originalFileName}</span>
                 </div>
                 {doc.description && (
                   <div className="col-span-1 sm:col-span-2">
-                    <span className={`block text-[11px] ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+                    <span className="block text-[11px] text-[var(--text-muted)] font-mono">
                       Description:
                     </span>
-                    <p className="mt-1 leading-relaxed">{doc.description}</p>
+                    <p className="mt-1 leading-relaxed text-[var(--text-secondary)]">{doc.description}</p>
                   </div>
                 )}
               </div>
 
-              <div
-                className={`mt-6 pt-4 border-t flex justify-end ${
-                  isDark ? 'border-[#243042]' : 'border-[#e5e5e5]'
-                }`}
-              >
+              <div className="mt-6 pt-4 border-t border-[var(--border-color)] flex justify-end">
                 <button
                   type="button"
                   onClick={() => setActiveTab('preview')}
-                  className={`px-4 py-1.5 text-xs font-medium cursor-pointer ${
-                    isDark
-                      ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                      : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                  }`}
+                  className="dms-btn-primary px-4 py-2 text-xs"
                 >
                   Back to Preview
                 </button>
@@ -546,33 +482,23 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
           /* Live Document Previewer View */
           <div className="w-full h-full flex items-center justify-center overflow-hidden">
             {loadingStream ? (
-              <div className="flex flex-col items-center justify-center p-8 text-center text-xs text-[#888888]">
-                <Loader2 className="w-8 h-8 animate-spin mb-3 text-[#0284c7]" />
-                <span className="font-medium text-sm text-[#f8fafc]">Streaming technical document...</span>
-                <span className="text-[11px] text-[#64748b] mt-1">{doc.originalFileName}</span>
+              <div className="flex flex-col items-center justify-center p-8 text-center text-xs text-[var(--text-secondary)]">
+                <Loader2 className="w-8 h-8 animate-spin mb-3 text-[var(--primary-blue)]" />
+                <span className="font-medium text-sm text-[var(--text-primary)]">Streaming technical document...</span>
+                <span className="text-[11px] font-mono text-[var(--text-muted)] mt-1">{doc.originalFileName}</span>
               </div>
             ) : streamError ? (
-              <div
-                className={`max-w-md w-full p-6 text-center border shadow-xl m-4 ${
-                  isDark
-                    ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-                    : 'bg-[#ffffff] border-[#e2e8f0] text-[#111111]'
-                }`}
-              >
-                <AlertTriangle className="w-10 h-10 mx-auto mb-3 text-[#f59e0b]" />
-                <h4 className="font-semibold text-sm mb-2">Unable to Preview Document</h4>
-                <p className={`text-xs mb-4 leading-relaxed ${isDark ? 'text-[#94a3b8]' : 'text-[#64748b]'}`}>
+              <div className="dms-card max-w-md w-full p-6 text-center m-4">
+                <AlertTriangle className="w-10 h-10 mx-auto mb-3 text-[var(--color-warning)]" />
+                <h4 className="font-semibold text-sm mb-2 text-[var(--text-primary)]">Unable to Preview Document</h4>
+                <p className="text-xs mb-4 leading-relaxed text-[var(--text-secondary)]">
                   {streamError}
                 </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
                   <button
                     type="button"
                     onClick={fetchDocument}
-                    className={`w-full sm:w-auto px-4 py-2 text-xs font-medium flex items-center justify-center space-x-1.5 cursor-pointer border ${
-                      isDark
-                        ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
-                        : 'bg-[#f1f5f9] text-[#111111] border-[#cbd5e1] hover:bg-[#e2e8f0]'
-                    }`}
+                    className="dms-btn-secondary w-full sm:w-auto px-4 py-2 text-xs"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     <span>Retry Preview</span>
@@ -582,11 +508,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                     <button
                       type="button"
                       onClick={handleDownload}
-                      className={`w-full sm:w-auto px-4 py-2 text-xs font-medium flex items-center justify-center space-x-1.5 cursor-pointer ${
-                        isDark
-                          ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                          : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                      }`}
+                      className="dms-btn-primary w-full sm:w-auto px-4 py-2 text-xs"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download File</span>
@@ -598,13 +520,13 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
               /* Actual File Previewers */
               <Suspense
                 fallback={
-                  <div className="flex flex-col items-center justify-center p-8 text-xs text-[#888888]">
-                    <Loader2 className="w-8 h-8 animate-spin mb-3 text-[#0284c7]" />
-                    <span className="font-medium text-[#f8fafc]">Loading preview engine...</span>
+                  <div className="flex flex-col items-center justify-center p-8 text-xs text-[var(--text-secondary)]">
+                    <Loader2 className="w-8 h-8 animate-spin mb-3 text-[var(--primary-blue)]" />
+                    <span className="font-medium text-[var(--text-primary)]">Loading preview engine...</span>
                   </div>
                 }
               >
-                {/* 1. PDF Documents: Rendered directly with PDF.js */}
+                {/* 1. PDF Documents */}
                 {isPdf && (
                   <PdfViewer
                     data={documentBuffer}
@@ -618,7 +540,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   />
                 )}
 
-                {/* 2. Images: Responsive sizing, zoom and rotation */}
+                {/* 2. Images */}
                 {isImage && (
                   <ImageViewer
                     src={blobUrl || doc.secureUrl}
@@ -629,7 +551,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   />
                 )}
 
-                {/* 3. Word Documents: Rendered in-browser with docx-preview */}
+                {/* 3. Word Documents */}
                 {isDocx && (
                   <DocxViewer
                     data={documentBuffer}
@@ -640,7 +562,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   />
                 )}
 
-                {/* 4. Spreadsheets: Rendered in-browser with xlsx */}
+                {/* 4. Spreadsheets */}
                 {isExcel && (
                   <SpreadsheetViewer
                     data={documentBuffer}
@@ -653,30 +575,20 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
                 {/* 5. Plain Text, CSV, JSON, Log files */}
                 {isText && (
-                  <div className="w-full h-full flex flex-col p-2 sm:p-4">
+                  <div className="w-full h-full flex flex-col p-3 sm:p-5">
                     <div className="flex justify-end mb-2">
                       <button
                         type="button"
                         onClick={copyTextToClipboard}
-                        className={`px-3 py-1 text-xs border flex items-center space-x-1 cursor-pointer transition-colors ${
-                          copiedText
-                            ? 'bg-green-600 border-green-600 text-white'
-                            : isDark
-                            ? 'bg-[#1e293b] border-[#334155] text-[#cbd5e1] hover:text-white'
-                            : 'bg-[#ffffff] border-[#cbd5e1] text-[#475569] hover:bg-[#f1f5f9]'
+                        className={`dms-btn-secondary px-3 py-1.5 text-xs ${
+                          copiedText ? 'text-[var(--color-success)]' : ''
                         }`}
                       >
                         {copiedText ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedText ? 'Copied' : 'Copy Content'}</span>
                       </button>
                     </div>
-                    <pre
-                      className={`flex-1 overflow-auto p-4 border font-mono text-xs whitespace-pre-wrap select-text ${
-                        isDark
-                          ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155]'
-                          : 'bg-[#ffffff] text-[#111111] border-[#cbd5e1]'
-                      }`}
-                    >
+                    <pre className="flex-1 overflow-auto p-4 rounded-md border border-[var(--border-color)] font-mono text-xs whitespace-pre-wrap select-text bg-[var(--bg-card)] text-[var(--text-primary)]">
                       {textContent}
                     </pre>
                   </div>
@@ -684,11 +596,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
                 {/* 6. Video Player */}
                 {isVideo && (
-                  <div className="max-w-4xl w-full p-2 sm:p-4 flex items-center justify-center">
+                  <div className="max-w-4xl w-full p-3 sm:p-5 flex items-center justify-center">
                     <video
                       controls
                       autoPlay={false}
-                      className="w-full max-h-[80vh] shadow-2xl bg-[#000000]"
+                      className="w-full max-h-[80vh] rounded-lg shadow-2xl bg-black"
                     >
                       <source src={blobUrl || doc.secureUrl} type={doc.mimeType} />
                       Your browser does not support the video tag.
@@ -698,90 +610,11 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
 
                 {/* 7. Audio Player */}
                 {isAudio && (
-                  <div
-                    className={`p-6 sm:p-8 border text-center max-w-md w-full shadow-2xl ${
-                      isDark
-                        ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-                        : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-                    }`}
-                  >
-                    <FileText
-                      className={`w-12 h-12 mx-auto mb-3 ${
-                        isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                      }`}
-                    />
-                    <h4 className="font-semibold text-sm mb-4">{doc.title}</h4>
-                    <audio controls className="w-full">
+                  <div className="max-w-md w-full p-6 text-center dms-card m-4">
+                    <audio controls className="w-full mt-2">
                       <source src={blobUrl || doc.secureUrl} type={doc.mimeType} />
+                      Your browser does not support the audio element.
                     </audio>
-                  </div>
-                )}
-
-                {/* 8. Other / Unsupported Binary Formats */}
-                {!isPdf && !isImage && !isDocx && !isExcel && !isText && !isVideo && !isAudio && (
-                  <div
-                    className={`p-6 sm:p-8 max-w-lg w-full text-center border shadow-2xl m-4 ${
-                      isDark
-                        ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-                        : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-                    }`}
-                  >
-                    <FileText
-                      className={`w-14 h-14 mx-auto mb-4 ${
-                        isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                      }`}
-                    />
-                    <h3 className="font-bold text-base mb-1">{doc.title}</h3>
-                    <p
-                      className={`text-xs mb-4 ${
-                        isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-                      }`}
-                    >
-                      {doc.originalFileName} ({formatFileSize(doc.fileSize)})
-                    </p>
-                    <div
-                      className={`border p-3 text-left text-xs mb-6 space-y-1 ${
-                        isDark
-                          ? 'bg-[#0f172a] border-[#243042] text-[#cbd5e1]'
-                          : 'bg-[#fafafa] border-[#e5e5e5] text-[#111111]'
-                      }`}
-                    >
-                      <div>
-                        <strong>System:</strong> {doc.system || '—'}
-                      </div>
-                      <div>
-                        <strong>Category:</strong> {doc.category || 'General'}
-                      </div>
-                      <div>
-                        <strong>Order Number:</strong> {doc.orderNumber || '—'}
-                      </div>
-                    </div>
-
-                    {canDownload ? (
-                      <button
-                        type="button"
-                        onClick={handleDownload}
-                        disabled={downloading}
-                        className={`w-full py-2.5 text-xs font-semibold uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors cursor-pointer ${
-                          isDark
-                            ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                            : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                        }`}
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Download Original Document</span>
-                      </button>
-                    ) : (
-                      <div
-                        className={`p-3 text-xs border ${
-                          isDark
-                            ? 'bg-[#1e293b] text-[#94a3b8] border-[#334155]'
-                            : 'bg-[#f5f5f5] text-[#777777] border-[#cccccc]'
-                        }`}
-                      >
-                        Document downloading is restricted for your role. Contact an administrator.
-                      </div>
-                    )}
                   </div>
                 )}
               </Suspense>

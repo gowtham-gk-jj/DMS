@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Check } from 'lucide-react';
+import { Search, X, Check, FileCheck2, Filter, AlertTriangle } from 'lucide-react';
 import api from '../../services/api';
 
 export default function AdminRequestsPage() {
@@ -123,17 +123,17 @@ export default function AdminRequestsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-0">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
+      <div className="dms-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1">
             ACCESS REQUEST AUTHORIZATION QUEUE
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Access Requests
           </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
+          <p className="text-xs sm:text-[13px] text-[var(--text-secondary)] mt-1">
             Evaluate incoming user access submissions, allocate folder privileges, and configure permission levels.
           </p>
         </div>
@@ -144,10 +144,10 @@ export default function AdminRequestsPage() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`flex-1 sm:flex-initial min-h-[44px] sm:min-h-[36px] px-3.5 py-2 font-medium transition-colors cursor-pointer text-center ${
+              className={`flex-1 sm:flex-initial min-h-[38px] px-3.5 py-1.5 font-medium rounded-md transition-colors cursor-pointer text-center text-xs ${
                 statusFilter === s
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                  : 'bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--text-secondary)]'
+                  ? 'dms-btn-primary'
+                  : 'dms-btn-secondary'
               }`}
             >
               {s}
@@ -159,29 +159,29 @@ export default function AdminRequestsPage() {
       {/* Search Input */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-3.5 sm:top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search applicant name, email, organization..."
-            className="w-full pl-9 pr-3 py-2 min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="dms-input pl-9"
           />
         </div>
       </div>
 
       {/* Requests Table */}
-      <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
+      <div className="dms-card overflow-hidden">
         {/* Desktop Table View (>= md) */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[760px]">
             <thead>
-              <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
+              <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider border-b border-[var(--border-color)]">
                 <th className="py-2.5 px-4 border-r border-[var(--border-subtle)]">Applicant</th>
                 <th className="py-2.5 px-4 border-r border-[var(--border-subtle)]">Organization / Dept</th>
                 <th className="py-2.5 px-4 border-r border-[var(--border-subtle)]">Reason & Purpose</th>
                 <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center w-28">Status</th>
-                <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center w-28">Date</th>
+                <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center w-28 font-mono">Date</th>
                 <th className="py-2.5 px-4 text-center w-40">Actions</th>
               </tr>
             </thead>
@@ -189,13 +189,13 @@ export default function AdminRequestsPage() {
             <tbody className="divide-y divide-[var(--border-subtle)]">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-[var(--text-muted)]">
+                  <td colSpan={6} className="py-12 text-center text-[var(--text-muted)] font-mono">
                     Loading access requests...
                   </td>
                 </tr>
               ) : requests.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-[var(--text-muted)]">
+                  <td colSpan={6} className="py-12 text-center text-[var(--text-secondary)]">
                     No access requests found matching &ldquo;{statusFilter}&rdquo;.
                   </td>
                 </tr>
@@ -203,20 +203,20 @@ export default function AdminRequestsPage() {
                 requests.map((req, idx) => (
                   <tr
                     key={req._id}
-                    className={`hover:bg-[var(--table-row-hover)] transition-colors ${
-                      idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                    className={`hover:bg-[var(--bg-hover)] transition-colors ${
+                      idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
                     }`}
                   >
                     {/* Applicant */}
                     <td className="py-3 px-4 border-r border-[var(--border-subtle)]">
                       <div className="font-semibold text-[var(--text-primary)]">{req.name}</div>
-                      <div className="font-mono text-[11px] text-[var(--text-muted)] break-all">{req.email}</div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)] break-all mt-0.5">{req.email}</div>
                     </td>
 
                     {/* Organization */}
                     <td className="py-3 px-4 border-r border-[var(--border-subtle)]">
                       <div className="font-medium text-[var(--text-primary)]">{req.organization}</div>
-                      <div className="text-[11px] text-[var(--text-muted)]">
+                      <div className="text-[11px] text-[var(--text-muted)] mt-0.5">
                         {req.department || 'General'}
                       </div>
                     </td>
@@ -228,7 +228,7 @@ export default function AdminRequestsPage() {
                         <strong>Purpose:</strong> {req.purpose}
                       </div>
                       {req.rejectionReason && (
-                        <div className="text-[11px] text-[var(--text-primary)] bg-[var(--bg-hover)] border border-[var(--border-color)] p-1.5 mt-1">
+                        <div className="text-[11px] text-[var(--color-error-text)] bg-[var(--color-error-bg)] border border-[var(--color-error-border)] p-1.5 rounded-md mt-1">
                           <strong>Admin Feedback:</strong> {req.rejectionReason}
                         </div>
                       )}
@@ -237,12 +237,12 @@ export default function AdminRequestsPage() {
                     {/* Status */}
                     <td className="py-3 px-3 border-r border-[var(--border-subtle)] text-center">
                       <span
-                        className={`font-mono text-[10px] font-bold px-2 py-0.5 border ${
+                        className={`dms-badge ${
                           req.status === 'PENDING'
-                            ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                            ? 'dms-badge-warning'
                             : req.status === 'APPROVED'
-                            ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--text-primary)]'
-                            : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)]'
+                            ? 'dms-badge-success'
+                            : 'dms-badge-error'
                         }`}
                       >
                         {req.status}
@@ -260,13 +260,13 @@ export default function AdminRequestsPage() {
                         <div className="flex items-center justify-center space-x-1.5">
                           <button
                             onClick={() => openApproveModal(req)}
-                            className="bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider transition-opacity cursor-pointer"
+                            className="dms-btn-primary px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => openRejectModal(req)}
-                            className="border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer"
+                            className="dms-btn-secondary px-2.5 py-1 text-[11px] font-medium text-[var(--color-error-text)]"
                           >
                             Reject
                           </button>
@@ -285,11 +285,11 @@ export default function AdminRequestsPage() {
         {/* Mobile Access Requests Card View (< md) */}
         <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
           {loading ? (
-            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+            <div className="p-8 text-center text-xs text-[var(--text-muted)] font-mono">
               Loading access requests...
             </div>
           ) : requests.length === 0 ? (
-            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+            <div className="p-8 text-center text-xs text-[var(--text-secondary)]">
               No access requests found matching &ldquo;{statusFilter}&rdquo;.
             </div>
           ) : (
@@ -297,7 +297,7 @@ export default function AdminRequestsPage() {
               <div
                 key={`mob_req_${req._id}`}
                 className={`p-4 space-y-3 transition-colors ${
-                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                  idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
                 }`}
               >
                 {/* Applicant & Status */}
@@ -307,12 +307,12 @@ export default function AdminRequestsPage() {
                     <div className="font-mono text-xs text-[var(--text-muted)] break-all mt-0.5">{req.email}</div>
                   </div>
                   <span
-                    className={`font-mono text-[10px] font-bold px-2 py-0.5 border shrink-0 ${
+                    className={`dms-badge shrink-0 ${
                       req.status === 'APPROVED'
-                        ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--text-primary)]'
+                        ? 'dms-badge-success'
                         : req.status === 'REJECTED'
-                        ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
-                        : 'bg-[var(--bg-hover)] text-[var(--text-muted)] border-[var(--border-color)]'
+                        ? 'dms-badge-error'
+                        : 'dms-badge-warning'
                     }`}
                   >
                     {req.status}
@@ -328,7 +328,7 @@ export default function AdminRequestsPage() {
                 </div>
 
                 {/* Reason & Purpose */}
-                <div className="p-2.5 border border-[var(--border-subtle)] bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] leading-relaxed break-words">
+                <div className="p-3 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] leading-relaxed break-words">
                   {req.reason}
                 </div>
 
@@ -343,14 +343,14 @@ export default function AdminRequestsPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => openApproveModal(req)}
-                        className="flex-1 min-h-[44px] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center space-x-1"
+                        className="dms-btn-primary flex-1 min-h-[44px] px-4 py-2 font-semibold text-xs uppercase tracking-wider"
                       >
                         <Check className="w-4 h-4" />
                         <span>Review & Approve</span>
                       </button>
                       <button
                         onClick={() => openRejectModal(req)}
-                        className="min-h-[44px] px-4 py-2 border border-[var(--border-color)] hover:border-red-500 text-red-500 font-semibold text-xs uppercase tracking-wider hover:bg-red-500/10 transition-colors cursor-pointer flex items-center justify-center space-x-1"
+                        className="dms-btn-secondary min-h-[44px] px-4 py-2 text-[var(--color-error-text)] font-semibold text-xs uppercase tracking-wider"
                       >
                         <X className="w-4 h-4" />
                         <span>Reject</span>
@@ -370,25 +370,25 @@ export default function AdminRequestsPage() {
 
       {/* APPROVAL MODAL WITH FULL PERMISSION CONTROLS */}
       {modalMode === 'APPROVE' && activeRequest && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-[var(--modal-bg)] border border-[var(--border-color)] max-w-lg w-full shadow-2xl max-h-[92vh] flex flex-col">
-            <div className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] px-5 py-3.5 flex items-center justify-between shrink-0">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="dms-card max-w-lg w-full max-h-[92vh] flex flex-col overflow-hidden">
+            <div className="bg-[var(--bg-elevated)] border-b border-[var(--border-color)] px-5 py-3.5 flex items-center justify-between shrink-0">
               <div className="min-w-0 pr-2">
-                <h3 className="font-semibold text-sm truncate">Approve Access Request</h3>
-                <p className="text-[11px] opacity-75 truncate">
+                <h3 className="font-semibold text-sm text-[var(--text-primary)] truncate">Approve Access Request</h3>
+                <p className="text-[11px] text-[var(--text-secondary)] truncate">
                   Configure repository permissions for <strong>{activeRequest.name}</strong>
                 </p>
               </div>
               <button
                 onClick={() => setModalMode(null)}
-                className="opacity-75 hover:opacity-100 p-1 cursor-pointer"
+                className="p-1 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleApproveSubmit} className="p-5 space-y-4 text-xs overflow-y-auto">
-              <div className="bg-[var(--bg-hover)] border border-[var(--border-color)] p-3 text-xs space-y-1 text-[var(--text-secondary)]">
+              <div className="bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-md p-3 text-xs space-y-1 text-[var(--text-secondary)]">
                 <div>
                   <strong className="text-[var(--text-primary)]">Email:</strong> {activeRequest.email}
                 </div>
@@ -402,12 +402,12 @@ export default function AdminRequestsPage() {
 
               {/* PERMISSION CONTROLS: READ, UPLOAD, DOWNLOAD, MANAGE */}
               <div>
-                <label className="block font-bold uppercase tracking-wider text-[11px] text-[var(--text-primary)] mb-2">
+                <label className="block font-bold uppercase tracking-wider text-[11px] text-[var(--text-primary)] font-mono mb-2">
                   Granular Permission Controls:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {/* READ ACCESS */}
-                  <label className="flex items-center justify-between border border-[var(--border-color)] p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--text-secondary)]">
+                  <label className="flex items-center justify-between border border-[var(--border-color)] rounded-md p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--primary-blue)] transition-colors">
                     <div>
                       <span className="font-bold text-xs block text-[var(--text-primary)]">READ ACCESS</span>
                       <span className="text-[10px] text-[var(--text-muted)]">Browse & view documents</span>
@@ -416,12 +416,12 @@ export default function AdminRequestsPage() {
                       type="checkbox"
                       checked={readPerm}
                       onChange={(e) => setReadPerm(e.target.checked)}
-                      className="w-4 h-4 accent-[var(--text-primary)] cursor-pointer"
+                      className="w-4 h-4 accent-[var(--primary-blue)] cursor-pointer"
                     />
                   </label>
 
                   {/* UPLOAD ACCESS */}
-                  <label className="flex items-center justify-between border border-[var(--border-color)] p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--text-secondary)]">
+                  <label className="flex items-center justify-between border border-[var(--border-color)] rounded-md p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--primary-blue)] transition-colors">
                     <div>
                       <span className="font-bold text-xs block text-[var(--text-primary)]">UPLOAD ACCESS</span>
                       <span className="text-[10px] text-[var(--text-muted)]">Upload new technical files</span>
@@ -430,12 +430,12 @@ export default function AdminRequestsPage() {
                       type="checkbox"
                       checked={uploadPerm}
                       onChange={(e) => setUploadPerm(e.target.checked)}
-                      className="w-4 h-4 accent-[var(--text-primary)] cursor-pointer"
+                      className="w-4 h-4 accent-[var(--primary-blue)] cursor-pointer"
                     />
                   </label>
 
                   {/* DOWNLOAD ACCESS */}
-                  <label className="flex items-center justify-between border border-[var(--border-color)] p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--text-secondary)]">
+                  <label className="flex items-center justify-between border border-[var(--border-color)] rounded-md p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--primary-blue)] transition-colors">
                     <div>
                       <span className="font-bold text-xs block text-[var(--text-primary)]">DOWNLOAD ACCESS</span>
                       <span className="text-[10px] text-[var(--text-muted)]">Export & save local copies</span>
@@ -444,12 +444,12 @@ export default function AdminRequestsPage() {
                       type="checkbox"
                       checked={downloadPerm}
                       onChange={(e) => setDownloadPerm(e.target.checked)}
-                      className="w-4 h-4 accent-[var(--text-primary)] cursor-pointer"
+                      className="w-4 h-4 accent-[var(--primary-blue)] cursor-pointer"
                     />
                   </label>
 
                   {/* MANAGE ACCESS */}
-                  <label className="flex items-center justify-between border border-[var(--border-color)] p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--text-secondary)]">
+                  <label className="flex items-center justify-between border border-[var(--border-color)] rounded-md p-2.5 bg-[var(--bg-card)] cursor-pointer hover:border-[var(--primary-blue)] transition-colors">
                     <div>
                       <span className="font-bold text-xs block text-[var(--text-primary)]">MANAGE ACCESS</span>
                       <span className="text-[10px] text-[var(--text-muted)]">Create folders & edit meta</span>
@@ -458,7 +458,7 @@ export default function AdminRequestsPage() {
                       type="checkbox"
                       checked={managePerm}
                       onChange={(e) => setManagePerm(e.target.checked)}
-                      className="w-4 h-4 accent-[var(--text-primary)] cursor-pointer"
+                      className="w-4 h-4 accent-[var(--primary-blue)] cursor-pointer"
                     />
                   </label>
                 </div>
@@ -466,11 +466,11 @@ export default function AdminRequestsPage() {
 
               {/* ROLE SELECTION */}
               <div>
-                <label className="block text-[var(--text-secondary)] mb-1 font-medium">Assign Role</label>
+                <label className="block text-[var(--text-secondary)] mb-1 font-medium font-mono text-[11px] uppercase">Assign Role</label>
                 <select
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value)}
-                  className="w-full border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
+                  className="dms-input"
                 >
                   <option value="USER">User (Standard Document Consumer)</option>
                   <option value="MANAGER">Manager (Document Contributor & Editor)</option>
@@ -481,17 +481,17 @@ export default function AdminRequestsPage() {
               {/* FOLDER ASSIGNMENT */}
               {folders.length > 0 && (
                 <div>
-                  <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+                  <label className="block text-[var(--text-secondary)] mb-1 font-medium font-mono text-[11px] uppercase">
                     Assign Specific Folder Access (Leave empty for all standard repositories)
                   </label>
-                  <div className="border border-[var(--border-color)] bg-[var(--bg-card)] p-2 max-h-32 overflow-y-auto space-y-1">
+                  <div className="border border-[var(--border-color)] bg-[var(--bg-card)] rounded-md p-2.5 max-h-32 overflow-y-auto space-y-1">
                     {folders.map((f) => (
-                      <label key={f._id} className="flex items-center space-x-2 text-xs cursor-pointer">
+                      <label key={f._id} className="flex items-center space-x-2 text-xs cursor-pointer hover:bg-[var(--bg-hover)] p-1 rounded">
                         <input
                           type="checkbox"
                           checked={assignedFolders.includes(f._id)}
                           onChange={() => toggleFolderSelection(f._id)}
-                          className="accent-[var(--text-primary)] cursor-pointer"
+                          className="accent-[var(--primary-blue)] cursor-pointer"
                         />
                         <span className="font-medium text-[var(--text-primary)]">{f.name}</span>
                       </label>
@@ -501,21 +501,21 @@ export default function AdminRequestsPage() {
               )}
 
               {/* Footer */}
-              <div className="border-t border-[var(--border-subtle)] pt-3 flex items-center justify-end space-x-2 shrink-0">
+              <div className="border-t border-[var(--border-subtle)] pt-3.5 flex items-center justify-end space-x-2.5 shrink-0">
                 <button
                   type="button"
                   onClick={() => setModalMode(null)}
                   disabled={submitting}
-                  className="px-4 py-2 border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] cursor-pointer"
+                  className="dms-btn-secondary px-4 py-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold uppercase tracking-wider hover:opacity-90 disabled:opacity-50 cursor-pointer"
+                  className="dms-btn-primary px-5 py-2 font-semibold uppercase tracking-wider"
                 >
-                  {submitting ? 'Approving...' : 'Confirm Approval & Send Notification'}
+                  {submitting ? 'Approving...' : 'Confirm Approval & Notify'}
                 </button>
               </div>
             </form>
@@ -525,18 +525,18 @@ export default function AdminRequestsPage() {
 
       {/* REJECTION MODAL */}
       {modalMode === 'REJECT' && activeRequest && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-[var(--modal-bg)] border border-[var(--border-color)] max-w-md w-full shadow-2xl">
-            <div className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] px-5 py-3.5 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="dms-card max-w-md w-full overflow-hidden">
+            <div className="bg-[var(--bg-elevated)] border-b border-[var(--border-color)] px-5 py-3.5 flex items-center justify-between">
               <div className="min-w-0 pr-2">
-                <h3 className="font-semibold text-sm truncate">Reject Access Request</h3>
-                <p className="text-[11px] opacity-75 truncate">
+                <h3 className="font-semibold text-sm text-[var(--text-primary)] truncate">Reject Access Request</h3>
+                <p className="text-[11px] text-[var(--text-secondary)] truncate">
                   Decline request for <strong>{activeRequest.name}</strong>
                 </p>
               </div>
               <button
                 onClick={() => setModalMode(null)}
-                className="opacity-75 hover:opacity-100 p-1 cursor-pointer"
+                className="p-1 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -544,7 +544,7 @@ export default function AdminRequestsPage() {
 
             <form onSubmit={handleRejectSubmit} className="p-5 space-y-4 text-xs">
               <div>
-                <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+                <label className="block text-[var(--text-secondary)] mb-1 font-medium font-mono text-[11px] uppercase">
                   Rejection Reason / Administrator Feedback
                 </label>
                 <textarea
@@ -553,23 +553,23 @@ export default function AdminRequestsPage() {
                   onChange={(e) => setRejectionReason(e.target.value)}
                   placeholder="e.g. Incomplete organization verification, corporate email required, unauthorized division..."
                   required
-                  className="w-full border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
+                  className="dms-input min-h-[70px]"
                 />
               </div>
 
-              <div className="border-t border-[var(--border-subtle)] pt-3 flex items-center justify-end space-x-2">
+              <div className="border-t border-[var(--border-subtle)] pt-3.5 flex items-center justify-end space-x-2.5">
                 <button
                   type="button"
                   onClick={() => setModalMode(null)}
                   disabled={submitting}
-                  className="px-4 py-2 border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] cursor-pointer"
+                  className="dms-btn-secondary px-4 py-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold uppercase tracking-wider hover:opacity-90 disabled:opacity-50 cursor-pointer"
+                  className="dms-btn-secondary px-4 py-2 font-semibold uppercase tracking-wider text-[var(--color-error-text)] border-[var(--color-error-border)] hover:bg-[var(--color-error-bg)]"
                 >
                   {submitting ? 'Rejecting...' : 'Reject Request & Send Email'}
                 </button>

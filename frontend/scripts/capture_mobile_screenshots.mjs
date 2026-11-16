@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const SCREENSHOT_DIR = 'C:\\Users\\lmspr\\.gemini\\antigravity\\brain\\4169d8c8-cbb6-4bad-a542-07db40ae4249\\screenshots\\mobile';
+const SCREENSHOT_DIR = 'C:\\Users\\lmspr\\.gemini\\antigravity\\brain\\d1cbe12d-0efa-408f-89c1-63989de98530\\screenshots\\mobile';
 const BASE_URL = 'http://localhost:5173';
 
 if (!fs.existsSync(SCREENSHOT_DIR)) {

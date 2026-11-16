@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ZoomIn, ZoomOut, RotateCw, Maximize2, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function ImageViewer({
   src,

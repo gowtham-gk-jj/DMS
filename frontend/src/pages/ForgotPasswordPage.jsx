@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
@@ -37,35 +37,24 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div
-      className={`min-h-screen flex flex-col justify-between transition-colors duration-150 ${
-        isDark ? 'bg-[#0b0f17] text-[#f8fafc]' : 'bg-[#ffffff] text-[#111111]'
-      }`}
-    >
+    <div className="min-h-screen flex flex-col justify-between bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors duration-150">
       {/* Header */}
-      <header
-        className={`border-b px-4 sm:px-8 py-3.5 flex items-center justify-between ${
-          isDark ? 'bg-[#0f172a] border-[#243042]' : 'bg-[#ffffff] border-[#e5e5e5]'
-        }`}
-      >
+      <header className="border-b border-[var(--border-color)] px-4 sm:px-8 py-3.5 flex items-center justify-between bg-[var(--bg-header)]">
         <div className="flex items-center space-x-2.5">
-          <div
-            className={`w-7 h-7 flex items-center justify-center font-bold text-xs font-mono shrink-0 ${
-              isDark ? 'bg-[#f8fafc] text-[#0b0f17]' : 'bg-[#111111] text-[#ffffff]'
-            }`}
-          >
-            D
+          <div className="w-8 h-8 rounded-md flex items-center justify-center font-bold text-xs font-mono shrink-0 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+            ED
           </div>
-          <span className="font-bold text-xs sm:text-sm tracking-tight uppercase">
-            ENTERPRISE DMS PLATFORM
-          </span>
+          <div>
+            <span className="font-bold text-xs sm:text-sm tracking-tight text-[var(--text-primary)] block font-sans">
+              ENTERPRISE DMS
+            </span>
+            <span className="text-[10px] font-mono tracking-wider text-[var(--text-muted)] block uppercase">
+              DOCUMENT MANAGEMENT PLATFORM
+            </span>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
-          <div
-            className={`text-xs font-mono hidden sm:block ${
-              isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-            }`}
-          >
+          <div className="text-xs font-mono hidden sm:block text-[var(--text-secondary)]">
             PASSWORD RECOVERY
           </div>
           <ThemeToggle />
@@ -73,38 +62,22 @@ export default function ForgotPasswordPage() {
       </header>
 
       {/* Main Card */}
-      <div className="flex-1 flex items-center justify-center p-3 sm:p-6 my-auto">
-        <div
-          className={`max-w-md w-full border p-5 sm:p-8 shadow-sm transition-colors duration-150 ${
-            isDark
-              ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-              : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-          }`}
-        >
+      <div className="flex-1 flex items-center justify-center p-3.5 sm:p-6 my-auto page-enter">
+        <div className="max-w-md w-full dms-card p-6 sm:p-8">
           <div className="mb-6 text-center">
-            <div
-              className={`w-12 h-12 flex items-center justify-center mx-auto mb-3 ${
-                isDark ? 'bg-[#1e293b] text-[#60a5fa] border border-[#334155]' : 'bg-[#111111] text-[#ffffff]'
-              }`}
-            >
-              <Mail className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-lg flex items-center justify-center mx-auto mb-3 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+              <Mail className="w-5 h-5" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
               Reset Account Password
             </h1>
-            <p className={`text-xs mt-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
-              Enter the email address registered with your DMS account to receive a secure, single-use password reset link.
+            <p className="text-xs sm:text-[13px] text-[var(--text-secondary)] mt-1.5 leading-relaxed">
+              Enter your registered corporate email to receive a secure, single-use password reset link.
             </p>
           </div>
 
           {error && (
-            <div
-              className={`mb-5 p-3 border text-xs flex items-center space-x-2 ${
-                isDark
-                  ? 'bg-[#451a1a] border-[#b91c1c] text-[#fca5a5]'
-                  : 'bg-[#fafafa] border-[#111111] text-[#111111]'
-              }`}
-            >
+            <div className="mb-5 p-3 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] text-[var(--color-error-text)] text-xs flex items-center space-x-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -112,33 +85,23 @@ export default function ForgotPasswordPage() {
 
           {submitted ? (
             <div className="space-y-5">
-              <div
-                className={`p-4 border text-xs space-y-2 ${
-                  isDark
-                    ? 'bg-[#0f172a] border-[#243042] text-[#cbd5e1]'
-                    : 'bg-[#fafafa] border-[#111111] text-[#111111]'
-                }`}
-              >
-                <div className="flex items-center space-x-2 font-semibold">
-                  <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-[#34d399]' : 'text-[#111111]'}`} />
+              <div className="p-4 rounded-md border border-[var(--color-success-border)] bg-[var(--color-success-bg)] text-xs space-y-2">
+                <div className="flex items-center space-x-2 font-semibold text-[var(--color-success-text)]">
+                  <CheckCircle2 className="w-4 h-4" />
                   <span>Request Dispatched</span>
                 </div>
-                <p className={`leading-relaxed ${isDark ? 'text-[#94a3b8]' : 'text-[#666666]'}`}>
+                <p className="leading-relaxed text-[var(--text-secondary)]">
                   If an account exists with that email address, a password reset link has been dispatched. Please check your inbox and spam folder.
                 </p>
-                <p className={`text-[11px] ${isDark ? 'text-[#64748b]' : 'text-[#888888]'}`}>
+                <p className="text-[11px] font-mono text-[var(--text-muted)]">
                   • Link validity: 1 hour<br />
-                  • Single-use expiring token
+                  • Single-use cryptographically signed token
                 </p>
               </div>
 
               <Link
                 to="/login"
-                className={`w-full py-2.5 border text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 ${
-                  isDark
-                    ? 'border-[#334155] text-[#f8fafc] hover:bg-[#1e293b]'
-                    : 'border-[#111111] text-[#111111] hover:bg-[#f5f5f5]'
-                }`}
+                className="dms-btn-secondary w-full py-2.5 text-xs font-semibold uppercase tracking-wider"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Return to Sign In</span>
@@ -147,11 +110,7 @@ export default function ForgotPasswordPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label
-                  className={`block text-xs font-medium mb-1.5 uppercase tracking-wider ${
-                    isDark ? 'text-[#cbd5e1]' : 'text-[#111111]'
-                  }`}
-                >
+                <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider text-[var(--text-secondary)] font-mono">
                   Account Email Address
                 </label>
                 <input
@@ -161,32 +120,23 @@ export default function ForgotPasswordPage() {
                   placeholder="name@company.com"
                   required
                   autoComplete="email"
-                  className={`w-full px-3 py-2.5 sm:py-2 min-h-[44px] sm:min-h-[38px] text-xs border rounded-none focus:outline-none transition-colors ${
-                    isDark
-                      ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                      : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-                  }`}
+                  className="dms-input"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 min-h-[44px] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer ${
-                  isDark
-                    ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                    : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                }`}
+                className="dms-btn-primary w-full py-2.5 text-xs font-semibold uppercase tracking-wider"
               >
                 <span>{loading ? 'Dispatching...' : 'Send Password Reset Link'}</span>
+                {!loading && <ArrowRight className="w-3.5 h-3.5" />}
               </button>
 
               <div className="text-center pt-2">
                 <Link
                   to="/login"
-                  className={`text-xs inline-flex items-center space-x-1.5 underline ${
-                    isDark ? 'text-[#94a3b8] hover:text-[#f8fafc]' : 'text-[#777777] hover:text-[#111111]'
-                  }`}
+                  className="text-xs inline-flex items-center space-x-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-colors"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back to Sign In</span>
@@ -198,11 +148,7 @@ export default function ForgotPasswordPage() {
       </div>
 
       {/* Footer */}
-      <footer
-        className={`border-t px-4 sm:px-8 py-3.5 text-center text-xs ${
-          isDark ? 'border-[#243042] text-[#94a3b8]' : 'border-[#e5e5e5] text-[#777777]'
-        }`}
-      >
+      <footer className="border-t border-[var(--border-color)] px-4 sm:px-8 py-3.5 text-center text-xs text-[var(--text-muted)] bg-[var(--bg-header)]">
         Enterprise Document Management System • ISO 27001 & DOConCD Compliant
       </footer>
     </div>

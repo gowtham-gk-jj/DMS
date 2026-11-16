@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../../services/api';
 
 export default function AdminAuditLogsPage() {
@@ -34,17 +34,17 @@ export default function AdminAuditLogsPage() {
   }, [selectedAction, search, page]);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-0">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
+      <div className="dms-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1">
             IMMUTABLE SECURITY AUDIT TRAIL
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Security Audit Logs
           </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
+          <p className="text-xs sm:text-[13px] text-[var(--text-secondary)] mt-1">
             Track user logins, access requests, admin approvals, document previews, uploads, and downloads.
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function AdminAuditLogsPage() {
               setSelectedAction(e.target.value);
               setPage(1);
             }}
-            className="border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] p-2 text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="dms-input min-h-[38px] w-auto text-xs"
           >
             <option value="ALL">All Actions ({actions.length})</option>
             {actions.map((act) => (
@@ -71,7 +71,7 @@ export default function AdminAuditLogsPage() {
       {/* Search Input */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-3.5 sm:top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
           <input
             type="text"
             value={search}
@@ -80,21 +80,21 @@ export default function AdminAuditLogsPage() {
               setPage(1);
             }}
             placeholder="Search email, username, target document or folder..."
-            className="w-full pl-9 pr-3 py-2 min-h-[44px] sm:min-h-[38px] border border-[var(--border-color)] bg-[var(--input-bg)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--text-primary)]"
+            className="dms-input pl-9"
           />
         </div>
       </div>
 
       {/* Logs Table */}
-      <div className="border border-[var(--border-color)] bg-[var(--bg-card)] transition-colors">
+      <div className="dms-card overflow-hidden">
         {/* Desktop Table View (>= md) */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[760px]">
             <thead>
-              <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider">
-                <th className="py-2.5 px-4 border-r border-[var(--border-subtle)] w-40">Timestamp</th>
+              <tr className="bg-[var(--table-header-bg)] text-[var(--table-header-text)] font-semibold text-[11px] uppercase tracking-wider border-b border-[var(--border-color)]">
+                <th className="py-2.5 px-4 border-r border-[var(--border-subtle)] w-40 font-mono">Timestamp</th>
                 <th className="py-2.5 px-4 border-r border-[var(--border-subtle)] w-48">Actor (User)</th>
-                <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center w-48">Action</th>
+                <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center w-48 font-mono">Action</th>
                 <th className="py-2.5 px-4 border-r border-[var(--border-subtle)]">Target Subject</th>
                 <th className="py-2.5 px-4">Event Details</th>
               </tr>
@@ -103,13 +103,13 @@ export default function AdminAuditLogsPage() {
             <tbody className="divide-y divide-[var(--border-subtle)]">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-[var(--text-muted)]">
+                  <td colSpan={5} className="py-12 text-center text-[var(--text-muted)] font-mono">
                     Loading audit trail...
                   </td>
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-[var(--text-muted)]">
+                  <td colSpan={5} className="py-12 text-center text-[var(--text-secondary)]">
                     No audit records match the current filter.
                   </td>
                 </tr>
@@ -117,8 +117,8 @@ export default function AdminAuditLogsPage() {
                 logs.map((log, idx) => (
                   <tr
                     key={log._id}
-                    className={`hover:bg-[var(--table-row-hover)] transition-colors ${
-                      idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                    className={`hover:bg-[var(--bg-hover)] transition-colors ${
+                      idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
                     }`}
                   >
                     {/* Timestamp */}
@@ -129,12 +129,12 @@ export default function AdminAuditLogsPage() {
                     {/* Actor */}
                     <td className="py-2.5 px-4 border-r border-[var(--border-subtle)]">
                       <div className="font-semibold text-[var(--text-primary)]">{log.userName || 'System'}</div>
-                      <div className="font-mono text-[11px] text-[var(--text-muted)] break-all">{log.userEmail}</div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)] break-all mt-0.5">{log.userEmail}</div>
                     </td>
 
                     {/* Action */}
                     <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center font-mono">
-                      <span className="bg-[var(--badge-bg)] border border-[var(--border-color)] px-2 py-0.5 text-[10px] font-bold text-[var(--text-primary)] whitespace-nowrap inline-block">
+                      <span className="dms-badge dms-badge-neutral text-[10px]">
                         {log.action}
                       </span>
                     </td>
@@ -142,7 +142,7 @@ export default function AdminAuditLogsPage() {
                     {/* Target */}
                     <td className="py-2.5 px-4 border-r border-[var(--border-subtle)]">
                       <div className="font-medium text-[var(--text-primary)]">{log.targetName || '—'}</div>
-                      <div className="text-[10px] font-mono text-[var(--text-muted)]">
+                      <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">
                         {log.targetType} {log.targetId ? `(${log.targetId.slice(-6)})` : ''}
                       </div>
                     </td>
@@ -167,23 +167,23 @@ export default function AdminAuditLogsPage() {
         {/* Mobile Audit Logs Card View (< md) */}
         <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
           {loading ? (
-            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+            <div className="p-8 text-center text-xs text-[var(--text-muted)] font-mono">
               Loading audit trail...
             </div>
           ) : logs.length === 0 ? (
-            <div className="p-8 text-center text-xs text-[var(--text-muted)]">
+            <div className="p-8 text-center text-xs text-[var(--text-secondary)]">
               No audit records match the current filter.
             </div>
           ) : (
             logs.map((log, idx) => (
               <div
                 key={`mob_log_${log._id}`}
-                className={`p-3.5 space-y-2 transition-colors ${
-                  idx % 2 === 1 ? 'bg-[var(--bg-hover)]' : 'bg-[var(--bg-card)]'
+                className={`p-4 space-y-2.5 transition-colors ${
+                  idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="bg-[var(--badge-bg)] border border-[var(--border-color)] px-2 py-0.5 text-[10px] font-bold text-[var(--text-primary)] font-mono">
+                  <span className="dms-badge dms-badge-neutral text-[10px]">
                     {log.action}
                   </span>
                   <span className="text-[10px] font-mono text-[var(--text-muted)]">
@@ -193,20 +193,21 @@ export default function AdminAuditLogsPage() {
 
                 <div className="text-xs">
                   <div className="font-semibold text-[var(--text-primary)]">{log.userName || 'System'}</div>
-                  <div className="font-mono text-[11px] text-[var(--text-muted)] break-all">{log.userEmail}</div>
+                  <div className="font-mono text-[11px] text-[var(--text-muted)] break-all mt-0.5">{log.userEmail}</div>
                 </div>
 
                 {(log.targetName || log.targetType) && (
-                  <div className="text-[11px] font-mono text-[var(--text-secondary)] bg-[var(--bg-hover)] p-2 border border-[var(--border-subtle)]">
-                    <span className="opacity-75">Target:</span> <strong>{log.targetName || '—'}</strong>
+                  <div className="text-[11px] font-mono text-[var(--text-secondary)] bg-[var(--bg-elevated)] p-2.5 rounded-md border border-[var(--border-subtle)]">
+                    <span className="text-[var(--text-muted)]">Target:</span>{' '}
+                    <strong className="text-[var(--text-primary)]">{log.targetName || '—'}</strong>
                     {log.targetType && (
-                      <span className="text-[10px] opacity-75 ml-1">({log.targetType})</span>
+                      <span className="text-[10px] text-[var(--text-muted)] ml-1">({log.targetType})</span>
                     )}
                   </div>
                 )}
 
                 {log.details && Object.keys(log.details).length > 0 && (
-                  <div className="text-[10px] font-mono text-[var(--text-muted)] break-all bg-[var(--bg-hover)]/50 p-1.5 border border-[var(--border-subtle)]">
+                  <div className="text-[10px] font-mono text-[var(--text-muted)] break-all bg-[var(--bg-main)] p-2 rounded border border-[var(--border-subtle)]">
                     {JSON.stringify(log.details)}
                   </div>
                 )}
@@ -217,24 +218,26 @@ export default function AdminAuditLogsPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="border-t border-[var(--border-subtle)] p-3 bg-[var(--bg-hover)] flex items-center justify-between text-xs">
-            <span className="text-[var(--text-muted)]">
+          <div className="border-t border-[var(--border-subtle)] p-3 px-4 bg-[var(--bg-elevated)] flex items-center justify-between text-xs">
+            <span className="text-[var(--text-secondary)] font-mono text-[11px]">
               Page {page} of {totalPages}
             </span>
-            <div className="space-x-1.5">
+            <div className="flex items-center space-x-2">
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="px-3 py-1 border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] disabled:opacity-40 cursor-pointer"
+                className="dms-btn-secondary px-3 py-1.5 text-xs"
               >
-                Previous
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Previous</span>
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="px-3 py-1 border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] disabled:opacity-40 cursor-pointer"
+                className="dms-btn-secondary px-3 py-1.5 text-xs"
               >
-                Next
+                <span>Next</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

@@ -40,57 +40,41 @@ export default function CreateFolderModal({ parentFolderId = null, parentName = 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-      <div
-        className={`border max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto ${
-          isDark
-            ? 'bg-[#141c2b] border-[#334155] text-[#f8fafc]'
-            : 'bg-[#ffffff] border-[#111111] text-[#111111]'
-        }`}
-      >
-        <div
-          className={`px-4 sm:px-5 py-3 flex items-center justify-between border-b ${
-            isDark
-              ? 'bg-[#0f172a] border-[#243042] text-[#f8fafc]'
-              : 'bg-[#111111] border-[#111111] text-[#ffffff]'
-          }`}
-        >
+    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3.5 sm:p-4">
+      <div className="dms-card max-w-md w-full overflow-hidden max-h-[90vh] flex flex-col">
+        <div className="px-5 py-3.5 flex items-center justify-between border-b border-[var(--border-color)] bg-[var(--bg-elevated)]">
           <div className="flex items-center space-x-2">
-            <FolderPlus className="w-4 h-4" />
-            <h3 className="font-semibold text-xs sm:text-sm">Create New Folder</h3>
+            <div className="w-7 h-7 rounded-md flex items-center justify-center bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+              <FolderPlus className="w-4 h-4" />
+            </div>
+            <h3 className="font-semibold text-xs sm:text-sm text-[var(--text-primary)]">Create New Folder</h3>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close create folder modal"
-            className="p-1 hover:opacity-75 transition-opacity cursor-pointer"
+            className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 text-xs overflow-y-auto flex-1">
           {error && (
-            <div
-              className={`p-2.5 border ${
-                isDark
-                  ? 'bg-[#451a1a] border-[#b91c1c] text-[#fca5a5]'
-                  : 'bg-[#fafafa] border-[#111111] text-[#111111]'
-              }`}
-            >
+            <div className="p-3 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] text-[var(--color-error-text)] text-xs">
               {error}
             </div>
           )}
 
           <div>
-            <span className={`block text-[11px] mb-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <span className="block text-[11px] font-mono text-[var(--text-muted)] mb-1">
               Parent Location:
             </span>
-            <span className="font-semibold text-xs">{parentName}</span>
+            <span className="font-semibold text-xs text-[var(--text-primary)]">{parentName}</span>
           </div>
 
           <div>
-            <label className={`block mb-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <label className="block mb-1 font-semibold uppercase tracking-wider text-[var(--text-secondary)] font-mono text-[11px]">
               Folder Name *
             </label>
             <input
@@ -99,16 +83,12 @@ export default function CreateFolderModal({ parentFolderId = null, parentName = 
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Commissioning, Diagnostics, Training"
               required
-              className={`w-full border p-2 text-xs focus:outline-none rounded-none ${
-                isDark
-                  ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-              }`}
+              className="dms-input"
             />
           </div>
 
           <div>
-            <label className={`block mb-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <label className="block mb-1 font-semibold uppercase tracking-wider text-[var(--text-secondary)] font-mono text-[11px]">
               Folder Code / Identifier (Optional)
             </label>
             <input
@@ -116,16 +96,12 @@ export default function CreateFolderModal({ parentFolderId = null, parentName = 
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="e.g. DOConCD_SINUMERIK_COMM"
-              className={`w-full border p-2 text-xs font-mono focus:outline-none rounded-none ${
-                isDark
-                  ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-              }`}
+              className="dms-input font-mono"
             />
           </div>
 
           <div>
-            <label className={`block mb-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <label className="block mb-1 font-semibold uppercase tracking-wider text-[var(--text-secondary)] font-mono text-[11px]">
               Description (Optional)
             </label>
             <textarea
@@ -133,39 +109,23 @@ export default function CreateFolderModal({ parentFolderId = null, parentName = 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief description of the folder's technical scope..."
-              className={`w-full border p-2 text-xs focus:outline-none rounded-none ${
-                isDark
-                  ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-              }`}
+              className="dms-input min-h-[64px]"
             />
           </div>
 
-          <div
-            className={`border-t pt-3 flex items-center justify-end space-x-2 ${
-              isDark ? 'border-[#243042]' : 'border-[#e5e5e5]'
-            }`}
-          >
+          <div className="border-t border-[var(--border-subtle)] pt-4 flex items-center justify-end space-x-2.5">
             <button
               type="button"
               onClick={onClose}
               disabled={saving}
-              className={`px-4 py-2.5 min-h-[44px] border rounded-none cursor-pointer transition-colors ${
-                isDark
-                  ? 'border-[#334155] text-[#cbd5e1] hover:bg-[#1e293b]'
-                  : 'border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
-              }`}
+              className="dms-btn-secondary px-4 py-2 text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving || !name.trim()}
-              className={`px-4 py-2.5 min-h-[44px] font-semibold uppercase tracking-wider rounded-none cursor-pointer disabled:opacity-50 transition-colors ${
-                isDark
-                  ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                  : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-              }`}
+              className="dms-btn-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider"
             >
               {saving ? 'Creating...' : 'Create Folder'}
             </button>

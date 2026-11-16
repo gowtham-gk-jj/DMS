@@ -13,6 +13,7 @@ import {
   Maximize2,
   Minimize2,
   Info,
+  X,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import simodriveCatalogue from '../data/simodrive_catalogue_extracted.json';
@@ -265,27 +266,13 @@ export default function DOConCDTable({
   };
 
   return (
-    <div
-      className={`w-full border font-sans shadow-xs transition-colors duration-150 ${
-        isDark
-          ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-          : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-      }`}
-    >
+    <div className="w-full dms-card overflow-hidden">
       {/* Siemens-Style Control & Filter Toolbar */}
-      <div
-        className={`border-b p-3 flex flex-col md:flex-row flex-wrap items-stretch md:items-center justify-between gap-3 text-xs ${
-          isDark ? 'bg-[#111827] border-[#243042]' : 'bg-[#fafafa] border-[#e5e5e5]'
-        }`}
-      >
+      <div className="border-b border-[var(--border-color)] p-3.5 sm:p-4 flex flex-col md:flex-row flex-wrap items-stretch md:items-center justify-between gap-3 text-xs bg-[var(--bg-elevated)]">
         {/* Left Controls: Filter Dropdowns & Live Search */}
-        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-2.5">
-          <span
-            className={`font-bold uppercase tracking-wider flex items-center gap-1.5 font-mono text-[11px] ${
-              isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-            }`}
-          >
-            <Filter className={`w-3.5 h-3.5 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`} />
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5">
+          <span className="font-bold uppercase tracking-wider flex items-center gap-1.5 font-mono text-[11px] text-[var(--text-secondary)]">
+            <Filter className="w-3.5 h-3.5 text-[var(--primary-blue)]" />
             Filter:
           </span>
 
@@ -294,11 +281,7 @@ export default function DOConCDTable({
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             aria-label="Filter by Category"
-            className={`px-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs border rounded-none focus:outline-none transition-colors ${
-              isDark
-                ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155] focus:border-[#60a5fa]'
-                : 'bg-[#ffffff] text-[#111111] border-[#cccccc] focus:border-[#111111]'
-            }`}
+            className="px-3 py-1.5 min-h-[38px] text-xs rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary-blue)] transition-colors"
           >
             <option value="ALL">All Categories ({activeCatalogue.length})</option>
             {activeCategoryOrder.map((c) => {
@@ -317,11 +300,7 @@ export default function DOConCDTable({
               value={selectedSystem}
               onChange={(e) => setSelectedSystem(e.target.value)}
               aria-label="Filter by System"
-              className={`px-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs border rounded-none focus:outline-none transition-colors ${
-                isDark
-                  ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] text-[#111111] border-[#cccccc] focus:border-[#111111]'
-              }`}
+              className="px-3 py-1.5 min-h-[38px] text-xs rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary-blue)] transition-colors"
             >
               <option value="ALL">All Systems ({systemOptions.length})</option>
               {systemOptions.map((s) => (
@@ -334,21 +313,13 @@ export default function DOConCDTable({
 
           {/* Live Search: searches System, Title, Order No, and File name */}
           <div className="relative flex-1 sm:flex-initial">
-            <Search
-              className={`w-3.5 h-3.5 absolute left-2.5 top-3.5 sm:top-2.5 pointer-events-none ${
-                isDark ? 'text-[#64748b]' : 'text-[#777777]'
-              }`}
-            />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-muted)]" />
             <input
               type="text"
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
-              placeholder="Search System, Title, Order No, File name..."
-              className={`pl-8 pr-2.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[36px] text-xs w-full sm:w-64 border rounded-none focus:outline-none transition-colors ${
-                isDark
-                  ? 'bg-[#0f172a] text-[#f8fafc] placeholder-[#64748b] border-[#334155] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] text-[#111111] placeholder-[#888888] border-[#cccccc] focus:border-[#111111]'
-              }`}
+              placeholder="Search System, Title, Order No, File..."
+              className="pl-9 pr-3 py-1.5 min-h-[38px] text-xs w-full sm:w-64 rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary-blue)] transition-colors"
             />
           </div>
 
@@ -360,11 +331,9 @@ export default function DOConCDTable({
                 setSelectedSystem('ALL');
                 setSearchFilter('');
               }}
-              className={`underline text-xs cursor-pointer py-1 ${
-                isDark ? 'text-[#60a5fa] hover:text-[#93c5fd]' : 'text-[#555555] hover:text-[#111111]'
-              }`}
+              className="text-xs text-[var(--primary-blue)] hover:underline cursor-pointer py-1 font-medium"
             >
-              Clear
+              Clear Filters
             </button>
           )}
         </div>
@@ -373,22 +342,14 @@ export default function DOConCDTable({
         <div className="flex flex-wrap items-center justify-between md:justify-end gap-2.5 pt-2 md:pt-0 border-t md:border-t-0 border-[var(--border-subtle)]">
           {/* Sorting Selector */}
           <div className="flex items-center space-x-1.5">
-            <span
-              className={`font-mono text-[11px] uppercase tracking-wider hidden sm:inline ${
-                isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-              }`}
-            >
+            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline text-[var(--text-muted)]">
               Order:
             </span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               aria-label="Ordering Options"
-              className={`px-2 py-1 min-h-[44px] sm:min-h-[36px] text-xs font-medium border rounded-none focus:outline-none transition-colors ${
-                isDark
-                  ? 'bg-[#0f172a] text-[#f8fafc] border-[#334155] focus:border-[#60a5fa]'
-                  : 'bg-[#ffffff] text-[#111111] border-[#cccccc] focus:border-[#111111]'
-              }`}
+              className="px-2.5 py-1.5 min-h-[38px] text-xs font-medium rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary-blue)] transition-colors"
             >
               <option value="catalogue">Official Siemens Catalogue Order (DEFAULT)</option>
               <option value="system">System</option>
@@ -399,16 +360,12 @@ export default function DOConCDTable({
           </div>
 
           {/* Expand / Collapse All buttons */}
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1.5">
             <button
               type="button"
               onClick={expandAll}
               title="Expand all categories"
-              className={`px-2 py-1 min-h-[44px] sm:min-h-[36px] text-[11px] font-mono border cursor-pointer transition-colors ${
-                isDark
-                  ? 'bg-[#1e293b] border-[#334155] text-[#cbd5e1] hover:bg-[#334155]'
-                  : 'bg-[#ffffff] border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
-              }`}
+              className="dms-btn-secondary px-2.5 py-1 min-h-[36px] text-[11px] font-mono"
             >
               Expand All
             </button>
@@ -416,11 +373,7 @@ export default function DOConCDTable({
               type="button"
               onClick={collapseAll}
               title="Collapse all categories"
-              className={`px-2 py-1 min-h-[44px] sm:min-h-[36px] text-[11px] font-mono border cursor-pointer transition-colors ${
-                isDark
-                  ? 'bg-[#1e293b] border-[#334155] text-[#cbd5e1] hover:bg-[#334155]'
-                  : 'bg-[#ffffff] border-[#cccccc] text-[#111111] hover:bg-[#f5f5f5]'
-              }`}
+              className="dms-btn-secondary px-2.5 py-1 min-h-[36px] text-[11px] font-mono"
             >
               Collapse All
             </button>
@@ -429,14 +382,11 @@ export default function DOConCDTable({
       </div>
 
       {/* Summary Stat Bar */}
-      <div
-        className={`px-3 py-1.5 border-b text-[11px] font-mono flex items-center justify-between ${
-          isDark ? 'bg-[#0b0f17] border-[#243042] text-[#94a3b8]' : 'bg-[#f0f0f0] border-[#e5e5e5] text-[#666666]'
-        }`}
-      >
+      <div className="px-4 py-2 border-b border-[var(--border-subtle)] text-[11px] font-mono flex items-center justify-between bg-[var(--bg-main)] text-[var(--text-muted)]">
         <span>
-          Showing <strong>{filteredDocuments.length}</strong> of <strong>{activeCatalogue.length}</strong> official
-          catalogue records across <strong>{categoriesToRender.length}</strong> categories
+          Showing <strong className="text-[var(--text-primary)]">{filteredDocuments.length}</strong> of{' '}
+          <strong className="text-[var(--text-primary)]">{activeCatalogue.length}</strong> official catalogue records across{' '}
+          <strong className="text-[var(--text-primary)]">{categoriesToRender.length}</strong> categories
         </span>
         <span className="hidden sm:inline">Continuous Full-View (No Pagination)</span>
       </div>
@@ -445,68 +395,43 @@ export default function DOConCDTable({
       <div className="hidden md:block overflow-x-auto w-full">
         <table className="w-full text-left border-collapse text-xs min-w-[880px]">
           <thead>
-            <tr
-              className={`font-semibold text-xs tracking-wide select-none ${
-                isDark ? 'bg-[#0f172a] text-[#f8fafc] border-b border-[#243042]' : 'bg-[#111111] text-[#ffffff]'
-              }`}
-            >
-              <th className={`py-2.5 px-3 border-r w-32 ${isDark ? 'border-[#243042]' : 'border-[#333333]'}`}>
+            <tr className="font-semibold text-xs tracking-wider select-none bg-[var(--table-header-bg)] text-[var(--table-header-text)] border-b border-[var(--border-color)]">
+              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-32 font-mono uppercase text-[11px]">
                 System
               </th>
-              <th className={`py-2.5 px-4 border-r ${isDark ? 'border-[#243042]' : 'border-[#333333]'}`}>
+              <th className="py-2.5 px-4 border-r border-[var(--border-subtle)] uppercase text-[11px]">
                 Title
               </th>
-              <th
-                className={`py-2.5 px-2.5 border-r w-20 text-center ${
-                  isDark ? 'border-[#243042]' : 'border-[#333333]'
-                }`}
-              >
+              <th className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] w-20 text-center font-mono uppercase text-[11px]">
                 SW
               </th>
-              <th
-                className={`py-2.5 px-2.5 border-r w-24 text-center ${
-                  isDark ? 'border-[#243042]' : 'border-[#333333]'
-                }`}
-              >
+              <th className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] w-24 text-center font-mono uppercase text-[11px]">
                 Edition
               </th>
-              <th className={`py-2.5 px-3 border-r w-44 ${isDark ? 'border-[#243042]' : 'border-[#333333]'}`}>
+              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-44 font-mono uppercase text-[11px]">
                 Order No.
               </th>
-              <th
-                className={`py-2.5 px-3 border-r w-32 text-center ${
-                  isDark ? 'border-[#243042]' : 'border-[#333333]'
-                }`}
-              >
+              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-32 text-center font-mono uppercase text-[11px]">
                 File name
               </th>
-              <th
-                className={`py-2.5 px-3 border-r w-28 text-center ${
-                  isDark ? 'border-[#243042]' : 'border-[#333333]'
-                }`}
-              >
+              <th className="py-2.5 px-3 border-r border-[var(--border-subtle)] w-28 text-center font-mono uppercase text-[11px]">
                 Status
               </th>
-              <th className="py-2.5 px-3 text-center w-36">Actions</th>
+              <th className="py-2.5 px-3 text-center w-36 uppercase text-[11px]">
+                Actions
+              </th>
             </tr>
           </thead>
 
           <tbody>
             {categoriesToRender.length === 0 ? (
               <tr>
-                <td
-                  colSpan={8}
-                  className={`py-12 text-center ${
-                    isDark ? 'bg-[#141c2b] text-[#94a3b8]' : 'bg-[#ffffff] text-[#777777]'
-                  }`}
-                >
-                  <FileText
-                    className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-[#334155]' : 'text-[#cccccc]'}`}
-                  />
-                  <p className={`font-semibold text-sm ${isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}`}>
+                <td colSpan={8} className="py-12 text-center bg-[var(--bg-card)] text-[var(--text-secondary)]">
+                  <FileText className="w-8 h-8 mx-auto mb-2 text-[var(--text-muted)]" />
+                  <p className="font-semibold text-sm text-[var(--text-primary)]">
                     No catalogue entries match the current filter.
                   </p>
-                  <p className="text-xs mt-1">Try resetting the search or category filters.</p>
+                  <p className="text-xs mt-1 text-[var(--text-muted)]">Try resetting the search or category filters.</p>
                 </td>
               </tr>
             ) : (
@@ -521,44 +446,24 @@ export default function DOConCDTable({
                       data-cat-row="true"
                       data-category={category}
                       onClick={() => toggleCategory(category)}
-                      className={`border-y cursor-pointer select-none transition-colors ${
-                        isDark
-                          ? 'bg-[#111827] border-[#243042] hover:bg-[#162032]'
-                          : 'bg-[#f5f5f5] border-[#e5e5e5] hover:bg-[#eaeaea]'
-                      }`}
+                      className="border-y border-[var(--border-color)] cursor-pointer select-none transition-colors bg-[var(--bg-elevated)] hover:bg-[var(--bg-hover)]"
                     >
                       <td colSpan={8} className="py-2.5 px-3 text-xs">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             {isCollapsed ? (
-                              <ChevronRight
-                                className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`}
-                              />
+                              <ChevronRight className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
                             ) : (
-                              <ChevronDown
-                                className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`}
-                              />
+                              <ChevronDown className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
                             )}
-                            <span
-                              className={`uppercase tracking-wide font-bold ${
-                                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                              }`}
-                            >
+                            <span className="uppercase tracking-wide font-bold text-[var(--text-primary)] font-mono">
                               {category}
                             </span>
-                            <span
-                              className={`text-[11px] font-normal ${
-                                isDark ? 'text-[#94a3b8]' : 'text-[#666666]'
-                              }`}
-                            >
+                            <span className="text-[11px] font-normal text-[var(--text-muted)]">
                               ({categoryDocs.length} {categoryDocs.length === 1 ? 'document' : 'documents'})
                             </span>
                           </div>
-                          <span
-                            className={`text-[11px] font-mono hidden sm:inline ${
-                              isDark ? 'text-[#64748b]' : 'text-[#777777]'
-                            }`}
-                          >
+                          <span className="text-[11px] font-mono hidden sm:inline text-[var(--text-muted)]">
                             {isCollapsed ? 'Click to expand' : 'Click to collapse'}
                           </span>
                         </div>
@@ -579,65 +484,37 @@ export default function DOConCDTable({
                             data-doc-id={doc._id}
                             data-category={category}
                             onClick={() => handleRowClick(doc)}
-                            className={`border-b transition-colors cursor-pointer ${
-                              isDark
-                                ? idx % 2 === 1
-                                  ? 'bg-[#141c2b] border-[#1e293b]'
-                                  : 'bg-[#0f172a] border-[#1e293b]'
-                                : idx % 2 === 1
-                                ? 'bg-[#fafafa] border-[#e5e5e5]'
-                                : 'bg-[#ffffff] border-[#e5e5e5]'
-                            } ${isDark ? 'hover:bg-[#1e293b]' : 'hover:bg-[#f0f0f0]'}`}
+                            className={`border-b border-[var(--border-subtle)] transition-colors cursor-pointer ${
+                              idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
+                            } hover:bg-[var(--bg-hover)]`}
                           >
                             {/* 1. System */}
-                            <td
-                              className={`py-2 px-3 border-r font-mono text-[11px] ${
-                                isDark ? 'border-[#243042] text-[#f8fafc]' : 'border-[#e5e5e5] text-[#111111]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] font-mono text-[11px] text-[var(--text-primary)]">
                               {doc.system && doc.system !== '—' ? (
                                 <span
-                                  className={`border px-1.5 py-0.5 font-semibold text-[10px] inline-block max-w-[130px] truncate ${
-                                    isDark
-                                      ? 'bg-[#1e293b] border-[#334155] text-[#f8fafc]'
-                                      : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-                                  }`}
+                                  className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs font-semibold text-[10px] inline-block max-w-[130px] truncate bg-[var(--bg-card)] text-[var(--text-primary)]"
                                   title={doc.system}
                                 >
                                   {doc.system}
                                 </span>
                               ) : (
-                                <span className={isDark ? 'text-[#64748b]' : 'text-[#999999]'}>—</span>
+                                <span className="text-[var(--text-muted)]">—</span>
                               )}
                             </td>
 
                             {/* 2. Title */}
-                            <td
-                              className={`py-2 px-4 border-r ${
-                                isDark ? 'border-[#243042] text-[#f8fafc]' : 'border-[#e5e5e5] text-[#111111]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-4 border-r border-[var(--border-subtle)] text-[var(--text-primary)]">
                               <div className="flex items-center space-x-2">
                                 <FileText
                                   className={`w-3.5 h-3.5 shrink-0 ${
-                                    isAvailable
-                                      ? isDark
-                                        ? 'text-[#60a5fa]'
-                                        : 'text-[#111111]'
-                                      : isDark
-                                      ? 'text-[#64748b]'
-                                      : 'text-[#888888]'
+                                    isAvailable ? 'text-[var(--primary-blue)]' : 'text-[var(--text-muted)]'
                                   }`}
                                 />
                                 <span
                                   className={`font-medium ${
                                     isAvailable
-                                      ? isDark
-                                        ? 'text-[#f8fafc] hover:underline'
-                                        : 'text-[#111111] hover:underline'
-                                      : isDark
-                                      ? 'text-[#94a3b8]'
-                                      : 'text-[#555555]'
+                                      ? 'text-[var(--text-primary)] hover:text-[var(--primary-blue)]'
+                                      : 'text-[var(--text-secondary)]'
                                   } leading-snug`}
                                 >
                                   {doc.title && doc.title !== '—' ? doc.title : '—'}
@@ -646,78 +523,48 @@ export default function DOConCDTable({
                             </td>
 
                             {/* 3. SW (Software Version) */}
-                            <td
-                              className={`py-2 px-2.5 border-r text-center font-mono text-[11px] ${
-                                isDark ? 'border-[#243042] text-[#94a3b8]' : 'border-[#e5e5e5] text-[#555555]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] text-center font-mono text-[11px] text-[var(--text-secondary)]">
                               {doc.softwareVersion && doc.softwareVersion !== '—' ? (
                                 doc.softwareVersion
                               ) : (
-                                <span className={isDark ? 'text-[#64748b]' : 'text-[#999999]'}>—</span>
+                                <span className="text-[var(--text-muted)]">—</span>
                               )}
                             </td>
 
                             {/* 4. Edition */}
-                            <td
-                              className={`py-2 px-2.5 border-r text-center font-mono text-[11px] ${
-                                isDark ? 'border-[#243042] text-[#94a3b8]' : 'border-[#e5e5e5] text-[#555555]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-2.5 border-r border-[var(--border-subtle)] text-center font-mono text-[11px] text-[var(--text-secondary)]">
                               {doc.edition && doc.edition !== '—' ? (
                                 doc.edition
                               ) : (
-                                <span className={isDark ? 'text-[#64748b]' : 'text-[#999999]'}>—</span>
+                                <span className="text-[var(--text-muted)]">—</span>
                               )}
                             </td>
 
                             {/* 5. Order No. */}
-                            <td
-                              className={`py-2 px-3 border-r font-mono text-[11px] whitespace-nowrap ${
-                                isDark ? 'border-[#243042] text-[#cbd5e1]' : 'border-[#e5e5e5] text-[#111111]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] font-mono text-[11px] whitespace-nowrap text-[var(--text-secondary)]">
                               {doc.orderNumber && doc.orderNumber !== '—' ? (
                                 doc.orderNumber
                               ) : (
-                                <span className={isDark ? 'text-[#64748b]' : 'text-[#999999]'}>—</span>
+                                <span className="text-[var(--text-muted)]">—</span>
                               )}
                             </td>
 
                             {/* 6. File name */}
-                            <td
-                              className={`py-2 px-3 border-r text-center font-mono font-bold text-[11px] ${
-                                isDark ? 'border-[#243042] text-[#f8fafc]' : 'border-[#e5e5e5] text-[#111111]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center font-mono font-bold text-[11px] text-[var(--text-primary)]">
                               {doc.fileName && doc.fileName !== '—' ? (
-                                <span
-                                  className={`px-1.5 py-0.5 border ${
-                                    isDark
-                                      ? 'bg-[#1e293b] border-[#334155] text-[#60a5fa]'
-                                      : 'bg-[#f0f0f0] border-[#cccccc] text-[#111111]'
-                                  }`}
-                                >
+                                <span className="px-1.5 py-0.5 rounded-xs border border-[var(--border-color)] bg-[var(--bg-main)] text-[var(--primary-blue)]">
                                   {doc.fileName}
                                 </span>
                               ) : (
-                                <span className={isDark ? 'text-[#64748b]' : 'text-[#999999]'}>—</span>
+                                <span className="text-[var(--text-muted)]">—</span>
                               )}
                             </td>
 
                             {/* 7. Status */}
-                            <td
-                              className={`py-2 px-3 border-r text-center whitespace-nowrap ${
-                                isDark ? 'border-[#243042]' : 'border-[#e5e5e5]'
-                              }`}
-                            >
+                            <td className="py-2.5 px-3 border-r border-[var(--border-subtle)] text-center whitespace-nowrap">
                               {isAvailable ? (
                                 <span
-                                  className={`inline-flex items-center space-x-1 px-2 py-0.5 border font-mono text-[10px] font-semibold select-none ${
-                                    isDark
-                                      ? 'bg-[#064e3b] text-[#a7f3d0] border-[#047857]'
-                                      : 'bg-[#e6f4ea] text-[#137333] border-[#ceead6]'
-                                  }`}
+                                  className="dms-badge dms-badge-success"
                                   title="Document file is stored and available in the archive"
                                 >
                                   <CheckCircle2 className="w-2.5 h-2.5" />
@@ -725,14 +572,10 @@ export default function DOConCDTable({
                                 </span>
                               ) : (
                                 <span
-                                  className={`inline-flex items-center space-x-1 px-2 py-0.5 border font-mono text-[10px] font-semibold select-none ${
-                                    isDark
-                                      ? 'bg-[#291e14] text-[#fcd34d] border-[#b45309]'
-                                      : 'bg-[#fffbeb] text-[#b45309] border-[#fef3c7]'
-                                  }`}
+                                  className="dms-badge dms-badge-warning"
                                   title="Document file missing from physical archive"
                                 >
-                                  <AlertTriangle className="w-2.5 h-2.5 text-amber-500" />
+                                  <AlertTriangle className="w-2.5 h-2.5" />
                                   <span>Missing</span>
                                 </span>
                               )}
@@ -740,7 +583,7 @@ export default function DOConCDTable({
 
                             {/* 8. Actions (Preview and Download) */}
                             <td
-                              className="py-2 px-3 text-center whitespace-nowrap"
+                              className="py-2.5 px-3 text-center whitespace-nowrap"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="flex items-center justify-center space-x-1.5">
@@ -751,13 +594,9 @@ export default function DOConCDTable({
                                       onClick={() => onSelectDocument && onSelectDocument(doc)}
                                       title="Preview Document"
                                       aria-label={`Preview ${doc.title}`}
-                                      className={`px-2 py-1 border text-[11px] font-medium flex items-center space-x-1 cursor-pointer transition-colors ${
-                                        isDark
-                                          ? 'border-[#334155] text-[#f8fafc] bg-[#1e293b] hover:bg-[#334155]'
-                                          : 'border-[#cccccc] text-[#111111] bg-[#ffffff] hover:bg-[#f0f0f0]'
-                                      }`}
+                                      className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
                                     >
-                                      <Eye className="w-3.5 h-3.5 text-sky-400" />
+                                      <Eye className="w-3.5 h-3.5 text-[var(--primary-blue)]" />
                                       <span>Preview</span>
                                     </button>
 
@@ -771,11 +610,7 @@ export default function DOConCDTable({
                                         }
                                         title="Download Manual"
                                         aria-label={`Download ${doc.title}`}
-                                        className={`px-2 py-1 border text-[11px] font-medium flex items-center space-x-1 cursor-pointer transition-colors ${
-                                          isDark
-                                            ? 'border-[#334155] text-[#cbd5e1] hover:bg-[#1e293b] hover:text-[#f8fafc]'
-                                            : 'border-[#cccccc] text-[#555555] hover:bg-[#f5f5f5] hover:text-[#111111]'
-                                        }`}
+                                        className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
                                       >
                                         <Download className="w-3.5 h-3.5" />
                                         <span>Download</span>
@@ -786,14 +621,10 @@ export default function DOConCDTable({
                                   <button
                                     type="button"
                                     onClick={() => setUnavailableModalDoc(doc)}
-                                    className={`px-2 py-1 border text-[11px] font-mono flex items-center space-x-1 cursor-pointer transition-colors ${
-                                      isDark
-                                        ? 'bg-[#1e293b] text-[#94a3b8] border-[#334155] hover:bg-[#334155]'
-                                        : 'bg-[#f5f5f5] text-[#777777] border-[#cccccc] hover:bg-[#eeeeee]'
-                                    }`}
+                                    className="dms-btn-secondary px-2 py-1 min-h-[32px] text-[11px] font-mono text-[var(--text-muted)]"
                                     title="Physical manual file not in repository"
                                   >
-                                    <Info className="w-3 h-3 text-amber-500" />
+                                    <Info className="w-3 h-3 text-[var(--color-warning)]" />
                                     <span>Details</span>
                                   </button>
                                 )}
@@ -811,14 +642,14 @@ export default function DOConCDTable({
       </div>
 
       {/* MOBILE VIEW (< md): STRUCTURED CARDS WITH TOUCH TARGETS >= 44PX */}
-      <div className="block md:hidden p-2.5 space-y-3">
+      <div className="block md:hidden p-3 space-y-3">
         {categoriesToRender.length === 0 ? (
-          <div className={`p-8 text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
-            <FileText className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-[#334155]' : 'text-[#cccccc]'}`} />
-            <p className={`font-semibold text-sm ${isDark ? 'text-[#f8fafc]' : 'text-[#111111]'}`}>
+          <div className="p-8 text-center text-[var(--text-secondary)]">
+            <FileText className="w-8 h-8 mx-auto mb-2 text-[var(--text-muted)]" />
+            <p className="font-semibold text-sm text-[var(--text-primary)]">
               No catalogue entries match the current filter.
             </p>
-            <p className="text-xs mt-1">Try resetting the search or category filters.</p>
+            <p className="text-xs mt-1 text-[var(--text-muted)]">Try resetting the search or category filters.</p>
           </div>
         ) : (
           categoriesToRender.map((category) => {
@@ -828,53 +659,37 @@ export default function DOConCDTable({
             return (
               <div
                 key={`mob_cat_${category}`}
-                className={`border ${
-                  isDark ? 'border-[#243042] bg-[#0f172a]' : 'border-[#e5e5e5] bg-[#ffffff]'
-                }`}
+                className="rounded-lg border border-[var(--border-color)] overflow-hidden bg-[var(--bg-card)]"
               >
                 {/* Mobile Category Accordion Header */}
                 <button
                   type="button"
                   onClick={() => toggleCategory(category)}
-                  className={`w-full p-3 min-h-[44px] flex items-center justify-between text-left transition-colors cursor-pointer ${
-                    isDark ? 'bg-[#111827] hover:bg-[#162032]' : 'bg-[#f5f5f5] hover:bg-[#eaeaea]'
-                  }`}
+                  className="w-full p-3.5 min-h-[44px] flex items-center justify-between text-left transition-colors cursor-pointer bg-[var(--bg-elevated)] hover:bg-[var(--bg-hover)]"
                 >
                   <div className="flex items-center space-x-2 min-w-0 pr-2">
                     {isCollapsed ? (
-                      <ChevronRight
-                        className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`}
-                      />
+                      <ChevronRight className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
                     ) : (
-                      <ChevronDown
-                        className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#60a5fa]' : 'text-[#555555]'}`}
-                      />
+                      <ChevronDown className="w-4 h-4 shrink-0 text-[var(--primary-blue)]" />
                     )}
                     <div className="min-w-0">
-                      <div
-                        className={`text-xs font-bold uppercase tracking-wide truncate ${
-                          isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                        }`}
-                      >
+                      <div className="text-xs font-bold uppercase tracking-wide truncate text-[var(--text-primary)] font-mono">
                         {category}
                       </div>
-                      <div className={`text-[10px] font-mono ${isDark ? 'text-[#94a3b8]' : 'text-[#666666]'}`}>
+                      <div className="text-[10px] font-mono text-[var(--text-muted)]">
                         {categoryDocs.length} {categoryDocs.length === 1 ? 'doc' : 'docs'}
                       </div>
                     </div>
                   </div>
-                  <span
-                    className={`text-[9px] font-mono px-1.5 py-0.5 border shrink-0 ${
-                      isDark ? 'border-[#334155] text-[#94a3b8]' : 'border-[#cccccc] text-[#666666]'
-                    }`}
-                  >
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-xs border border-[var(--border-color)] shrink-0 text-[var(--text-muted)]">
                     {isCollapsed ? 'EXPAND' : 'COLLAPSE'}
                   </span>
                 </button>
 
                 {/* Mobile Document Cards List (Continuous List, No Pagination) */}
                 {!isCollapsed && (
-                  <div className={`divide-y ${isDark ? 'divide-[#1e293b]' : 'divide-[#e5e5e5]'}`}>
+                  <div className="divide-y divide-[var(--border-subtle)]">
                     {categoryDocs.map((doc, idx) => {
                       const isAvailable =
                         doc.status === 'Available' ||
@@ -883,58 +698,28 @@ export default function DOConCDTable({
                       return (
                         <div
                           key={`mob_doc_${doc._id || idx}`}
-                          className={`p-3 space-y-2.5 transition-colors ${
-                            idx % 2 === 1
-                              ? isDark
-                                ? 'bg-[#141c2b]'
-                                : 'bg-[#fafafa]'
-                              : isDark
-                              ? 'bg-[#0f172a]'
-                              : 'bg-[#ffffff]'
+                          className={`p-3.5 space-y-2.5 transition-colors ${
+                            idx % 2 === 1 ? 'bg-[var(--bg-card)]' : 'bg-[var(--bg-elevated)]'
                           }`}
                         >
                           {/* Badges: System, SW, Edition, Status */}
                           <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-mono">
-                            <span
-                              className={`border px-1.5 py-0.5 font-semibold ${
-                                isDark
-                                  ? 'bg-[#1e293b] border-[#334155] text-[#f8fafc]'
-                                  : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-                              }`}
-                            >
+                            <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs font-semibold bg-[var(--bg-card)] text-[var(--text-primary)]">
                               {doc.system && doc.system !== '—' ? doc.system : '—'}
                             </span>
                             {doc.softwareVersion && doc.softwareVersion !== '—' && (
-                              <span
-                                className={`border px-1.5 py-0.5 ${
-                                  isDark
-                                    ? 'bg-[#111827] border-[#243042] text-[#94a3b8]'
-                                    : 'bg-[#f0f0f0] border-[#dddddd] text-[#666666]'
-                                }`}
-                              >
+                              <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs text-[var(--text-secondary)]">
                                 SW {doc.softwareVersion}
                               </span>
                             )}
                             {doc.edition && doc.edition !== '—' && (
-                              <span
-                                className={`border px-1.5 py-0.5 ${
-                                  isDark
-                                    ? 'bg-[#111827] border-[#243042] text-[#94a3b8]'
-                                    : 'bg-[#f0f0f0] border-[#dddddd] text-[#666666]'
-                                }`}
-                              >
+                              <span className="border border-[var(--border-color)] px-1.5 py-0.5 rounded-xs text-[var(--text-secondary)]">
                                 Ed: {doc.edition}
                               </span>
                             )}
                             <span
-                              className={`ml-auto border px-1.5 py-0.5 font-semibold text-[9px] ${
-                                isAvailable
-                                  ? isDark
-                                    ? 'bg-[#064e3b] text-[#6ee7b7] border-[#047857]'
-                                    : 'bg-[#ecfdf5] text-[#065f46] border-[#a7f3d0]'
-                                  : isDark
-                                  ? 'bg-[#291e14] text-[#fcd34d] border-[#b45309]'
-                                  : 'bg-[#fffbeb] text-[#b45309] border-[#fef3c7]'
+                              className={`ml-auto dms-badge ${
+                                isAvailable ? 'dms-badge-success' : 'dms-badge-warning'
                               }`}
                             >
                               {isAvailable ? 'Available' : 'Missing'}
@@ -949,12 +734,8 @@ export default function DOConCDTable({
                             <h4
                               className={`text-xs font-semibold leading-snug break-words ${
                                 isAvailable
-                                  ? isDark
-                                    ? 'text-[#f8fafc] group-hover:text-[#60a5fa]'
-                                    : 'text-[#111111] group-hover:underline'
-                                  : isDark
-                                  ? 'text-[#94a3b8]'
-                                  : 'text-[#777777]'
+                                  ? 'text-[var(--text-primary)] group-hover:text-[var(--primary-blue)]'
+                                  : 'text-[var(--text-secondary)]'
                               }`}
                             >
                               {doc.title && doc.title !== '—' ? doc.title : '—'}
@@ -962,41 +743,29 @@ export default function DOConCDTable({
                           </div>
 
                           {/* Order No & File Name */}
-                          <div
-                            className={`flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono ${
-                              isDark ? 'text-[#94a3b8]' : 'text-[#666666]'
-                            }`}
-                          >
+                          <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono text-[var(--text-secondary)]">
                             <div className="truncate">
-                              <span className="opacity-70">Order No.:</span>{' '}
-                              <span className="font-semibold">{doc.orderNumber || '—'}</span>
+                              <span className="text-[var(--text-muted)]">Order:</span>{' '}
+                              <span className="font-semibold text-[var(--text-primary)]">{doc.orderNumber || '—'}</span>
                             </div>
                             <div className="truncate">
-                              <span className="opacity-70">File name:</span>{' '}
-                              <span
-                                className={`px-1 font-bold ${
-                                  isDark ? 'text-[#60a5fa]' : 'text-[#111111]'
-                                }`}
-                              >
+                              <span className="text-[var(--text-muted)]">File:</span>{' '}
+                              <span className="font-bold text-[var(--primary-blue)]">
                                 {doc.fileName || '—'}
                               </span>
                             </div>
                           </div>
 
-                          {/* Action Buttons: strictly at least 44px high */}
+                          {/* Action Buttons: touch target >= 44px */}
                           <div className="flex items-center gap-2 pt-1 border-t border-[var(--border-subtle)]">
                             {isAvailable ? (
                               <>
                                 <button
                                   type="button"
                                   onClick={() => onSelectDocument && onSelectDocument(doc)}
-                                  className={`flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 border cursor-pointer transition-colors ${
-                                    isDark
-                                      ? 'bg-[#1e293b] hover:bg-[#334155] border-[#334155] text-[#f8fafc]'
-                                      : 'bg-[#fafafa] hover:bg-[#f0f0f0] border-[#cccccc] text-[#111111]'
-                                  }`}
+                                  className="dms-btn-secondary flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold"
                                 >
-                                  <Eye className="w-4 h-4 text-[#60a5fa]" />
+                                  <Eye className="w-4 h-4 text-[var(--primary-blue)]" />
                                   <span>Preview</span>
                                 </button>
                                 {userPermissions?.download !== false && (
@@ -1007,11 +776,7 @@ export default function DOConCDTable({
                                         ? onDownloadDocument(doc)
                                         : window.open(doc.secureUrl, '_blank')
                                     }
-                                    className={`flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold flex items-center justify-center space-x-1.5 cursor-pointer transition-colors ${
-                                      isDark
-                                        ? 'bg-[#f8fafc] hover:bg-[#e2e8f0] text-[#0b0f17]'
-                                        : 'bg-[#111111] hover:bg-[#333333] text-[#ffffff]'
-                                    }`}
+                                    className="dms-btn-primary flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold"
                                   >
                                     <Download className="w-4 h-4" />
                                     <span>Download</span>
@@ -1022,13 +787,9 @@ export default function DOConCDTable({
                               <button
                                 type="button"
                                 onClick={() => setUnavailableModalDoc(doc)}
-                                className={`w-full min-h-[44px] px-3 py-2 text-xs flex items-center justify-center space-x-1.5 border cursor-pointer ${
-                                  isDark
-                                    ? 'border-[#334155] text-[#94a3b8] bg-[#111827]'
-                                    : 'border-[#cccccc] text-[#666666] bg-[#f9f9f9]'
-                                }`}
+                                className="dms-btn-secondary w-full min-h-[44px] px-3 py-2 text-xs text-[var(--color-warning)]"
                               >
-                                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                                <AlertTriangle className="w-4 h-4" />
                                 <span>Document Missing from Archive</span>
                               </button>
                             )}
@@ -1045,86 +806,80 @@ export default function DOConCDTable({
       </div>
 
       {/* DOConCD Table Footer */}
-      <div
-        className={`border-t p-2.5 px-4 text-xs flex flex-col sm:flex-row items-center justify-between gap-2 ${
-          isDark ? 'bg-[#111827] border-[#243042] text-[#94a3b8]' : 'bg-[#fafafa] border-[#e5e5e5] text-[#777777]'
-        }`}
-      >
+      <div className="border-t border-[var(--border-color)] p-3 px-4 text-xs flex flex-col sm:flex-row items-center justify-between gap-2 bg-[var(--bg-elevated)] text-[var(--text-muted)]">
         <div className="flex items-center space-x-4">
           <span className="font-mono text-[10px] sm:text-[11px] text-center sm:text-left">
             DOConCD 09/2011 Master Catalogue • Siemens SINUMERIK / SIMODRIVE Reference
           </span>
         </div>
-        <div className={`font-mono text-[11px] ${isDark ? 'text-[#cbd5e1]' : 'text-[#555555]'}`}>
-          Total Catalogue Entries: <strong>{filteredDocuments.length}</strong> / <strong>{activeCatalogue.length}</strong>
+        <div className="font-mono text-[11px] text-[var(--text-secondary)]">
+          Total Entries: <strong className="text-[var(--text-primary)]">{filteredDocuments.length}</strong> /{' '}
+          <strong className="text-[var(--text-primary)]">{activeCatalogue.length}</strong>
         </div>
       </div>
 
       {/* Unavailable / Missing Document Info Modal */}
       {unavailableModalDoc && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-          <div
-            className={`border max-w-md w-full p-4 sm:p-5 space-y-4 shadow-xl max-h-[90vh] overflow-y-auto ${
-              isDark
-                ? 'bg-[#141c2b] border-[#334155] text-[#f8fafc]'
-                : 'bg-[#ffffff] border-[#111111] text-[#111111]'
-            }`}
-          >
-            <div className="flex items-center space-x-2">
-              <AlertTriangle className="w-5 h-5 text-[#f59e0b] shrink-0" />
-              <h3 className="font-bold text-sm uppercase tracking-wide">
-                Document Missing from Archive
-              </h3>
-            </div>
-            <p
-              className={`text-xs leading-relaxed ${
-                isDark ? 'text-[#cbd5e1]' : 'text-[#555555]'
-              }`}
-            >
-              This document is an authentic entry in the official Siemens DOConCD SINUMERIK / SIMODRIVE 09/2011 catalogue,
-              but its physical document file is currently not uploaded to this DMS archive.
-            </p>
-            <div
-              className={`border p-3 text-xs space-y-1 font-mono ${
-                isDark
-                  ? 'bg-[#0f172a] border-[#243042] text-[#f8fafc]'
-                  : 'bg-[#fafafa] border-[#e5e5e5] text-[#111111]'
-              }`}
-            >
-              <div>
-                <strong>Title:</strong> {unavailableModalDoc.title && unavailableModalDoc.title !== '—' ? unavailableModalDoc.title : '—'}
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3.5 sm:p-4">
+          <div className="dms-card max-w-md w-full p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <AlertTriangle className="w-5 h-5 text-[var(--color-warning)] shrink-0" />
+                <h3 className="font-bold text-sm uppercase tracking-wide text-[var(--text-primary)] font-mono">
+                  Document Missing from Archive
+                </h3>
               </div>
-              <div>
-                <strong>System:</strong> {unavailableModalDoc.system && unavailableModalDoc.system !== '—' ? unavailableModalDoc.system : '—'}
-              </div>
-              <div>
-                <strong>SW:</strong> {unavailableModalDoc.softwareVersion && unavailableModalDoc.softwareVersion !== '—' ? unavailableModalDoc.softwareVersion : '—'}
-              </div>
-              <div>
-                <strong>Edition:</strong> {unavailableModalDoc.edition && unavailableModalDoc.edition !== '—' ? unavailableModalDoc.edition : '—'}
-              </div>
-              <div>
-                <strong>Order No.:</strong> {unavailableModalDoc.orderNumber && unavailableModalDoc.orderNumber !== '—' ? unavailableModalDoc.orderNumber : '—'}
-              </div>
-              <div>
-                <strong>File name:</strong> {unavailableModalDoc.fileName && unavailableModalDoc.fileName !== '—' ? unavailableModalDoc.fileName : '—'}
-              </div>
-              <div>
-                <strong>Category:</strong> {unavailableModalDoc.category}
-              </div>
-              <div>
-                <strong>Status:</strong> Missing
-              </div>
-            </div>
-            <div className="flex justify-end pt-2">
               <button
                 type="button"
                 onClick={() => setUnavailableModalDoc(null)}
-                className={`px-4 py-2 min-h-[44px] text-xs font-semibold uppercase tracking-wider cursor-pointer ${
-                  isDark
-                    ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                    : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-                }`}
+                className="p-1 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+              This document is an authentic record in the official Siemens DOConCD SINUMERIK / SIMODRIVE 09/2011 catalogue,
+              but its physical document file has not yet been uploaded to this DMS repository.
+            </p>
+            <div className="rounded-md border border-[var(--border-color)] bg-[var(--bg-elevated)] p-3.5 text-xs space-y-1.5 font-mono">
+              <div>
+                <strong className="text-[var(--text-secondary)]">Title:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.title && unavailableModalDoc.title !== '—' ? unavailableModalDoc.title : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">System:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.system && unavailableModalDoc.system !== '—' ? unavailableModalDoc.system : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">SW Version:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.softwareVersion && unavailableModalDoc.softwareVersion !== '—' ? unavailableModalDoc.softwareVersion : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">Edition:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.edition && unavailableModalDoc.edition !== '—' ? unavailableModalDoc.edition : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">Order No.:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.orderNumber && unavailableModalDoc.orderNumber !== '—' ? unavailableModalDoc.orderNumber : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">File name:</strong>{' '}
+                <span className="text-[var(--primary-blue)] font-bold">{unavailableModalDoc.fileName && unavailableModalDoc.fileName !== '—' ? unavailableModalDoc.fileName : '—'}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">Category:</strong>{' '}
+                <span className="text-[var(--text-primary)]">{unavailableModalDoc.category}</span>
+              </div>
+              <div>
+                <strong className="text-[var(--text-secondary)]">Status:</strong>{' '}
+                <span className="dms-badge dms-badge-warning">Missing from Archive</span>
+              </div>
+            </div>
+            <div className="flex justify-end pt-1">
+              <button
+                type="button"
+                onClick={() => setUnavailableModalDoc(null)}
+                className="dms-btn-primary px-4 py-2 text-xs"
               >
                 Close
               </button>

@@ -64,11 +64,7 @@ export default function AppLayout({ breadcrumbs = [] }) {
     : user?.permissions || {};
 
   return (
-    <div
-      className={`flex min-h-screen transition-colors duration-150 ${
-        isDark ? 'bg-[#0b0f17] text-[#f8fafc]' : 'bg-[#ffffff] text-[#111111]'
-      }`}
-    >
+    <div className="flex min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors duration-150">
       {/* 1. Desktop Persistent Sidebar (>= 1024px) */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -88,7 +84,7 @@ export default function AppLayout({ breadcrumbs = [] }) {
       >
         {/* Dark transparent backdrop overlay */}
         <div
-          className={`fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 ${
+          className={`fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300 ${
             isMobileDrawerOpen ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={() => setIsMobileDrawerOpen(false)}
@@ -109,11 +105,7 @@ export default function AppLayout({ breadcrumbs = [] }) {
       </div>
 
       {/* 3. Main Application Content Area */}
-      <div
-        className={`flex-1 flex flex-col min-w-0 transition-colors duration-150 ${
-          isDark ? 'bg-[#0b0f17]' : 'bg-[#ffffff]'
-        }`}
-      >
+      <div className="flex-1 flex flex-col min-w-0 bg-[var(--bg-main)] transition-colors duration-150">
         <Header
           breadcrumbs={breadcrumbs}
           onSelectDocument={setActiveDocument}
@@ -122,12 +114,10 @@ export default function AppLayout({ breadcrumbs = [] }) {
           onToggleCollapse={toggleCollapse}
         />
 
-        <main
-          className={`flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 transition-colors duration-150 ${
-            isDark ? 'bg-[#0b0f17]' : 'bg-[#ffffff]'
-          }`}
-        >
-          <Outlet context={{ openDocument: setActiveDocument }} />
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 lg:p-8 bg-[var(--bg-main)] transition-colors duration-150">
+          <div className="page-enter">
+            <Outlet context={{ openDocument: setActiveDocument }} />
+          </div>
         </main>
       </div>
 

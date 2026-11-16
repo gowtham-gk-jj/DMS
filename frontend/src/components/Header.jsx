@@ -18,13 +18,7 @@ export default function Header({
   const location = useLocation();
 
   return (
-    <header
-      className={`h-14 border-b px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-40 select-none transition-colors duration-150 ${
-        isDark
-          ? 'bg-[#0f172a] border-[#243042] text-[#f8fafc]'
-          : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-      }`}
-    >
+    <header className="h-14 border-b border-[var(--border-color)] px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-40 select-none bg-[var(--bg-header)] text-[var(--text-primary)] transition-colors duration-150">
       {/* Left: Mobile Hamburger & Breadcrumbs */}
       <div className="flex items-center space-x-2 min-w-0 shrink">
         {/* Mobile Hamburger Menu Button (< lg) */}
@@ -32,7 +26,7 @@ export default function Header({
           type="button"
           onClick={onToggleMobileDrawer}
           aria-label="Open navigation menu"
-          className="lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center bg-[#162234] text-[#94A3B8] hover:text-[#E2E8F0] border-[#29364A] hover:bg-[#203B59]"
+          className="lg:hidden p-2 rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
         >
           <Menu className="w-4 h-4" />
         </button>
@@ -44,7 +38,7 @@ export default function Header({
             onClick={onToggleCollapse}
             aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             title={isCollapsed ? 'Expand sidebar (Ctrl+[)' : 'Collapse sidebar (Ctrl+[)'}
-            className="hidden lg:flex p-1.5 rounded-none border transition-colors cursor-pointer shrink-0 items-center justify-center bg-[#162234] text-[#94A3B8] hover:text-[#E2E8F0] border-[#29364A] hover:bg-[#203B59]"
+            className="hidden lg:flex p-1.5 rounded-md border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer shrink-0 items-center justify-center"
           >
             {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
@@ -53,43 +47,29 @@ export default function Header({
         {/* Breadcrumb Navigation - hidden on mobile (< md) to give search maximum space */}
         <nav
           aria-label="Breadcrumb"
-          className={`hidden md:flex items-center space-x-1.5 text-xs min-w-0 shrink ${
-            isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-          }`}
+          className="hidden md:flex items-center space-x-1.5 text-xs min-w-0 shrink text-[var(--text-secondary)]"
         >
           <Link
             to="/dashboard"
             aria-label="Dashboard Home"
-            className={`flex items-center space-x-1 shrink-0 transition-colors ${
-              isDark ? 'hover:text-[#f8fafc]' : 'hover:text-[#111111]'
-            }`}
+            className="flex items-center space-x-1 shrink-0 transition-colors hover:text-[var(--text-primary)]"
           >
             <Home className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Home</span>
+            <span className="hidden md:inline font-medium">Home</span>
           </Link>
 
           {breadcrumbs.length > 0 ? (
             breadcrumbs.map((crumb, index) => (
               <React.Fragment key={crumb.id || index}>
-                <ChevronRight
-                  className={`w-3.5 h-3.5 shrink-0 ${
-                    isDark ? 'text-[#475569]' : 'text-[#cccccc]'
-                  }`}
-                />
+                <ChevronRight className="w-3.5 h-3.5 shrink-0 text-[var(--border-strong)]" />
                 {index === breadcrumbs.length - 1 ? (
-                  <span
-                    className={`font-semibold truncate max-w-[100px] sm:max-w-[160px] ${
-                      isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                    }`}
-                  >
+                  <span className="font-semibold truncate max-w-[100px] sm:max-w-[160px] text-[var(--text-primary)]">
                     {crumb.name}
                   </span>
                 ) : (
                   <Link
                     to={`/library/${crumb.id}`}
-                    className={`truncate max-w-[80px] sm:max-w-[140px] transition-colors ${
-                      isDark ? 'hover:text-[#f8fafc]' : 'hover:text-[#111111]'
-                    }`}
+                    className="truncate max-w-[80px] sm:max-w-[140px] transition-colors hover:text-[var(--text-primary)]"
                   >
                     {crumb.name}
                   </Link>
@@ -98,16 +78,8 @@ export default function Header({
             ))
           ) : (
             <>
-              <ChevronRight
-                className={`w-3.5 h-3.5 shrink-0 ${
-                  isDark ? 'text-[#475569]' : 'text-[#cccccc]'
-                }`}
-              />
-              <span
-                className={`font-semibold capitalize truncate max-w-[110px] sm:max-w-none ${
-                  isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-                }`}
-              >
+              <ChevronRight className="w-3.5 h-3.5 shrink-0 text-[var(--border-strong)]" />
+              <span className="font-semibold capitalize truncate max-w-[110px] sm:max-w-none text-[var(--text-primary)]">
                 {location.pathname.replace(/^\//, '').replace(/\//g, ' / ') || 'Dashboard'}
               </span>
             </>
@@ -126,52 +98,28 @@ export default function Header({
         <ThemeToggle />
 
         {/* System Status Pill (Desktop only) */}
-        <div
-          className={`hidden xl:flex items-center space-x-1.5 px-2.5 py-1 text-[11px] border font-mono ${
-            isDark
-              ? 'bg-[#111827] border-[#334155] text-[#cbd5e1]'
-              : 'bg-[#fafafa] border-[#e5e5e5] text-[#555555]'
-          }`}
-        >
-          <span
-            className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#3b82f6]' : 'bg-[#111111]'}`}
-          ></span>
+        <div className="hidden xl:flex items-center space-x-1.5 px-2.5 py-1 text-[11px] border rounded-md font-mono bg-[var(--bg-elevated)] border-[var(--border-color)] text-[var(--text-secondary)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] animate-pulse" />
           <span>Atlas Cloud</span>
         </div>
 
         {/* User Role Badge */}
-        <div
-          className={`flex items-center space-x-2 border-l pl-2 sm:pl-3 ${
-            isDark ? 'border-[#243042]' : 'border-[#e5e5e5]'
-          }`}
-        >
+        <div className="flex items-center space-x-2 border-l border-[var(--border-color)] pl-2 sm:pl-3">
           <div className="text-right hidden sm:block">
-            <div
-              className={`font-semibold text-xs leading-tight truncate max-w-[100px] md:max-w-[130px] ${
-                isDark ? 'text-[#f8fafc]' : 'text-[#111111]'
-              }`}
-            >
+            <div className="font-semibold text-xs leading-tight truncate max-w-[100px] md:max-w-[130px] text-[var(--text-primary)]">
               {user?.name}
             </div>
-            <div
-              className={`text-[10px] uppercase font-mono ${
-                isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-              }`}
-            >
+            <div className="text-[10px] uppercase font-mono text-[var(--text-muted)] tracking-wider">
               {isAdmin ? 'ADMINISTRATOR' : 'AUTHORIZED'}
             </div>
           </div>
 
           {/* Compact User Initial on Mobile */}
           <div
-            className={`sm:hidden w-8 h-8 flex items-center justify-center font-bold text-xs border shrink-0 ${
+            className={`sm:hidden w-8 h-8 rounded-md flex items-center justify-center font-bold text-xs border shrink-0 ${
               isAdmin
-                ? isDark
-                  ? 'bg-[#f8fafc] text-[#0b0f17] border-[#f8fafc]'
-                  : 'bg-[#111111] text-[#ffffff] border-[#111111]'
-                : isDark
-                ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155]'
-                : 'bg-[#fafafa] text-[#111111] border-[#cccccc]'
+                ? 'bg-[var(--primary-subtle)] text-[var(--primary-blue)] border-[var(--primary-border)]'
+                : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-color)]'
             }`}
           >
             {user?.name?.charAt(0)?.toUpperCase() || 'U'}

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Lock, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import api from '../services/api';
-import { useTheme } from '../context/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 
 export default function ResetPasswordPage() {
   const { token } = useParams();
   const navigate = useNavigate();
-  const { isDark } = useTheme();
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,35 +44,24 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div
-      className={`min-h-screen flex flex-col justify-between transition-colors duration-150 ${
-        isDark ? 'bg-[#0b0f17] text-[#f8fafc]' : 'bg-[#ffffff] text-[#111111]'
-      }`}
-    >
+    <div className="min-h-screen flex flex-col justify-between bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors duration-150">
       {/* Header */}
-      <header
-        className={`border-b px-4 sm:px-8 py-3.5 flex items-center justify-between ${
-          isDark ? 'bg-[#0f172a] border-[#243042]' : 'bg-[#ffffff] border-[#e5e5e5]'
-        }`}
-      >
+      <header className="border-b border-[var(--border-color)] px-4 sm:px-8 py-3.5 flex items-center justify-between bg-[var(--bg-header)]">
         <div className="flex items-center space-x-2.5">
-          <div
-            className={`w-7 h-7 flex items-center justify-center font-bold text-xs font-mono shrink-0 ${
-              isDark ? 'bg-[#f8fafc] text-[#0b0f17]' : 'bg-[#111111] text-[#ffffff]'
-            }`}
-          >
-            D
+          <div className="w-8 h-8 rounded-md flex items-center justify-center font-bold text-xs font-mono shrink-0 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+            ED
           </div>
-          <span className="font-bold text-xs sm:text-sm tracking-tight uppercase">
-            ENTERPRISE DMS PLATFORM
-          </span>
+          <div>
+            <span className="font-bold text-xs sm:text-sm tracking-tight text-[var(--text-primary)] block font-sans">
+              ENTERPRISE DMS
+            </span>
+            <span className="text-[10px] font-mono tracking-wider text-[var(--text-muted)] block uppercase">
+              DOCUMENT MANAGEMENT PLATFORM
+            </span>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
-          <div
-            className={`text-xs font-mono hidden sm:block ${
-              isDark ? 'text-[#94a3b8]' : 'text-[#777777]'
-            }`}
-          >
+          <div className="text-xs font-mono hidden sm:block text-[var(--text-secondary)]">
             SECURE CREDENTIAL SETUP
           </div>
           <ThemeToggle />
@@ -82,38 +69,22 @@ export default function ResetPasswordPage() {
       </header>
 
       {/* Main Card */}
-      <div className="flex-1 flex items-center justify-center p-3 sm:p-6 my-auto">
-        <div
-          className={`max-w-md w-full border p-5 sm:p-8 shadow-sm transition-colors duration-150 ${
-            isDark
-              ? 'bg-[#141c2b] border-[#243042] text-[#f8fafc]'
-              : 'bg-[#ffffff] border-[#e5e5e5] text-[#111111]'
-          }`}
-        >
+      <div className="flex-1 flex items-center justify-center p-3.5 sm:p-6 my-auto page-enter">
+        <div className="max-w-md w-full dms-card p-6 sm:p-8">
           <div className="mb-6 text-center">
-            <div
-              className={`w-12 h-12 flex items-center justify-center mx-auto mb-3 ${
-                isDark ? 'bg-[#1e293b] text-[#60a5fa] border border-[#334155]' : 'bg-[#111111] text-[#ffffff]'
-              }`}
-            >
-              <Lock className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-lg flex items-center justify-center mx-auto mb-3 bg-[var(--primary-subtle)] text-[var(--primary-blue)] border border-[var(--primary-border)]">
+              <Lock className="w-5 h-5" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
               Set New Password
             </h1>
-            <p className={`text-xs mt-1 ${isDark ? 'text-[#94a3b8]' : 'text-[#777777]'}`}>
+            <p className="text-xs sm:text-[13px] text-[var(--text-secondary)] mt-1.5 leading-relaxed">
               Create a strong password for your Document Management System account.
             </p>
           </div>
 
           {error && (
-            <div
-              className={`mb-5 p-3 border text-xs flex items-center space-x-2 ${
-                isDark
-                  ? 'bg-[#451a1a] border-[#b91c1c] text-[#fca5a5]'
-                  : 'bg-[#fafafa] border-[#111111] text-[#111111]'
-              }`}
-            >
+            <div className="mb-5 p-3 rounded-md border border-[var(--color-error-border)] bg-[var(--color-error-bg)] text-[var(--color-error-text)] text-xs flex items-center space-x-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -121,11 +92,7 @@ export default function ResetPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                className={`block text-xs font-medium mb-1.5 uppercase tracking-wider ${
-                  isDark ? 'text-[#cbd5e1]' : 'text-[#111111]'
-                }`}
-              >
+              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider text-[var(--text-secondary)] font-mono">
                 New Password (Min 8 Characters)
               </label>
               <div className="relative">
@@ -136,18 +103,12 @@ export default function ResetPasswordPage() {
                   placeholder="Enter new secure password"
                   required
                   minLength={8}
-                  className={`w-full px-3 py-2.5 sm:py-2 pr-11 min-h-[44px] sm:min-h-[38px] text-xs border rounded-none focus:outline-none transition-colors ${
-                    isDark
-                      ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                      : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-                  }`}
+                  className="dms-input pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute right-1 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] flex items-center justify-center transition-colors cursor-pointer ${
-                    isDark ? 'text-[#94a3b8] hover:text-[#f8fafc]' : 'text-[#777777] hover:text-[#111111]'
-                  }`}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 min-w-[36px] min-h-[36px] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -156,11 +117,7 @@ export default function ResetPasswordPage() {
             </div>
 
             <div>
-              <label
-                className={`block text-xs font-medium mb-1.5 uppercase tracking-wider ${
-                  isDark ? 'text-[#cbd5e1]' : 'text-[#111111]'
-                }`}
-              >
+              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider text-[var(--text-secondary)] font-mono">
                 Confirm New Password
               </label>
               <input
@@ -170,32 +127,23 @@ export default function ResetPasswordPage() {
                 placeholder="Re-enter new secure password"
                 required
                 minLength={8}
-                className={`w-full px-3 py-2.5 sm:py-2 min-h-[44px] sm:min-h-[38px] text-xs border rounded-none focus:outline-none transition-colors ${
-                  isDark
-                    ? 'bg-[#0f172a] border-[#334155] text-[#f8fafc] focus:border-[#60a5fa]'
-                    : 'bg-[#ffffff] border-[#cccccc] text-[#111111] focus:border-[#111111]'
-                }`}
+                className="dms-input"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 min-h-[44px] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer ${
-                isDark
-                  ? 'bg-[#f8fafc] text-[#0b0f17] hover:bg-[#e2e8f0]'
-                  : 'bg-[#111111] text-[#ffffff] hover:bg-[#333333]'
-              }`}
+              className="dms-btn-primary w-full py-2.5 text-xs font-semibold uppercase tracking-wider"
             >
               <span>{loading ? 'Saving Password...' : 'Save New Password'}</span>
+              {!loading && <ArrowRight className="w-3.5 h-3.5" />}
             </button>
 
             <div className="text-center pt-2">
               <Link
                 to="/login"
-                className={`text-xs inline-flex items-center space-x-1.5 underline ${
-                  isDark ? 'text-[#94a3b8] hover:text-[#f8fafc]' : 'text-[#777777] hover:text-[#111111]'
-                }`}
+                className="text-xs inline-flex items-center space-x-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Return to Sign In</span>
@@ -206,11 +154,7 @@ export default function ResetPasswordPage() {
       </div>
 
       {/* Footer */}
-      <footer
-        className={`border-t px-4 sm:px-8 py-3.5 text-center text-xs ${
-          isDark ? 'border-[#243042] text-[#94a3b8]' : 'border-[#e5e5e5] text-[#777777]'
-        }`}
-      >
+      <footer className="border-t border-[var(--border-color)] px-4 sm:px-8 py-3.5 text-center text-xs text-[var(--text-muted)] bg-[var(--bg-header)]">
         Enterprise Document Management System • ISO 27001 & DOConCD Compliant
       </footer>
     </div>
