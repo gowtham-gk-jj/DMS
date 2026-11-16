@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronRight, Home, Menu } from 'lucide-react';
+import { ChevronRight, Home, Menu, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import GlobalSearch from './GlobalSearch';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
-export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMobileDrawer }) {
+export default function Header({
+  breadcrumbs = [],
+  onSelectDocument,
+  onToggleMobileDrawer,
+  isCollapsed = false,
+  onToggleCollapse,
+}) {
   const { user, isAdmin } = useAuth();
   const { isDark } = useTheme();
   const location = useLocation();
@@ -26,7 +32,7 @@ export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMob
           type="button"
           onClick={onToggleMobileDrawer}
           aria-label="Open navigation menu"
-          className={`lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] sm:min-w-[38px] sm:min-h-[38px] flex items-center justify-center ${
+          className={`lg:hidden p-2 rounded-none border transition-colors cursor-pointer shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center ${
             isDark
               ? 'bg-[#1e293b] text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
               : 'bg-[#fafafa] text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0]'
@@ -34,6 +40,23 @@ export default function Header({ breadcrumbs = [], onSelectDocument, onToggleMob
         >
           <Menu className="w-4 h-4" />
         </button>
+
+        {/* Desktop Sidebar Toggle Button (>= lg) */}
+        {onToggleCollapse && (
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={isCollapsed ? 'Expand sidebar (Ctrl+[)' : 'Collapse sidebar (Ctrl+[)'}
+            className={`hidden lg:flex p-1.5 rounded-none border transition-colors cursor-pointer shrink-0 items-center justify-center ${
+              isDark
+                ? 'bg-[#1e293b] text-[#94a3b8] hover:text-[#f8fafc] border-[#334155] hover:bg-[#334155]'
+                : 'bg-[#fafafa] text-[#64748b] hover:text-[#111111] border-[#cccccc] hover:bg-[#f0f0f0]'
+            }`}
+          >
+            {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+          </button>
+        )}
 
         {/* Breadcrumb Navigation - hidden on mobile (< md) to give search maximum space */}
         <nav
