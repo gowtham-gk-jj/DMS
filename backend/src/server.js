@@ -15,6 +15,7 @@ const rateLimit = require('express-rate-limit');
 
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
+const perfLogger = require('./middleware/perfLogger');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -190,8 +191,10 @@ app.use(
 );
 
 // ==========================================
-// LOGGING
+// LOGGING & TELEMETRY
 // ==========================================
+
+app.use(perfLogger);
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));

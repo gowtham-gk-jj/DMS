@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import { recordPdfPageRenderTime } from '../../utils/performanceMonitor';
 
 const PDFJS_VERSION = pdfjsLib.version || '6.5.438';
 const fallbackWorkerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/build/pdf.worker.min.mjs`;
@@ -70,6 +71,9 @@ export default function PdfViewer({
 
   const pageElementsRef = useRef({});
   const canvasRefs = useRef({});
+
+  const mountTimeRef = useRef(Date.now());
+  const pageOneRenderedRef = useRef(false);
 
   const internalPageRef = useRef(1);
   const isProgrammaticScrollRef = useRef(false);
@@ -200,6 +204,11 @@ export default function PdfViewer({
       .then(() => {
         pageStatusRef.current[nextPg] = PAGE_STATUS.RENDERED;
         setPageStatuses((prev) => ({ ...prev, [nextPg]: PAGE_STATUS.RENDERED }));
+
+        if (nextPg === 1 && !pageOneRenderedRef.current) {
+          pageOneRenderedRef.current = true;
+          recordPdfPageRenderTime(Date.now() - mountTimeRef.current);
+        }
 
         // Memory cache pruning for large manuals
         if (numPagesRef.current > 20) {
