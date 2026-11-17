@@ -48,7 +48,23 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
   const [blobUrl, setBlobUrl] = useState(null);
   const [textContent, setTextContent] = useState('');
   const [copiedText, setCopiedText] = useState(false);
-  const [loadingStream, setLoadingStream] = useState(true);
+
+  const ext = (doc?.fileExtension || '').toLowerCase();
+  const isPdf = ext === 'pdf';
+  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'].includes(ext);
+  const isDocx = ['docx', 'doc'].includes(ext);
+  const isExcel = ['xlsx', 'xls', 'csv'].includes(ext);
+  const isVideo = ['mp4', 'webm', 'ogg', 'mov'].includes(ext);
+  const isAudio = ['mp3', 'wav', 'aac'].includes(ext);
+  const isText = ['txt', 'json', 'log', 'md', 'xml'].includes(ext);
+
+  const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : null;
+  const rawApiUrl = api.defaults.baseURL || '/api';
+  const pdfStreamUrl = doc?._id
+    ? `${rawApiUrl}/documents/${doc._id}/stream?token=${encodeURIComponent(token || '')}`
+    : null;
+
+  const [loadingStream, setLoadingStream] = useState(!isPdf);
   const [streamError, setStreamError] = useState('');
 
   // Close on Escape key
@@ -68,15 +84,6 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
-
-  const ext = (doc?.fileExtension || '').toLowerCase();
-  const isPdf = ext === 'pdf';
-  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'].includes(ext);
-  const isDocx = ['docx', 'doc'].includes(ext);
-  const isExcel = ['xlsx', 'xls', 'csv'].includes(ext);
-  const isVideo = ['mp4', 'webm', 'ogg', 'mov'].includes(ext);
-  const isAudio = ['mp3', 'wav', 'aac'].includes(ext);
-  const isText = ['txt', 'json', 'log', 'md', 'xml'].includes(ext);
 
   // Fetch document stream using authenticated Axios instance
   const fetchDocument = useCallback(() => {
@@ -134,6 +141,12 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
   }, [doc?._id, doc?.mimeType, isText]);
 
   useEffect(() => {
+    // For PDFs, we stream directly via HTTP Range requests in PdfViewer.
+    // Upfront arraybuffer fetch is reserved for non-PDF files or fallback.
+    if (isPdf) {
+      setLoadingStream(false);
+      return;
+    }
     const cancel = fetchDocument();
     return () => {
       if (cancel) cancel();
@@ -141,7 +154,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
         window.URL.revokeObjectURL(blobUrl);
       }
     };
-  }, [fetchDocument]);
+  }, [fetchDocument, isPdf, blobUrl]);
 
   const canDownload = userPermissions.download !== false;
 
@@ -516,7 +529,7 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                   )}
                 </div>
               </div>
-            ) : documentBuffer ? (
+            ) : (documentBuffer || (isPdf && pdfStreamUrl)) ? (
               /* Actual File Previewers */
               <Suspense
                 fallback={
@@ -529,6 +542,8 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                 {/* 1. PDF Documents */}
                 {isPdf && (
                   <PdfViewer
+                    url={pdfStreamUrl}
+                    token={token}
                     data={documentBuffer}
                     zoom={zoom}
                     rotation={rotation}
@@ -536,6 +551,9 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                     currentPage={currentPage}
                     onTotalPages={setTotalPages}
                     onCurrentPageChange={setCurrentPage}
+                    onErrorFallback={() => {
+                      fetchDocument();
+                    }}
                     isDark={isDark}
                   />
                 )}

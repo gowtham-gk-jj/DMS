@@ -27,7 +27,10 @@ const MAX_CONCURRENT_RENDERS = 2;
 const MAX_CACHED_CANVASES = 12;
 
 export default function PdfViewer({
-  data,
+  url = null,
+  token = null,
+  data = null,
+  onErrorFallback = null,
   zoom = 100,
   rotation = 0,
   targetPage = null,
@@ -268,7 +271,7 @@ export default function PdfViewer({
 
   // Load PDF document from ArrayBuffer / Blob
   useEffect(() => {
-    if (!data) return;
+    if (!url && !data) return;
 
     let active = true;
     let loadingTask = null;
@@ -277,26 +280,46 @@ export default function PdfViewer({
 
     const initPdf = async () => {
       try {
-        let pdfData = data;
-        if (data instanceof Blob) {
-          pdfData = await data.arrayBuffer();
+        if (url) {
+          const params = {
+            url,
+            rangeChunkSize: 65536,
+            disableAutoFetch: true,
+            disableStream: false,
+            withCredentials: true,
+            wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
+            cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+            cMapPacked: true,
+            standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+          };
+          if (token) {
+            params.httpHeaders = {
+              Authorization: `Bearer ${token}`,
+            };
+          }
+          loadingTask = pdfjsLib.getDocument(params);
+        } else {
+          let pdfData = data;
+          if (data instanceof Blob) {
+            pdfData = await data.arrayBuffer();
+          }
+
+          // Clone buffer to avoid detachment issues in worker
+          const rawArray = pdfData instanceof Uint8Array ? pdfData : new Uint8Array(pdfData);
+          const copyBuffer = rawArray.buffer.slice(
+            rawArray.byteOffset,
+            rawArray.byteOffset + rawArray.byteLength
+          );
+          const typedArray = new Uint8Array(copyBuffer);
+
+          loadingTask = pdfjsLib.getDocument({
+            data: typedArray,
+            wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
+            cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+            cMapPacked: true,
+            standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+          });
         }
-
-        // Clone buffer to avoid detachment issues in worker
-        const rawArray = pdfData instanceof Uint8Array ? pdfData : new Uint8Array(pdfData);
-        const copyBuffer = rawArray.buffer.slice(
-          rawArray.byteOffset,
-          rawArray.byteOffset + rawArray.byteLength
-        );
-        const typedArray = new Uint8Array(copyBuffer);
-
-        loadingTask = pdfjsLib.getDocument({
-          data: typedArray,
-          wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
-          cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
-          cMapPacked: true,
-          standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
-        });
 
         const doc = await loadingTask.promise;
         if (!active) {
@@ -336,6 +359,10 @@ export default function PdfViewer({
       } catch (err) {
         if (!active) return;
         console.error('Failed to parse PDF document:', err);
+        if (url && onErrorFallback) {
+          onErrorFallback(err);
+          return;
+        }
         setDocError(err.message || 'Unable to decode PDF document.');
       } finally {
         if (active) setLoading(false);
@@ -370,7 +397,7 @@ export default function PdfViewer({
         return null;
       });
     };
-  }, [data, onTotalPages, enqueuePage]);
+  }, [url, token, data, onErrorFallback, onTotalPages, enqueuePage]);
 
   // When zoom or rotation changes: cancel running tasks and re-render visible pages without shifting scroll
   useEffect(() => {
