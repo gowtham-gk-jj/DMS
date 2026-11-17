@@ -1,28 +1,33 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import RouteSkeleton from './components/RouteSkeleton';
 
-// Layout & Pages
+// Layout (eagerly loaded for frame stability)
 import AppLayout from './layouts/AppLayout';
-import LoginPage from './pages/LoginPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
-import PendingApprovalPage from './pages/PendingApprovalPage';
-import DashboardPage from './pages/DashboardPage';
-import LibraryPage from './pages/LibraryPage';
-import SearchResultsPage from './pages/SearchResultsPage';
-import AccessInfoPage from './pages/AccessInfoPage';
-import SettingsPage from './pages/SettingsPage';
 
-// Admin Pages
-import AdminOverviewPage from './pages/admin/AdminOverviewPage';
-import AdminRequestsPage from './pages/admin/AdminRequestsPage';
-import AdminUsersPage from './pages/admin/AdminUsersPage';
-import AdminAuditLogsPage from './pages/admin/AdminAuditLogsPage';
-import AdminEmailLogsPage from './pages/admin/AdminEmailLogsPage';
-import AdminMigrationPage from './pages/admin/AdminMigrationPage';
+// Lazy-loaded Public Pages
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
+const PendingApprovalPage = lazy(() => import('./pages/PendingApprovalPage'));
+
+// Lazy-loaded Authenticated Pages
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const LibraryPage = lazy(() => import('./pages/LibraryPage'));
+const SearchResultsPage = lazy(() => import('./pages/SearchResultsPage'));
+const AccessInfoPage = lazy(() => import('./pages/AccessInfoPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+
+// Lazy-loaded Admin Pages (Code-split out of general user bundle)
+const AdminOverviewPage = lazy(() => import('./pages/admin/AdminOverviewPage'));
+const AdminRequestsPage = lazy(() => import('./pages/admin/AdminRequestsPage'));
+const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminAuditLogsPage = lazy(() => import('./pages/admin/AdminAuditLogsPage'));
+const AdminEmailLogsPage = lazy(() => import('./pages/admin/AdminEmailLogsPage'));
+const AdminMigrationPage = lazy(() => import('./pages/admin/AdminMigrationPage'));
 
 // Protected Route Guard for Approved Users
 function ProtectedRoute({ children }) {
@@ -76,89 +81,91 @@ export default function App() {
       <GoogleOAuthProvider clientId={googleClientId}>
         <AuthProvider>
           <BrowserRouter>
-            <Routes>
-              {/* Public Auth Routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-              <Route path="/pending-approval" element={<PendingApprovalPage />} />
-              <Route path="/access-status" element={<PendingApprovalPage />} />
-              <Route path="/request-access" element={<Navigate to="/pending-approval" replace />} />
-              <Route path="/rejected" element={<PendingApprovalPage />} />
+            <Suspense fallback={<RouteSkeleton />}>
+              <Routes>
+                {/* Public Auth Routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+                <Route path="/pending-approval" element={<PendingApprovalPage />} />
+                <Route path="/access-status" element={<PendingApprovalPage />} />
+                <Route path="/request-access" element={<Navigate to="/pending-approval" replace />} />
+                <Route path="/rejected" element={<PendingApprovalPage />} />
 
-            {/* Authenticated Application Layout */}
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="/dashboard" replace />} />
-              <Route path="dashboard" element={<DashboardPage />} />
-              <Route path="library" element={<LibraryPage />} />
-              <Route path="library/:folderId" element={<LibraryPage />} />
-              <Route path="recent" element={<DashboardPage />} />
-              <Route path="search" element={<SearchResultsPage />} />
-              <Route path="access-info" element={<AccessInfoPage />} />
-              <Route path="settings" element={<SettingsPage />} />
+                {/* Authenticated Application Layout */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Navigate to="/dashboard" replace />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
+                  <Route path="library" element={<LibraryPage />} />
+                  <Route path="library/:folderId" element={<LibraryPage />} />
+                  <Route path="recent" element={<DashboardPage />} />
+                  <Route path="search" element={<SearchResultsPage />} />
+                  <Route path="access-info" element={<AccessInfoPage />} />
+                  <Route path="settings" element={<SettingsPage />} />
 
-              {/* Admin Routes */}
-              <Route
-                path="admin"
-                element={
-                  <AdminRoute>
-                    <AdminOverviewPage />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="admin/requests"
-                element={
-                  <AdminRoute>
-                    <AdminRequestsPage />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="admin/users"
-                element={
-                  <AdminRoute>
-                    <AdminUsersPage />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="admin/audit-logs"
-                element={
-                  <AdminRoute>
-                    <AdminAuditLogsPage />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="admin/email-logs"
-                element={
-                  <AdminRoute>
-                    <AdminEmailLogsPage />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="admin/migration"
-                element={
-                  <AdminRoute>
-                    <AdminMigrationPage />
-                  </AdminRoute>
-                }
-              />
-            </Route>
+                  {/* Admin Routes */}
+                  <Route
+                    path="admin"
+                    element={
+                      <AdminRoute>
+                        <AdminOverviewPage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="admin/requests"
+                    element={
+                      <AdminRoute>
+                        <AdminRequestsPage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="admin/users"
+                    element={
+                      <AdminRoute>
+                        <AdminUsersPage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="admin/audit-logs"
+                    element={
+                      <AdminRoute>
+                        <AdminAuditLogsPage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="admin/email-logs"
+                    element={
+                      <AdminRoute>
+                        <AdminEmailLogsPage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="admin/migration"
+                    element={
+                      <AdminRoute>
+                        <AdminMigrationPage />
+                      </AdminRoute>
+                    }
+                  />
+                </Route>
 
-            {/* Catch-all */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </BrowserRouter>
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
       </AuthProvider>
     </GoogleOAuthProvider>
   </ThemeProvider>
