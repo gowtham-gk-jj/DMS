@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useDeferredValue, memo } from 'react';
 import {
   FileText,
   Eye,
@@ -81,6 +81,180 @@ const normalizeOrderNumber = (str) => {
   return str.toLowerCase().replace(/[\s\-_]/g, '').trim();
 };
 
+// Memoized Catalogue Table Row to eliminate re-rendering all rows on category or selection updates
+const CatalogueRow = memo(function CatalogueRow({
+  doc,
+  idx,
+  category,
+  onSelectDocument,
+  onDownloadDocument,
+  onOpenUnavailableModal,
+  userPermissions,
+}) {
+  const isAvailable = doc.status === 'Available' || doc.availabilityStatus === 'AVAILABLE';
+
+  const handleRowClick = () => {
+    if (isAvailable && onSelectDocument) {
+      onSelectDocument(doc);
+    } else {
+      onOpenUnavailableModal(doc);
+    }
+  };
+
+  return (
+    <tr
+      data-category={category}
+      onClick={handleRowClick}
+      className={`border-b border-[#29364A] transition-colors cursor-pointer ${
+        idx % 2 === 1 ? 'bg-[#141C2B]' : 'bg-[#101827]'
+      } hover:bg-[#1E2B3E]`}
+    >
+      {/* 1. System */}
+      <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] text-[#F1F5F9]">
+        {doc.system && doc.system !== '—' ? (
+          <span
+            className="border border-[#29364A] px-2 py-0.5 rounded font-mono font-semibold text-[10px] inline-block max-w-[130px] truncate bg-[#172235] text-[#F1F5F9]"
+            title={doc.system}
+          >
+            {doc.system}
+          </span>
+        ) : (
+          <span className="text-[var(--text-muted)] font-mono">—</span>
+        )}
+      </td>
+
+      {/* 2. Title */}
+      <td className="py-2.5 px-4 border-r border-[#29364A] text-[#F1F5F9]">
+        <div className="flex items-start space-x-2.5 py-0.5">
+          <FileText
+            className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${
+              isAvailable ? 'text-[#60A5FA]' : 'text-[var(--text-muted)]'
+            }`}
+          />
+          <span
+            className={`font-medium ${
+              isAvailable
+                ? 'text-[#F1F5F9] hover:text-[#60A5FA]'
+                : 'text-[#94A3B8]'
+            } leading-snug break-words`}
+          >
+            {doc.title && doc.title !== '—' ? doc.title : '—'}
+          </span>
+        </div>
+      </td>
+
+      {/* 3. SW (Software Version) */}
+      <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
+        {doc.softwareVersion && doc.softwareVersion !== '—' ? (
+          <span className="font-mono">{doc.softwareVersion}</span>
+        ) : (
+          <span className="text-[var(--text-muted)] font-mono">—</span>
+        )}
+      </td>
+
+      {/* 4. Edition */}
+      <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
+        {doc.edition && doc.edition !== '—' ? (
+          <span className="font-mono">{doc.edition}</span>
+        ) : (
+          <span className="text-[var(--text-muted)] font-mono">—</span>
+        )}
+      </td>
+
+      {/* 5. Order No. */}
+      <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] whitespace-nowrap text-[#94A3B8]">
+        {doc.orderNumber && doc.orderNumber !== '—' ? (
+          <span className="font-mono tracking-tight">{doc.orderNumber}</span>
+        ) : (
+          <span className="text-[var(--text-muted)] font-mono">—</span>
+        )}
+      </td>
+
+      {/* 6. File name */}
+      <td className="py-2.5 px-3 border-r border-[#29364A] text-center font-mono font-bold text-[11px] text-[#F1F5F9]">
+        {doc.fileName && doc.fileName !== '—' ? (
+          <span className="px-2 py-0.5 rounded border border-[#29364A] bg-[#0F172A] text-[#60A5FA] font-mono">
+            {doc.fileName}
+          </span>
+        ) : (
+          <span className="text-[var(--text-muted)] font-mono">—</span>
+        )}
+      </td>
+
+      {/* 7. Status */}
+      <td className="py-2.5 px-3 border-r border-[#29364A] text-center whitespace-nowrap">
+        {isAvailable ? (
+          <span
+            className="dms-badge dms-badge-success"
+            title="Document file is stored and available in the archive"
+          >
+            <CheckCircle2 className="w-2.5 h-2.5" />
+            <span>Available</span>
+          </span>
+        ) : (
+          <span
+            className="dms-badge dms-badge-warning"
+            title="Document file missing from physical archive"
+          >
+            <AlertTriangle className="w-2.5 h-2.5" />
+            <span>Missing</span>
+          </span>
+        )}
+      </td>
+
+      {/* 8. Actions (Preview and Download) */}
+      <td
+        className="py-2.5 px-3 text-center whitespace-nowrap"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-center space-x-1.5">
+          {isAvailable ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onSelectDocument && onSelectDocument(doc)}
+                title="Preview Document"
+                aria-label={`Preview ${doc.title}`}
+                className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
+              >
+                <Eye className="w-3.5 h-3.5 text-[#60A5FA]" />
+                <span>Preview</span>
+              </button>
+
+              {userPermissions.download !== false && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onDownloadDocument
+                      ? onDownloadDocument(doc)
+                      : window.open(doc.secureUrl, '_blank')
+                  }
+                  title="Download Manual"
+                  aria-label={`Download ${doc.title}`}
+                  className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download</span>
+                </button>
+              )}
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onOpenUnavailableModal(doc)}
+              className="dms-btn-secondary px-2 py-1 min-h-[32px] text-[11px] font-mono text-[var(--text-muted)]"
+              title="Physical manual file not in repository"
+            >
+              <Info className="w-3 h-3 text-[var(--color-warning)]" />
+              <span>Details</span>
+            </button>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+});
+
 export default function DOConCDTable({
   documents = [],
   availableCategories = [],
@@ -96,6 +270,7 @@ export default function DOConCDTable({
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedSystem, setSelectedSystem] = useState('ALL');
   const [searchFilter, setSearchFilter] = useState('');
+  const deferredSearch = useDeferredValue(searchFilter);
   const [sortBy, setSortBy] = useState('catalogue'); // 'catalogue' | 'system' | 'title' | 'orderNumber' | 'fileName'
   const [collapsedCategories, setCollapsedCategories] = useState({});
   const [unavailableModalDoc, setUnavailableModalDoc] = useState(null);
@@ -293,8 +468,8 @@ export default function DOConCDTable({
       if (selectedSystem !== 'ALL' && doc.system !== selectedSystem) {
         return false;
       }
-      if (searchFilter.trim()) {
-        const query = searchFilter.toLowerCase().trim();
+      if (deferredSearch.trim()) {
+        const query = deferredSearch.toLowerCase().trim();
         const matchesTitle = (doc.title || '').toLowerCase().includes(query);
         const matchesSystem = (doc.system || '').toLowerCase().includes(query);
         const matchesOrder = (doc.orderNumber || '').toLowerCase().includes(query);
@@ -305,7 +480,7 @@ export default function DOConCDTable({
       }
       return true;
     });
-  }, [activeCatalogue, selectedCategory, selectedSystem, searchFilter]);
+  }, [activeCatalogue, selectedCategory, selectedSystem, deferredSearch]);
 
   // Group filtered documents by Category and sort items within each category
   const filteredGrouped = useMemo(() => {
@@ -580,169 +755,19 @@ export default function DOConCDTable({
                       </td>
                     </tr>
 
-                    {/* CONTINUOUS LIST OF DOCUMENT ROWS (NO PAGINATION) */}
                     {!isCollapsed &&
-                      categoryDocs.map((doc, idx) => {
-                        const isAvailable =
-                          doc.status === 'Available' ||
-                          (doc.availabilityStatus === 'AVAILABLE' && Boolean(doc.secureUrl));
-
-                        return (
-                          <tr
-                            key={doc._id || `${category}_${idx}`}
-                            data-doc-row="true"
-                            data-doc-id={doc._id}
-                            data-category={category}
-                            onClick={() => handleRowClick(doc)}
-                            className={`border-b border-[#29364A] transition-colors cursor-pointer ${
-                              idx % 2 === 1 ? 'bg-[#141C2B]' : 'bg-[#101827]'
-                            } hover:bg-[#1E2B3E]`}
-                          >
-                            {/* 1. System */}
-                            <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] text-[#F1F5F9]">
-                              {doc.system && doc.system !== '—' ? (
-                                <span
-                                  className="border border-[#29364A] px-2 py-0.5 rounded font-mono font-semibold text-[10px] inline-block max-w-[130px] truncate bg-[#172235] text-[#F1F5F9]"
-                                  title={doc.system}
-                                >
-                                  {doc.system}
-                                </span>
-                              ) : (
-                                <span className="text-[var(--text-muted)] font-mono">—</span>
-                              )}
-                            </td>
-
-                            {/* 2. Title */}
-                            <td className="py-2.5 px-4 border-r border-[#29364A] text-[#F1F5F9]">
-                              <div className="flex items-start space-x-2.5 py-0.5">
-                                <FileText
-                                  className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${
-                                    isAvailable ? 'text-[#60A5FA]' : 'text-[var(--text-muted)]'
-                                  }`}
-                                />
-                                <span
-                                  className={`font-medium ${
-                                    isAvailable
-                                      ? 'text-[#F1F5F9] hover:text-[#60A5FA]'
-                                      : 'text-[#94A3B8]'
-                                  } leading-snug break-words`}
-                                >
-                                  {doc.title && doc.title !== '—' ? doc.title : '—'}
-                                </span>
-                              </div>
-                            </td>
-
-                            {/* 3. SW (Software Version) */}
-                            <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
-                              {doc.softwareVersion && doc.softwareVersion !== '—' ? (
-                                <span className="font-mono">{doc.softwareVersion}</span>
-                              ) : (
-                                <span className="text-[var(--text-muted)] font-mono">—</span>
-                              )}
-                            </td>
-
-                            {/* 4. Edition */}
-                            <td className="py-2.5 px-2.5 border-r border-[#29364A] text-center font-mono text-[11px] text-[#94A3B8]">
-                              {doc.edition && doc.edition !== '—' ? (
-                                <span className="font-mono">{doc.edition}</span>
-                              ) : (
-                                <span className="text-[var(--text-muted)] font-mono">—</span>
-                              )}
-                            </td>
-
-                            {/* 5. Order No. */}
-                            <td className="py-2.5 px-3 border-r border-[#29364A] font-mono text-[11px] whitespace-nowrap text-[#94A3B8]">
-                              {doc.orderNumber && doc.orderNumber !== '—' ? (
-                                <span className="font-mono tracking-tight">{doc.orderNumber}</span>
-                              ) : (
-                                <span className="text-[var(--text-muted)] font-mono">—</span>
-                              )}
-                            </td>
-
-                            {/* 6. File name */}
-                            <td className="py-2.5 px-3 border-r border-[#29364A] text-center font-mono font-bold text-[11px] text-[#F1F5F9]">
-                              {doc.fileName && doc.fileName !== '—' ? (
-                                <span className="px-2 py-0.5 rounded border border-[#29364A] bg-[#0F172A] text-[#60A5FA] font-mono">
-                                  {doc.fileName}
-                                </span>
-                              ) : (
-                                <span className="text-[var(--text-muted)] font-mono">—</span>
-                              )}
-                            </td>
-
-                            {/* 7. Status */}
-                            <td className="py-2.5 px-3 border-r border-[#29364A] text-center whitespace-nowrap">
-                              {isAvailable ? (
-                                <span
-                                  className="dms-badge dms-badge-success"
-                                  title="Document file is stored and available in the archive"
-                                >
-                                  <CheckCircle2 className="w-2.5 h-2.5" />
-                                  <span>Available</span>
-                                </span>
-                              ) : (
-                                <span
-                                  className="dms-badge dms-badge-warning"
-                                  title="Document file missing from physical archive"
-                                >
-                                  <AlertTriangle className="w-2.5 h-2.5" />
-                                  <span>Missing</span>
-                                </span>
-                              )}
-                            </td>
-
-                            {/* 8. Actions (Preview and Download) */}
-                            <td
-                              className="py-2.5 px-3 text-center whitespace-nowrap"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <div className="flex items-center justify-center space-x-1.5">
-                                {isAvailable ? (
-                                  <>
-                                    <button
-                                      type="button"
-                                      onClick={() => onSelectDocument && onSelectDocument(doc)}
-                                      title="Preview Document"
-                                      aria-label={`Preview ${doc.title}`}
-                                      className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
-                                    >
-                                      <Eye className="w-3.5 h-3.5 text-[#60A5FA]" />
-                                      <span>Preview</span>
-                                    </button>
-
-                                    {userPermissions.download !== false && (
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          onDownloadDocument
-                                            ? onDownloadDocument(doc)
-                                            : window.open(doc.secureUrl, '_blank')
-                                        }
-                                        title="Download Manual"
-                                        aria-label={`Download ${doc.title}`}
-                                        className="dms-btn-secondary px-2.5 py-1 min-h-[32px] text-[11px]"
-                                      >
-                                        <Download className="w-3.5 h-3.5" />
-                                        <span>Download</span>
-                                      </button>
-                                    )}
-                                  </>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => setUnavailableModalDoc(doc)}
-                                    className="dms-btn-secondary px-2 py-1 min-h-[32px] text-[11px] font-mono text-[var(--text-muted)]"
-                                    title="Physical manual file not in repository"
-                                  >
-                                    <Info className="w-3 h-3 text-[var(--color-warning)]" />
-                                    <span>Details</span>
-                                  </button>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                      categoryDocs.map((doc, idx) => (
+                        <CatalogueRow
+                          key={doc._id || `${category}_${idx}`}
+                          doc={doc}
+                          idx={idx}
+                          category={category}
+                          onSelectDocument={onSelectDocument}
+                          onDownloadDocument={onDownloadDocument}
+                          onOpenUnavailableModal={setUnavailableModalDoc}
+                          userPermissions={userPermissions}
+                        />
+                      ))}
                   </React.Fragment>
                 );
               })

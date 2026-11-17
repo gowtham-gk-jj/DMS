@@ -221,8 +221,37 @@ const normalizeOrderNo = (str) => {
   return str.toLowerCase().replace(/[\s\-_]/g, '').trim();
 };
 
+// In-Memory Catalogue Cache with strictly isolated keys
+let sinamicsCache = { data: null, timestamp: 0 };
+let simodriveCache = { data: null, timestamp: 0 };
+const folderCache = new Map();
+const CATALOGUE_CACHE_TTL = 60 * 1000; // 60 seconds
+
+const invalidateCatalogueCaches = () => {
+  sinamicsCache = { data: null, timestamp: 0 };
+  simodriveCache = { data: null, timestamp: 0 };
+  folderCache.clear();
+};
+
+const getCachedFolder = async (folderId) => {
+  const key = String(folderId);
+  const cached = folderCache.get(key);
+  if (cached && (Date.now() - cached.timestamp < 30000)) {
+    return cached.folder;
+  }
+  const folder = await Folder.findById(folderId).lean();
+  if (folder) {
+    folderCache.set(key, { folder, timestamp: Date.now() });
+  }
+  return folder;
+};
+
 // Helper to load and match the 186 official Siemens DOConCD SINUMERIK - SINAMICS catalogue records to live DMS documents
 const getSinamicsCatalogueDocs = async () => {
+  if (sinamicsCache.data && (Date.now() - sinamicsCache.timestamp < CATALOGUE_CACHE_TTL)) {
+    return sinamicsCache.data;
+  }
+
   const sinamicsJsonPath = path.resolve(__dirname, '../../data/sinamics_catalogue_extracted.json');
   if (!fs.existsSync(sinamicsJsonPath)) {
     return [];
@@ -290,7 +319,7 @@ const getSinamicsCatalogueDocs = async () => {
     }
   });
 
-  return rawCatalogue.map((catEntry) => {
+  const result = rawCatalogue.map((catEntry) => {
     const rawFn = (catEntry.fileName || '').trim().toLowerCase();
     const normFn = normalizeFileName(catEntry.fileName);
     const normOrder = normalizeOrderNo(catEntry.orderNumber);
@@ -345,10 +374,17 @@ const getSinamicsCatalogueDocs = async () => {
       matchedDocId: matchedDoc ? matchedDoc._id : null,
     };
   });
+
+  sinamicsCache = { data: result, timestamp: Date.now() };
+  return result;
 };
 
 // Helper to load and match the 212 official Siemens catalogue records to live DMS documents
 const getSimodriveCatalogueDocs = async () => {
+  if (simodriveCache.data && (Date.now() - simodriveCache.timestamp < CATALOGUE_CACHE_TTL)) {
+    return simodriveCache.data;
+  }
+
   const simodriveJsonPath = path.resolve(__dirname, '../../data/simodrive_catalogue_extracted.json');
   if (!fs.existsSync(simodriveJsonPath)) {
     return [];
@@ -398,7 +434,7 @@ const getSimodriveCatalogueDocs = async () => {
     }
   }
 
-  return rawCatalogue.map((catEntry) => {
+  const result = rawCatalogue.map((catEntry) => {
     const fn = (catEntry.fileName || '').trim().toLowerCase();
     const order = (catEntry.orderNumber || '').trim().toLowerCase();
 
@@ -431,6 +467,9 @@ const getSimodriveCatalogueDocs = async () => {
       matchedDocId: matchedDoc ? matchedDoc._id : null,
     };
   });
+
+  simodriveCache = { data: result, timestamp: Date.now() };
+  return result;
 };
 
 // DOConCD-style document listing for a folder
@@ -447,7 +486,7 @@ const getDocumentsInFolder = async (req, res, next) => {
       limit = 100, // Default up to 100 for DOConCD catalogue table
     } = req.query;
 
-    const folder = await Folder.findById(folderId);
+    const folder = await getCachedFolder(folderId);
     if (!folder || folder.isArchived) {
       return res.status(404).json({ success: false, message: 'Folder not found' });
     }
@@ -1014,6 +1053,7 @@ const uploadDocuments = async (req, res, next) => {
       });
     }
 
+    invalidateCatalogueCaches();
     return res.status(201).json({
       success: true,
       message: `Successfully uploaded ${uploadedDocuments.length} document(s).`,
@@ -1075,6 +1115,7 @@ const updateDocument = async (req, res, next) => {
       req,
     });
 
+    invalidateCatalogueCaches();
     return res.status(200).json({ success: true, document });
   } catch (err) {
     next(err);
@@ -1111,6 +1152,7 @@ const moveDocument = async (req, res, next) => {
       req,
     });
 
+    invalidateCatalogueCaches();
     return res.status(200).json({
       success: true,
       message: `Document moved to ${targetFolder.name}`,
@@ -1143,6 +1185,7 @@ const deleteDocument = async (req, res, next) => {
       req,
     });
 
+    invalidateCatalogueCaches();
     return res.status(200).json({
       success: true,
       message: `Document '${document.title}' deleted successfully.`,
@@ -1315,4 +1358,5 @@ module.exports = {
   moveDocument,
   deleteDocument,
   getRecentDocuments,
+  invalidateCatalogueCaches,
 };
