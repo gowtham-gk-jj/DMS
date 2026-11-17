@@ -23,6 +23,68 @@ const buildBreadcrumbs = async (folderId) => {
   return breadcrumbs;
 };
 
+// In-memory cache for folder hierarchy and aggregate document counts (15s TTL)
+let folderHierarchyCache = null;
+let folderHierarchyExpiresAt = 0;
+
+const getCachedFolderHierarchy = async () => {
+  const now = Date.now();
+  if (folderHierarchyCache && now < folderHierarchyExpiresAt) {
+    return folderHierarchyCache;
+  }
+
+  const [allActiveFolders, docCountsAgg] = await Promise.all([
+    Folder.find({ isArchived: false }).select('_id parentFolderId path').lean(),
+    Document.aggregate([
+      { $match: { isArchived: false, folderId: { $ne: null } } },
+      { $group: { _id: '$folderId', count: { $sum: 1 } } },
+    ]),
+  ]);
+
+  const docCountMap = new Map();
+  docCountsAgg.forEach((d) => docCountMap.set(String(d._id), d.count));
+
+  const childrenMap = new Map();
+  allActiveFolders.forEach((f) => {
+    const pid = f.parentFolderId ? String(f.parentFolderId) : 'root';
+    if (!childrenMap.has(pid)) childrenMap.set(pid, []);
+    childrenMap.get(pid).push(f);
+  });
+
+  const getDescendantDocCount = (folderId) => {
+    let total = docCountMap.get(String(folderId)) || 0;
+    const children = childrenMap.get(String(folderId)) || [];
+    for (const child of children) {
+      total += getDescendantDocCount(child._id);
+    }
+    return total;
+  };
+
+  const getDescendantFolderCount = (folderId) => {
+    const children = childrenMap.get(String(folderId)) || [];
+    let total = children.length;
+    for (const child of children) {
+      total += getDescendantFolderCount(child._id);
+    }
+    return total;
+  };
+
+  folderHierarchyCache = {
+    docCountMap,
+    childrenMap,
+    getDescendantDocCount,
+    getDescendantFolderCount,
+  };
+  folderHierarchyExpiresAt = now + 15000;
+
+  return folderHierarchyCache;
+};
+
+const invalidateFolderHierarchyCache = () => {
+  folderHierarchyCache = null;
+  folderHierarchyExpiresAt = 0;
+};
+
 // Get folders (optionally filtered by parentFolderId)
 const getFolders = async (req, res, next) => {
   try {
@@ -34,42 +96,12 @@ const getFolders = async (req, res, next) => {
       parentFolderId: parentId && parentId !== 'root' ? parentId : null,
     };
 
-    let folders = await Folder.find(query).sort({ name: 1 });
-
-    // Fetch active folders and group documents by folderId to calculate descendant document counts without N+1 queries
-    const allActiveFolders = await Folder.find({ isArchived: false }).select('_id parentFolderId path').lean();
-    const docCountsAgg = await Document.aggregate([
-      { $match: { isArchived: false, folderId: { $ne: null } } },
-      { $group: { _id: '$folderId', count: { $sum: 1 } } },
+    const [folders, hierarchy] = await Promise.all([
+      Folder.find(query).sort({ name: 1 }).lean(),
+      getCachedFolderHierarchy(),
     ]);
 
-    const docCountMap = new Map();
-    docCountsAgg.forEach((d) => docCountMap.set(String(d._id), d.count));
-
-    const childrenMap = new Map();
-    allActiveFolders.forEach((f) => {
-      const pid = f.parentFolderId ? String(f.parentFolderId) : 'root';
-      if (!childrenMap.has(pid)) childrenMap.set(pid, []);
-      childrenMap.get(pid).push(f);
-    });
-
-    const getDescendantDocCount = (folderId) => {
-      let total = docCountMap.get(String(folderId)) || 0;
-      const children = childrenMap.get(String(folderId)) || [];
-      for (const child of children) {
-        total += getDescendantDocCount(child._id);
-      }
-      return total;
-    };
-
-    const getDescendantFolderCount = (folderId) => {
-      const children = childrenMap.get(String(folderId)) || [];
-      let total = children.length;
-      for (const child of children) {
-        total += getDescendantFolderCount(child._id);
-      }
-      return total;
-    };
+    const { docCountMap, childrenMap, getDescendantDocCount, getDescendantFolderCount } = hierarchy;
 
     // Pre-fetch user permissions in one query
     const targetFolderIds = folders.map((f) => f._id);
@@ -103,7 +135,7 @@ const getFolders = async (req, res, next) => {
       }
 
       return {
-        ...folder.toObject(),
+        ...(typeof folder.toObject === 'function' ? folder.toObject() : folder),
         subfoldersCount: directSubfolders,
         directSubfoldersCount: directSubfolders,
         totalSubfoldersCount: totalSubfolders,
@@ -233,6 +265,8 @@ const createFolder = async (req, res, next) => {
       req,
     });
 
+    invalidateFolderHierarchyCache();
+
     return res.status(201).json({
       success: true,
       message: 'Folder created successfully',
@@ -310,6 +344,8 @@ const updateFolder = async (req, res, next) => {
       req,
     });
 
+    invalidateFolderHierarchyCache();
+
     return res.status(200).json({ success: true, folder });
   } catch (err) {
     next(err);
@@ -345,6 +381,8 @@ const deleteFolder = async (req, res, next) => {
       req,
     });
 
+    invalidateFolderHierarchyCache();
+
     return res.status(200).json({
       success: true,
       message: `Folder '${folder.name}' and its references archived successfully.`,
@@ -356,6 +394,7 @@ const deleteFolder = async (req, res, next) => {
 
 module.exports = {
   getFolders,
+  invalidateFolderHierarchyCache,
   getFolderById,
   createFolder,
   updateFolder,

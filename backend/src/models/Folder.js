@@ -62,7 +62,12 @@ folderSchema.virtual('documentsCount', {
   localField: '_id',
   foreignField: 'folderId',
   count: true,
-  match: { isArchived: false }
+  match: { isArchived: false },
 });
+
+// High-performance indexes for tree traversal and name sorting
+folderSchema.index({ parentFolderId: 1, isArchived: 1 });
+folderSchema.index({ isArchived: 1, name: 1 });
+folderSchema.index({ path: 1 });
 
 module.exports = mongoose.model('Folder', folderSchema);

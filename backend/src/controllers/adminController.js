@@ -9,9 +9,23 @@ const { notifyUserApproved, notifyUserRejected, notifyPermissionsUpdated } = req
 const { logAudit } = require('../services/auditService');
 const { escapeRegex } = require('../utils/escapeRegex');
 
+// In-memory cache for high-level admin dashboard statistics (15s TTL)
+let dashboardStatsCache = null;
+let dashboardStatsExpiresAt = 0;
+
+const invalidateDashboardStatsCache = () => {
+  dashboardStatsCache = null;
+  dashboardStatsExpiresAt = 0;
+};
+
 // Get high-level admin dashboard statistics
 const getDashboardStats = async (req, res, next) => {
   try {
+    const now = Date.now();
+    if (dashboardStatsCache && now < dashboardStatsExpiresAt) {
+      return res.status(200).json(dashboardStatsCache);
+    }
+
     const [
       totalUsers,
       pendingRequests,
@@ -33,13 +47,13 @@ const getDashboardStats = async (req, res, next) => {
         { $match: { isArchived: false } },
         { $group: { _id: null, totalBytes: { $sum: '$fileSize' } } },
       ]),
-      AccessRequest.find().sort({ createdAt: -1 }).limit(5),
-      User.find().sort({ createdAt: -1 }).limit(5).select('-googleId'),
+      AccessRequest.find().sort({ createdAt: -1 }).limit(5).lean(),
+      User.find().sort({ createdAt: -1 }).limit(5).select('-googleId').lean(),
     ]);
 
     const totalStorageBytes = documentSizeAgg.length > 0 ? documentSizeAgg[0].totalBytes : 0;
 
-    return res.status(200).json({
+    const responseData = {
       success: true,
       stats: {
         totalUsers,
@@ -53,7 +67,12 @@ const getDashboardStats = async (req, res, next) => {
       },
       recentRequests,
       recentUsers,
-    });
+    };
+
+    dashboardStatsCache = responseData;
+    dashboardStatsExpiresAt = now + 15000;
+
+    return res.status(200).json(responseData);
   } catch (err) {
     next(err);
   }
@@ -171,6 +190,8 @@ const approveAccessRequest = async (req, res, next) => {
       req,
     });
 
+    invalidateDashboardStatsCache();
+
     return res.status(200).json({
       success: true,
       message: `User ${user.email} approved successfully with assigned permissions.`,
@@ -225,6 +246,8 @@ const rejectAccessRequest = async (req, res, next) => {
       details: { rejectionReason },
       req,
     });
+
+    invalidateDashboardStatsCache();
 
     return res.status(200).json({
       success: true,
@@ -358,6 +381,8 @@ const updateUser = async (req, res, next) => {
       req,
     });
 
+    invalidateDashboardStatsCache();
+
     return res.status(200).json({
       success: true,
       message: `User ${user.email} updated successfully.`,
@@ -433,6 +458,8 @@ const inviteOrCreateUser = async (req, res, next) => {
       details: { role: newUser.role, status: newUser.status, hasDirectPassword: Boolean(password) },
       req,
     });
+
+    invalidateDashboardStatsCache();
 
     return res.status(201).json({
       success: true,
@@ -722,6 +749,7 @@ const exportJobReportHandler = async (req, res, next) => {
 
 module.exports = {
   getDashboardStats,
+  invalidateDashboardStatsCache,
   getAccessRequests,
   approveAccessRequest,
   rejectAccessRequest,

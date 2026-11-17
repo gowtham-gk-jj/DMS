@@ -46,7 +46,10 @@ const globalSearch = async (req, res, next) => {
       folderFilter._id = allowedFolderIds;
     }
 
-    const matchingFolders = await Folder.find(folderFilter).limit(8);
+    const matchingFolders = await Folder.find(folderFilter)
+      .select('name code description path level parentFolderId')
+      .limit(8)
+      .lean();
 
     // 2. Search matching documents
     const docFilter = {
@@ -84,9 +87,13 @@ const globalSearch = async (req, res, next) => {
     }
 
     const matchingDocuments = await Document.find(docFilter)
+      .select(
+        'title system orderNumber documentCode fileName originalFileName displayName category availabilityStatus secureUrl fileExtension fileSize softwareVersion edition folderId updatedAt createdAt'
+      )
       .populate('folderId', 'name path')
       .sort({ updatedAt: -1 })
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .lean();
 
     const totalMatches = matchingFolders.length + matchingDocuments.length;
 

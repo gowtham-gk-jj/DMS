@@ -153,6 +153,13 @@ const documentSchema = new mongoose.Schema(
   }
 );
 
+// High-performance compound indexes for folder queries, availability filtering, and sorting
+documentSchema.index({ folderId: 1, isArchived: 1 });
+documentSchema.index({ folderId: 1, fileName: 1 });
+documentSchema.index({ availabilityStatus: 1, isArchived: 1 });
+documentSchema.index({ fileName: 1 });
+documentSchema.index({ isArchived: 1, createdAt: -1 });
+
 // Compound text index for global search
 documentSchema.index({
   title: 'text',

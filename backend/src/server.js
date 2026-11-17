@@ -10,6 +10,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 
 const connectDB = require('./config/db');
@@ -123,6 +124,23 @@ app.use(
     ],
 
     optionsSuccessStatus: 204,
+  })
+);
+
+// ==========================================
+// COMPRESSION (GZIP/DEFLATE)
+// ==========================================
+
+app.use(
+  compression({
+    threshold: 1024,
+    filter: (req, res) => {
+      // Exclude byte-range streaming requests and explicit skip headers
+      if (req.headers.range || req.headers['x-no-compression']) {
+        return false;
+      }
+      return compression.filter(req, res);
+    },
   })
 );
 

@@ -231,6 +231,14 @@ const invalidateCatalogueCaches = () => {
   sinamicsCache = { data: null, timestamp: 0 };
   simodriveCache = { data: null, timestamp: 0 };
   folderCache.clear();
+  try {
+    const { invalidateFolderHierarchyCache } = require('./folderController');
+    invalidateFolderHierarchyCache();
+  } catch (e) {}
+  try {
+    const { invalidateDashboardStatsCache } = require('./adminController');
+    invalidateDashboardStatsCache();
+  } catch (e) {}
 };
 
 const getCachedFolder = async (folderId) => {
