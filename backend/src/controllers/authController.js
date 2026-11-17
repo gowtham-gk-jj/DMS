@@ -549,9 +549,9 @@ const devLogin = async (req, res, next) => {
 // Get current user profile and live permissions
 const getMe = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select('-__v');
+    const user = req.user;
     if (!user) {
-      return res.status(404).json({ success: false, message: 'User not found' });
+      return res.status(401).json({ success: false, message: 'Not authenticated' });
     }
 
     return res.status(200).json({

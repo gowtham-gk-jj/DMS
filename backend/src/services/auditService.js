@@ -14,8 +14,8 @@ const logAudit = async ({
     let userAgent = '';
 
     if (req) {
-      ipAddress = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '';
-      userAgent = req.headers['user-agent'] || '';
+      ipAddress = req.headers?.['x-forwarded-for'] || req.socket?.remoteAddress || req.ip || '';
+      userAgent = req.headers?.['user-agent'] || '';
     }
 
     const auditEntry = new AuditLog({

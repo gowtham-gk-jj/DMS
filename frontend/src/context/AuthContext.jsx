@@ -13,37 +13,54 @@ export const AuthProvider = ({ children }) => {
     }
   });
   const [token, setToken] = useState(() => localStorage.getItem('dms_token') || null);
-  const [loading, setLoading] = useState(true);
+  // Initial loading is only true if we have a token that needs validation and no cached optimistic user
+  const [loading, setLoading] = useState(() => {
+    const hasToken = !!localStorage.getItem('dms_token');
+    const hasUser = !!localStorage.getItem('dms_user');
+    return hasToken && !hasUser;
+  });
+  const [isRevalidating, setIsRevalidating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load latest user profile on mount
+  // Securely revalidate user session and live permissions on mount
   useEffect(() => {
-    const fetchCurrentUser = async () => {
+    let isMounted = true;
+    const validateCurrentUser = async () => {
       const currentToken = localStorage.getItem('dms_token');
       if (!currentToken) {
-        setLoading(false);
+        if (isMounted) setLoading(false);
         return;
       }
 
+      setIsRevalidating(true);
       try {
-        const res = await api.get('/auth/me');
-        if (res.data.success) {
+        const res = await api.get('/auth/me', { skipCache: true });
+        if (res.data?.success && isMounted) {
           setUser(res.data.user);
           localStorage.setItem('dms_user', JSON.stringify(res.data.user));
         }
       } catch (err) {
-        console.error('Failed to restore user session:', err);
+        console.error('Session validation error:', err);
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-          // If suspended or forbidden, update user status if available
-          if (err.response.data && err.response.data.status) {
-            setUser((prev) => prev ? { ...prev, status: err.response.data.status } : null);
+          if (isMounted) {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem('dms_token');
+            localStorage.removeItem('dms_user');
           }
         }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          setIsRevalidating(false);
+        }
       }
     };
 
-    fetchCurrentUser();
+    validateCurrentUser();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleAuthSuccess = (token, userData) => {
@@ -54,21 +71,33 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginWithGoogle = async (credential) => {
-    const res = await api.post('/auth/google', { credential });
-    if (res.data.success) {
-      handleAuthSuccess(res.data.token, res.data.user);
-      return res.data.user;
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      const res = await api.post('/auth/google', { credential });
+      if (res.data.success) {
+        handleAuthSuccess(res.data.token, res.data.user);
+        return res.data.user;
+      }
+      throw new Error(res.data.message || 'Google authentication failed');
+    } finally {
+      setIsSubmitting(false);
     }
-    throw new Error(res.data.message || 'Google authentication failed');
   };
 
   const loginWithEmail = async (email, password) => {
-    const res = await api.post('/auth/login', { email, password });
-    if (res.data.success) {
-      handleAuthSuccess(res.data.token, res.data.user);
-      return res.data.user;
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      const res = await api.post('/auth/login', { email, password });
+      if (res.data.success) {
+        handleAuthSuccess(res.data.token, res.data.user);
+        return res.data.user;
+      }
+      throw new Error(res.data.message || 'Authentication failed');
+    } finally {
+      setIsSubmitting(false);
     }
-    throw new Error(res.data.message || 'Authentication failed');
   };
 
   const refreshUser = async () => {
@@ -110,6 +139,8 @@ export const AuthProvider = ({ children }) => {
     user,
     token,
     loading,
+    isRevalidating,
+    isSubmitting,
     isAdmin,
     isApproved,
     isPendingRequest,
