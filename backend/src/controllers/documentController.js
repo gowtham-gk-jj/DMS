@@ -182,6 +182,171 @@ const SIMODRIVE_CATEGORY_ORDER = [
   'Control system overview',
 ];
 
+// Exact Official Siemens SINUMERIK / SINAMICS 09/2011 Master Catalogue Hierarchy (19 categories)
+const SINAMICS_CATEGORY_ORDER = [
+  '840D sl/840Di sl/828D User / Operation',
+  '840D sl/840Di sl/828D User / Programming',
+  '840D sl/840Di sl Manufacturer/Service / Configuring',
+  '840D sl/840Di sl Manufacturer/Service / Commissioning',
+  'Functions',
+  '828D Manufacturer/Service / Version 4.3',
+  '828D Manufacturer/Service / Version 2.6',
+  '802D sl / User',
+  '802D sl / Manufacturer/Service',
+  'SINAMICS S120',
+  'Measuring Systems',
+  'Synchronous motors',
+  'Asynchronous motors',
+  'Linear/Torque Motors',
+  'Motion Control Information System',
+  'ePS Network Services',
+  'SIMATIC',
+  'Info/Training',
+  'Control system overview',
+];
+
+// Helper to normalize filenames for resilient multi-priority matching
+const normalizeFileName = (str) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .replace(/\.[^/.]+$/, '')
+    .replace(/[_\-\s]/g, '')
+    .trim();
+};
+
+// Helper to normalize Siemens order numbers
+const normalizeOrderNo = (str) => {
+  if (!str || str === '—' || str === '-') return '';
+  return str.toLowerCase().replace(/[\s\-_]/g, '').trim();
+};
+
+// Helper to load and match the 186 official Siemens DOConCD SINUMERIK - SINAMICS catalogue records to live DMS documents
+const getSinamicsCatalogueDocs = async () => {
+  const sinamicsJsonPath = path.resolve(__dirname, '../../data/sinamics_catalogue_extracted.json');
+  if (!fs.existsSync(sinamicsJsonPath)) {
+    return [];
+  }
+  const rawCatalogue = JSON.parse(fs.readFileSync(sinamicsJsonPath, 'utf8'));
+
+  // Scope strictly to the official DOConCD SINUMERIK - SINAMICS folder tree
+  const SINAMICS_ROOT_ID = '6af9f26ff959aeeb3d00e1c9';
+  const sinRoot = await Folder.findOne({
+    $or: [{ _id: SINAMICS_ROOT_ID }, { name: 'DOConCD SINUMERIK - SINAMICS 09/2011 English' }],
+    isArchived: false,
+  });
+
+  let folderFilter = {};
+  if (sinRoot) {
+    const sinFolders = await Folder.find({
+      $or: [
+        { _id: sinRoot._id },
+        { parentFolderId: sinRoot._id },
+        { path: new RegExp('^' + sinRoot.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) },
+      ],
+      isArchived: false,
+    }).select('_id').lean();
+    folderFilter = { folderId: { $in: sinFolders.map((f) => f._id) } };
+  }
+
+  // Pre-fetch all active SINAMICS documents in MongoDB
+  const allDocs = await Document.find({ ...folderFilter, isArchived: false })
+    .select('_id title originalFileName fileName orderNumber secureUrl fileSize mimeType fileExtension storageProvider folderId availabilityStatus system softwareVersion edition category subcategory')
+    .lean();
+
+  const idMap = new Map();
+  const exactFnMap = new Map();
+  const normalizedFnMap = new Map();
+  const orderMap = new Map();
+  const titleSystemMap = new Map();
+
+  allDocs.forEach((d) => {
+    if (d._id) idMap.set(String(d._id), d);
+    if (d.catalogueIndex) idMap.set(`cat_${d.catalogueIndex}`, d);
+
+    if (d.fileName) {
+      exactFnMap.set(d.fileName.trim().toLowerCase(), d);
+      const norm = normalizeFileName(d.fileName);
+      if (norm && !normalizedFnMap.has(norm)) normalizedFnMap.set(norm, d);
+    }
+    if (d.originalFileName) {
+      exactFnMap.set(d.originalFileName.trim().toLowerCase(), d);
+      const base = d.originalFileName.replace(/\.[^/.]+$/, '').trim().toLowerCase();
+      if (!exactFnMap.has(base)) exactFnMap.set(base, d);
+      const norm = normalizeFileName(d.originalFileName);
+      if (norm && !normalizedFnMap.has(norm)) normalizedFnMap.set(norm, d);
+    }
+
+    const normOrder = normalizeOrderNo(d.orderNumber);
+    if (normOrder && !orderMap.has(normOrder)) {
+      orderMap.set(normOrder, d);
+    }
+
+    if (d.title && d.title !== '—' && d.system && d.system !== '—') {
+      const titleSysKey = `${d.system.trim().toLowerCase()}__${d.title.trim().toLowerCase()}`;
+      if (!titleSystemMap.has(titleSysKey)) {
+        titleSystemMap.set(titleSysKey, d);
+      }
+    }
+  });
+
+  return rawCatalogue.map((catEntry) => {
+    const rawFn = (catEntry.fileName || '').trim().toLowerCase();
+    const normFn = normalizeFileName(catEntry.fileName);
+    const normOrder = normalizeOrderNo(catEntry.orderNumber);
+    const titleSysKey = (catEntry.title && catEntry.title !== '—' && catEntry.system && catEntry.system !== '—')
+      ? `${catEntry.system.trim().toLowerCase()}__${catEntry.title.trim().toLowerCase()}`
+      : null;
+
+    // Matching Priority:
+    // 1. Existing Document ID or explicit catalogue index
+    // 2. Exact fileName or originalFileName
+    // 3. Normalized filename (case, extension, underscore/hyphen flexible)
+    // 4. Siemens order number
+    // 5. Verified title and system combination
+    let matchedDoc = null;
+    if (catEntry._id && idMap.has(String(catEntry._id))) {
+      matchedDoc = idMap.get(String(catEntry._id));
+    } else if (idMap.has(`cat_${catEntry.catalogueIndex}`)) {
+      matchedDoc = idMap.get(`cat_${catEntry.catalogueIndex}`);
+    } else if (rawFn && exactFnMap.has(rawFn)) {
+      matchedDoc = exactFnMap.get(rawFn);
+    } else if (normFn && normalizedFnMap.has(normFn)) {
+      matchedDoc = normalizedFnMap.get(normFn);
+    } else if (normOrder && orderMap.has(normOrder)) {
+      matchedDoc = orderMap.get(normOrder);
+    } else if (titleSysKey && titleSystemMap.has(titleSysKey)) {
+      matchedDoc = titleSystemMap.get(titleSysKey);
+    }
+
+    const isAvailable = Boolean(matchedDoc && (matchedDoc.secureUrl || matchedDoc.availabilityStatus === 'AVAILABLE'));
+
+    return {
+      _id: matchedDoc ? matchedDoc._id : `missing_${catEntry.fileName}`,
+      catalogueIndex: catEntry.catalogueIndex,
+      displayOrder: catEntry.catalogueIndex,
+      page: catEntry.page,
+      category: catEntry.category,
+      system: catEntry.system || '—',
+      title: catEntry.title || '—',
+      softwareVersion: catEntry.softwareVersion || '—',
+      edition: catEntry.edition || '—',
+      orderNumber: catEntry.orderNumber || '—',
+      fileName: catEntry.fileName || '—',
+      status: isAvailable ? 'Available' : 'Missing',
+      availabilityStatus: isAvailable ? 'AVAILABLE' : 'FILE_NOT_FOUND',
+      secureUrl: matchedDoc ? matchedDoc.secureUrl : null,
+      originalFileName: matchedDoc ? (matchedDoc.originalFileName || `${catEntry.fileName}.pdf`) : `${catEntry.fileName}.pdf`,
+      fileSize: matchedDoc ? matchedDoc.fileSize : 0,
+      mimeType: matchedDoc ? (matchedDoc.mimeType || 'application/pdf') : 'application/pdf',
+      fileExtension: matchedDoc ? (matchedDoc.fileExtension || 'pdf') : 'pdf',
+      storageProvider: matchedDoc ? matchedDoc.storageProvider : 'CLOUDINARY',
+      isCatalogueRecord: true,
+      matchedDocId: matchedDoc ? matchedDoc._id : null,
+    };
+  });
+};
+
 // Helper to load and match the 212 official Siemens catalogue records to live DMS documents
 const getSimodriveCatalogueDocs = async () => {
   const simodriveJsonPath = path.resolve(__dirname, '../../data/simodrive_catalogue_extracted.json');
@@ -190,8 +355,28 @@ const getSimodriveCatalogueDocs = async () => {
   }
   const rawCatalogue = JSON.parse(fs.readFileSync(simodriveJsonPath, 'utf8'));
 
-  // Pre-fetch all active documents in MongoDB
-  const allDocs = await Document.find({ isArchived: false })
+  // Scope strictly to the official DOConCD_SINUMERIK_SIMODRIVE folder tree
+  const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
+  const simRoot = await Folder.findOne({
+    $or: [{ _id: SIMODRIVE_ROOT_ID }, { name: 'DOConCD_SINUMERIK_SIMODRIVE' }],
+    isArchived: false,
+  });
+
+  let folderFilter = {};
+  if (simRoot) {
+    const simFolders = await Folder.find({
+      $or: [
+        { _id: simRoot._id },
+        { parentFolderId: simRoot._id },
+        { path: new RegExp('^' + simRoot.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) },
+      ],
+      isArchived: false,
+    }).select('_id').lean();
+    folderFilter = { folderId: { $in: simFolders.map((f) => f._id) } };
+  }
+
+  // Pre-fetch all active SIMODRIVE documents in MongoDB
+  const allDocs = await Document.find({ ...folderFilter, isArchived: false })
     .select('_id title originalFileName fileName orderNumber secureUrl fileSize mimeType fileExtension storageProvider folderId availabilityStatus system softwareVersion edition category')
     .lean();
 
@@ -267,8 +452,99 @@ const getDocumentsInFolder = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Folder not found' });
     }
 
-    // Check if this is the SIMODRIVE repository or catalogue request
-    const isSimodrive = (folder.name && folder.name.includes('SIMODRIVE')) || req.query.catalogue === 'simodrive';
+    // Verified Root IDs and ancestral path detection for both master Siemens catalogues
+    const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
+    const SINAMICS_ROOT_ID = '6af9f26ff959aeeb3d00e1c9';
+
+    const isSimodrive =
+      String(folder._id) === SIMODRIVE_ROOT_ID ||
+      (folder.path && folder.path.startsWith('/DOConCD_SINUMERIK_SIMODRIVE')) ||
+      (folder.name && folder.name.includes('SIMODRIVE')) ||
+      req.query.catalogue === 'simodrive';
+
+    const isSinamics =
+      !isSimodrive &&
+      (String(folder._id) === SINAMICS_ROOT_ID ||
+        (folder.path && folder.path.startsWith('/DOConCD SINUMERIK - SINAMICS 09/2011 English')) ||
+        (folder.name && folder.name.includes('SINAMICS')) ||
+        (folder.name && folder.name.includes('DOConCD SINUMERIK')) ||
+        req.query.catalogue === 'sinamics');
+
+    // 1. Official Siemens SINUMERIK / SINAMICS 09/2011 Master Catalogue Mode (186 entries)
+    if (isSinamics) {
+      let matchedDocs = await getSinamicsCatalogueDocs();
+
+      if (category && category !== 'ALL') {
+        matchedDocs = matchedDocs.filter((d) => d.category === category);
+      }
+
+      if (system && system !== 'ALL') {
+        matchedDocs = matchedDocs.filter((d) => d.system === system);
+      }
+
+      if (search && search.trim()) {
+        const q = search.trim().toLowerCase();
+        matchedDocs = matchedDocs.filter((d) => {
+          const matchSys = (d.system || '').toLowerCase().includes(q);
+          const matchTitle = (d.title || '').toLowerCase().includes(q);
+          const matchOrder = (d.orderNumber || '').toLowerCase().includes(q);
+          const matchFile = (d.fileName || '').toLowerCase().includes(q);
+          return matchSys || matchTitle || matchOrder || matchFile;
+        });
+      }
+
+      // Ordering options
+      if (sortBy === 'title') {
+        matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.title || '').localeCompare(b.title || ''));
+      } else if (sortBy === 'system') {
+        matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.system || '').localeCompare(b.system || ''));
+      } else if (sortBy === 'orderNumber') {
+        matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.orderNumber || '').localeCompare(b.orderNumber || ''));
+      } else if (sortBy === 'fileName') {
+        matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.fileName || '').localeCompare(b.fileName || ''));
+      } else {
+        // Official Siemens Catalogue Order (DEFAULT)
+        matchedDocs.sort((a, b) => (a.catalogueIndex || 0) - (b.catalogueIndex || 0));
+      }
+
+      // Group by category maintaining exact official sequence
+      const groupedByCategory = {};
+      SINAMICS_CATEGORY_ORDER.forEach((cat) => {
+        groupedByCategory[cat] = [];
+      });
+      matchedDocs.forEach((doc) => {
+        if (!groupedByCategory[doc.category]) {
+          groupedByCategory[doc.category] = [];
+        }
+        groupedByCategory[doc.category].push(doc);
+      });
+
+      const distinctSystems = [...new Set(matchedDocs.map((d) => d.system).filter((s) => s && s !== '—'))].sort();
+
+      return res.status(200).json({
+        success: true,
+        isSinamicsCatalogue: true,
+        isSimodriveCatalogue: false,
+        folder: {
+          id: folder._id,
+          name: folder.name,
+          path: folder.path,
+          description: folder.description,
+        },
+        documents: matchedDocs,
+        groupedByCategory,
+        availableCategories: SINAMICS_CATEGORY_ORDER,
+        availableSystems: distinctSystems,
+        pagination: {
+          total: matchedDocs.length,
+          page: 1,
+          pages: 1,
+          limit: matchedDocs.length,
+        },
+      });
+    }
+
+    // 2. Official Siemens SINUMERIK / SIMODRIVE 09/2011 Master Catalogue Mode (212 entries)
     if (isSimodrive) {
       let matchedDocs = await getSimodriveCatalogueDocs();
 
@@ -321,6 +597,7 @@ const getDocumentsInFolder = async (req, res, next) => {
 
       return res.status(200).json({
         success: true,
+        isSinamicsCatalogue: false,
         isSimodriveCatalogue: true,
         folder: {
           id: folder._id,
@@ -957,9 +1234,78 @@ const getSimodriveCatalogue = async (req, res, next) => {
   }
 };
 
+// Get full official Siemens SINUMERIK / SINAMICS 09/2011 catalogue (186 entries)
+const getSinamicsCatalogue = async (req, res, next) => {
+  try {
+    const { category, system, search, sortBy = 'catalogue', sortOrder = 'asc' } = req.query;
+    let matchedDocs = await getSinamicsCatalogueDocs();
+
+    if (category && category !== 'ALL') {
+      matchedDocs = matchedDocs.filter((d) => d.category === category);
+    }
+
+    if (system && system !== 'ALL') {
+      matchedDocs = matchedDocs.filter((d) => d.system === system);
+    }
+
+    if (search && search.trim()) {
+      const q = search.trim().toLowerCase();
+      matchedDocs = matchedDocs.filter((d) => {
+        const matchSys = (d.system || '').toLowerCase().includes(q);
+        const matchTitle = (d.title || '').toLowerCase().includes(q);
+        const matchOrder = (d.orderNumber || '').toLowerCase().includes(q);
+        const matchFile = (d.fileName || '').toLowerCase().includes(q);
+        return matchSys || matchTitle || matchOrder || matchFile;
+      });
+    }
+
+    if (sortBy === 'title') {
+      matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.title || '').localeCompare(b.title || ''));
+    } else if (sortBy === 'system') {
+      matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.system || '').localeCompare(b.system || ''));
+    } else if (sortBy === 'orderNumber') {
+      matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.orderNumber || '').localeCompare(b.orderNumber || ''));
+    } else if (sortBy === 'fileName') {
+      matchedDocs.sort((a, b) => (sortOrder === 'desc' ? -1 : 1) * (a.fileName || '').localeCompare(b.fileName || ''));
+    } else {
+      matchedDocs.sort((a, b) => (a.catalogueIndex || 0) - (b.catalogueIndex || 0));
+    }
+
+    const groupedByCategory = {};
+    SINAMICS_CATEGORY_ORDER.forEach((cat) => {
+      groupedByCategory[cat] = [];
+    });
+    matchedDocs.forEach((doc) => {
+      if (!groupedByCategory[doc.category]) groupedByCategory[doc.category] = [];
+      groupedByCategory[doc.category].push(doc);
+    });
+
+    const distinctSystems = [...new Set(matchedDocs.map((d) => d.system).filter((s) => s && s !== '—'))].sort();
+
+    return res.status(200).json({
+      success: true,
+      isSinamicsCatalogue: true,
+      isSimodriveCatalogue: false,
+      documents: matchedDocs,
+      groupedByCategory,
+      availableCategories: SINAMICS_CATEGORY_ORDER,
+      availableSystems: distinctSystems,
+      pagination: {
+        total: matchedDocs.length,
+        page: 1,
+        pages: 1,
+        limit: matchedDocs.length,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getDocumentsInFolder,
   getSimodriveCatalogue,
+  getSinamicsCatalogue,
   getDocumentById,
   previewDocument,
   streamDocument,

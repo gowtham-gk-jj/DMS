@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getDocumentsInFolder,
   getSimodriveCatalogue,
+  getSinamicsCatalogue,
   getDocumentById,
   previewDocument,
   streamDocument,
@@ -21,6 +22,7 @@ router.use(protect, requireApproved);
 
 router.get('/recent', getRecentDocuments);
 router.get('/catalogue/simodrive', getSimodriveCatalogue);
+router.get('/catalogue/sinamics', getSinamicsCatalogue);
 router.get('/folder/:folderId', checkFolderPermission('read'), getDocumentsInFolder);
 router.post('/folder/:folderId/upload', checkFolderPermission('upload'), upload.array('files', 20), uploadDocuments);
 

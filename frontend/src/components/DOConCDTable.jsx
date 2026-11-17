@@ -17,8 +17,9 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import simodriveCatalogue from '../data/simodrive_catalogue_extracted.json';
+import sinamicsCatalogue from '../data/sinamics_catalogue_extracted.json';
 
-// Exact Official Siemens SINUMERIK / SIMODRIVE 09/2011 Master Catalogue Hierarchy
+// Exact Official Siemens SINUMERIK / SIMODRIVE 09/2011 Master Catalogue Hierarchy (19 categories)
 export const SIMODRIVE_CATEGORY_ORDER = [
   '840D/840Di/810D User Operation',
   'Programming',
@@ -41,8 +42,8 @@ export const SIMODRIVE_CATEGORY_ORDER = [
   'Control system overview',
 ];
 
-// Legacy SINAMICS DOConCD Categories fallback
-const SINAMICS_CATEGORY_ORDER = [
+// Exact Official Siemens SINUMERIK / SINAMICS 09/2011 Master Catalogue Hierarchy (19 categories)
+export const SINAMICS_CATEGORY_ORDER = [
   '840D sl/840Di sl/828D User / Operation',
   '840D sl/840Di sl/828D User / Programming',
   '840D sl/840Di sl Manufacturer/Service / Configuring',
@@ -64,6 +65,22 @@ const SINAMICS_CATEGORY_ORDER = [
   'Control system overview',
 ];
 
+// Normalization helper for resilient multi-priority filename matching
+const normalizeFileName = (str) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .replace(/\.[^/.]+$/, '')
+    .replace(/[_\-\s]/g, '')
+    .trim();
+};
+
+// Normalization helper for Siemens order numbers
+const normalizeOrderNumber = (str) => {
+  if (!str || str === '—' || str === '-') return '';
+  return str.toLowerCase().replace(/[\s\-_]/g, '').trim();
+};
+
 export default function DOConCDTable({
   documents = [],
   availableCategories = [],
@@ -83,45 +100,131 @@ export default function DOConCDTable({
   const [collapsedCategories, setCollapsedCategories] = useState({});
   const [unavailableModalDoc, setUnavailableModalDoc] = useState(null);
 
-  // Determine if this is SIMODRIVE catalogue mode
+  // Determine catalogue mode: explicit boolean prop takes absolute priority
   const isSimodriveMode = useMemo(() => {
-    if (isSimodrive) return true;
-    if (availableCategories.some((c) => SIMODRIVE_CATEGORY_ORDER.includes(c))) return true;
-    if (documents.some((d) => d.category === '840D/840Di/810D User Operation' || d.category === 'SIMODRIVE Sensor')) {
+    // 1. Explicit boolean prop takes absolute precedence
+    if (typeof isSimodrive === 'boolean') {
+      return isSimodrive;
+    }
+
+    // 2. Fallback check for exclusive SIMODRIVE categories (never check overlapping ones like Functions, SIMATIC, etc.)
+    const exclusiveSimodriveCategories = [
+      '840D/840Di/810D User Operation',
+      '802D base line',
+      '802S/802C base line',
+      'SIMODRIVE',
+      'SIMODRIVE Sensor',
+      'Distributed drive technology',
+      'SIMATIC Positioning Modules',
+    ];
+    if (availableCategories.some((c) => exclusiveSimodriveCategories.includes(c))) {
       return true;
     }
-    return true; // Default to official master catalogue
+    if (documents.some((d) => exclusiveSimodriveCategories.includes(d.category))) {
+      return true;
+    }
+
+    // 3. Fallback check for exclusive SINAMICS categories
+    const exclusiveSinamicsCategories = [
+      '840D sl/840Di sl/828D User / Operation',
+      '840D sl/840Di sl/828D User / Programming',
+      '840D sl/840Di sl Manufacturer/Service / Configuring',
+      '840D sl/840Di sl Manufacturer/Service / Commissioning',
+      '828D Manufacturer/Service / Version 4.3',
+      '828D Manufacturer/Service / Version 2.6',
+      '802D sl / User',
+      '802D sl / Manufacturer/Service',
+      'SINAMICS S120',
+      'Measuring Systems',
+    ];
+    if (availableCategories.some((c) => exclusiveSinamicsCategories.includes(c))) {
+      return false;
+    }
+    if (documents.some((d) => exclusiveSinamicsCategories.includes(d.category))) {
+      return false;
+    }
+
+    // 4. Default to official primary catalogue: SINAMICS
+    return false;
   }, [isSimodrive, availableCategories, documents]);
 
   const activeCategoryOrder = isSimodriveMode ? SIMODRIVE_CATEGORY_ORDER : SINAMICS_CATEGORY_ORDER;
 
   // Build the complete catalogue dataset matching live MongoDB documents
   const activeCatalogue = useMemo(() => {
-    if (!isSimodriveMode) {
-      return documents;
-    }
+    const targetCatalogue = isSimodriveMode ? simodriveCatalogue : sinamicsCatalogue;
 
-    // Index live MongoDB documents by fileName and orderNumber
-    const fnMap = new Map();
+    // Index live MongoDB documents by Priority:
+    // 1. Existing Document ID or catalogueIndex
+    // 2. Exact fileName or originalFileName
+    // 3. Normalized fileName
+    // 4. Siemens order number
+    // 5. Verified title & system combination
+    const idMap = new Map();
+    const exactFnMap = new Map();
+    const normalizedFnMap = new Map();
     const orderMap = new Map();
+    const titleSystemMap = new Map();
 
     documents.forEach((d) => {
-      if (d.fileName) fnMap.set(d.fileName.trim().toLowerCase(), d);
+      if (d._id) idMap.set(String(d._id), d);
+      if (d.catalogueIndex) idMap.set(`cat_${d.catalogueIndex}`, d);
+
+      if (d.fileName) {
+        exactFnMap.set(d.fileName.trim().toLowerCase(), d);
+        const norm = normalizeFileName(d.fileName);
+        if (norm && !normalizedFnMap.has(norm)) normalizedFnMap.set(norm, d);
+      }
       if (d.originalFileName) {
+        exactFnMap.set(d.originalFileName.trim().toLowerCase(), d);
         const base = d.originalFileName.replace(/\.[^/.]+$/, '').trim().toLowerCase();
-        if (!fnMap.has(base)) fnMap.set(base, d);
+        if (!exactFnMap.has(base)) exactFnMap.set(base, d);
+        const norm = normalizeFileName(d.originalFileName);
+        if (norm && !normalizedFnMap.has(norm)) normalizedFnMap.set(norm, d);
       }
       if (d.orderNumber && d.orderNumber.trim()) {
-        orderMap.set(d.orderNumber.trim().toLowerCase(), d);
+        const normOrder = normalizeOrderNumber(d.orderNumber);
+        if (normOrder && !orderMap.has(normOrder)) {
+          orderMap.set(normOrder, d);
+        }
+      }
+      if (d.title && d.title !== '—' && d.system && d.system !== '—') {
+        const titleSysKey = `${d.system.trim().toLowerCase()}__${d.title.trim().toLowerCase()}`;
+        if (!titleSystemMap.has(titleSysKey)) {
+          titleSystemMap.set(titleSysKey, d);
+        }
       }
     });
 
-    return simodriveCatalogue.map((catEntry) => {
-      const fn = (catEntry.fileName || '').trim().toLowerCase();
-      const order = (catEntry.orderNumber || '').trim().toLowerCase();
+    return targetCatalogue.map((catEntry) => {
+      const rawFn = (catEntry.fileName || '').trim().toLowerCase();
+      const normFn = normalizeFileName(catEntry.fileName);
+      const normOrder = normalizeOrderNumber(catEntry.orderNumber);
+      const titleSysKey = (catEntry.title && catEntry.title !== '—' && catEntry.system && catEntry.system !== '—')
+        ? `${catEntry.system.trim().toLowerCase()}__${catEntry.title.trim().toLowerCase()}`
+        : null;
 
-      // Priority match: fileName -> orderNumber
-      const matchedDoc = fnMap.get(fn) || (order ? orderMap.get(order) : null);
+      // Multi-Priority Match Execution:
+      // 1. Existing Document ID or explicit catalogue index
+      // 2. Exact fileName or originalFileName
+      // 3. Normalized filename (case, extension, underscore/hyphen flexible)
+      // 4. Siemens order number
+      // 5. Verified title and system combination
+      let matchedDoc = null;
+      if (catEntry._id && idMap.has(String(catEntry._id))) {
+        matchedDoc = idMap.get(String(catEntry._id));
+      } else if (idMap.has(`cat_${catEntry.catalogueIndex}`)) {
+        matchedDoc = idMap.get(`cat_${catEntry.catalogueIndex}`);
+      } else if (rawFn && exactFnMap.has(rawFn)) {
+        matchedDoc = exactFnMap.get(rawFn);
+      } else if (normFn && normalizedFnMap.has(normFn)) {
+        matchedDoc = normalizedFnMap.get(normFn);
+      } else if (normOrder && orderMap.has(normOrder)) {
+        matchedDoc = orderMap.get(normOrder);
+      } else if (titleSysKey && titleSystemMap.has(titleSysKey)) {
+        matchedDoc = titleSystemMap.get(titleSysKey);
+      }
+
       const isAvailable = Boolean(matchedDoc && (matchedDoc.secureUrl || matchedDoc.availabilityStatus === 'AVAILABLE'));
 
       return {
@@ -825,7 +928,7 @@ export default function DOConCDTable({
       <div className="border-t border-[#29364A] p-3 px-4 text-xs flex flex-col sm:flex-row items-center justify-between gap-2 bg-[var(--bg-elevated)] text-[var(--text-muted)]">
         <div className="flex items-center space-x-4">
           <span className="font-mono text-[10px] sm:text-[11px] text-center sm:text-left">
-            DOConCD 09/2011 Master Catalogue • Siemens SINUMERIK / SIMODRIVE Reference
+            DOConCD 09/2011 Master Catalogue • Siemens SINUMERIK / {isSimodriveMode ? 'SIMODRIVE' : 'SINAMICS'} Reference
           </span>
         </div>
         <div className="font-mono text-[11px] text-[var(--text-secondary)]">
@@ -854,7 +957,7 @@ export default function DOConCDTable({
               </button>
             </div>
             <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
-              This document is an authentic record in the official Siemens DOConCD SINUMERIK / SIMODRIVE 09/2011 catalogue,
+              This document is an authentic record in the official Siemens DOConCD SINUMERIK / {isSimodriveMode ? 'SIMODRIVE' : 'SINAMICS'} 09/2011 catalogue,
               but its physical document file has not yet been uploaded to this DMS repository.
             </p>
             <div className="rounded-md border border-[var(--border-color)] bg-[var(--bg-elevated)] p-3.5 text-xs space-y-1.5 font-mono">

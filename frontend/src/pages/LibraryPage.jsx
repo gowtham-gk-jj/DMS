@@ -105,10 +105,13 @@ export default function LibraryPage() {
 
         const folderObj = folderRes.data.folder;
         const breadcrumbList = folderRes.data.breadcrumbs || [];
+
+        const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
         const isSim = Boolean(
-          folderObj?.name?.includes('SIMODRIVE') ||
-          breadcrumbList.some((b) => b.name?.includes('SIMODRIVE')) ||
-          folderObj?.code === 'SIMODRIVE'
+          folderObj?._id === SIMODRIVE_ROOT_ID ||
+          folderObj?.path?.startsWith('/DOConCD_SINUMERIK_SIMODRIVE') ||
+          breadcrumbList.some((b) => (b._id || b.id) === SIMODRIVE_ROOT_ID || b.name === 'DOConCD_SINUMERIK_SIMODRIVE') ||
+          (folderObj?.name && folderObj.name.includes('SIMODRIVE'))
         );
 
         if (folderRes.data.success) {
@@ -352,38 +355,46 @@ export default function LibraryPage() {
 
           {/* DOConCD-STYLE DOCUMENT BROWSER TABLE */}
           {folderId && folderId !== 'root' ? (
-            <div className="space-y-2.5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs px-1 gap-1">
-                <div className="font-bold uppercase tracking-wider flex items-center space-x-2 text-[var(--text-primary)] font-mono">
-                  <FileText className="w-4 h-4 text-[var(--primary-blue)]" />
-                  <span>
-                    {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
-                      ? 'Siemens SINUMERIK / SIMODRIVE Technical Document Catalogue'
-                      : 'DOConCD Technical Document Catalogue'}
-                  </span>
-                </div>
-                <div className="text-[11px] font-mono text-[var(--text-muted)]">
-                  {currentFolder?.name?.includes('SIMODRIVE') || breadcrumbs.some((b) => b.name?.includes('SIMODRIVE'))
-                    ? 'DOConCD SINUMERIK / SIMODRIVE 09/2011 Table of Contents Reference'
-                    : 'Siemens SINUMERIK / SINAMICS Table-of-Contents Specification'}
-                </div>
-              </div>
+            (() => {
+              const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
+              const isSimodriveFolder = Boolean(
+                currentFolder?._id === SIMODRIVE_ROOT_ID ||
+                currentFolder?.path?.startsWith('/DOConCD_SINUMERIK_SIMODRIVE') ||
+                breadcrumbs.some((b) => (b._id || b.id) === SIMODRIVE_ROOT_ID || b.name === 'DOConCD_SINUMERIK_SIMODRIVE') ||
+                (currentFolder?.name && currentFolder.name.includes('SIMODRIVE'))
+              );
 
-              <DOConCDTable
-                documents={documents}
-                groupedByCategory={groupedByCategory}
-                availableCategories={availableCategories}
-                availableSystems={availableSystems}
-                userPermissions={permissions}
-                onSelectDocument={(doc) => openDocument && openDocument(doc)}
-                onDownloadDocument={handleDownload}
-                isSimodrive={Boolean(
-                  currentFolder?.name?.includes('SIMODRIVE') ||
-                  breadcrumbs.some((b) => b.name?.includes('SIMODRIVE')) ||
-                  currentFolder?.code === 'SIMODRIVE'
-                )}
-              />
-            </div>
+              return (
+                <div className="space-y-2.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs px-1 gap-1">
+                    <div className="font-bold uppercase tracking-wider flex items-center space-x-2 text-[var(--text-primary)] font-mono">
+                      <FileText className="w-4 h-4 text-[var(--primary-blue)]" />
+                      <span>
+                        {isSimodriveFolder
+                          ? 'Siemens SINUMERIK / SIMODRIVE Technical Document Catalogue'
+                          : 'Siemens SINUMERIK / SINAMICS Technical Document Catalogue'}
+                      </span>
+                    </div>
+                    <div className="text-[11px] font-mono text-[var(--text-muted)]">
+                      {isSimodriveFolder
+                        ? 'DOConCD SINUMERIK / SIMODRIVE 09/2011 Table of Contents Reference'
+                        : 'DOConCD SINUMERIK / SINAMICS 09/2011 Table of Contents Reference'}
+                    </div>
+                  </div>
+
+                  <DOConCDTable
+                    documents={documents}
+                    groupedByCategory={groupedByCategory}
+                    availableCategories={availableCategories}
+                    availableSystems={availableSystems}
+                    userPermissions={permissions}
+                    onSelectDocument={(doc) => openDocument && openDocument(doc)}
+                    onDownloadDocument={handleDownload}
+                    isSimodrive={isSimodriveFolder}
+                  />
+                </div>
+              );
+            })()
           ) : (
             /* Root View: Prompt to select a repository */
             <div className="dms-card p-10 text-center text-xs">
