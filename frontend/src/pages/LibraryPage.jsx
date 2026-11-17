@@ -17,6 +17,7 @@ import CreateFolderModal from '../components/CreateFolderModal';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import api from '../services/api';
+import backgroundPreloadService from '../services/backgroundPreloadService';
 
 // Exact Siemens DOConCD PDF Category Ordering
 const PDF_CATEGORY_ORDER = [
@@ -140,6 +141,7 @@ export default function LibraryPage() {
 
   useEffect(() => {
     setIsFoldersExpanded(false);
+    backgroundPreloadService.cancelFolderPrefetch();
     fetchLibraryData();
   }, [folderId]);
 

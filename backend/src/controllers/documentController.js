@@ -221,16 +221,21 @@ const normalizeOrderNo = (str) => {
   return str.toLowerCase().replace(/[\s\-_]/g, '').trim();
 };
 
-// In-Memory Catalogue Cache with strictly isolated keys
+// In-Memory Catalogue & Document Caches with strictly isolated keys
 let sinamicsCache = { data: null, timestamp: 0 };
 let simodriveCache = { data: null, timestamp: 0 };
 const folderCache = new Map();
+const folderDocsCache = new Map();
+const previewMetadataCache = new Map();
 const CATALOGUE_CACHE_TTL = 60 * 1000; // 60 seconds
+const CACHE_TTL_30S = 30 * 1000; // 30 seconds
 
 const invalidateCatalogueCaches = () => {
   sinamicsCache = { data: null, timestamp: 0 };
   simodriveCache = { data: null, timestamp: 0 };
   folderCache.clear();
+  folderDocsCache.clear();
+  previewMetadataCache.clear();
   try {
     const { invalidateFolderHierarchyCache } = require('./folderController');
     invalidateFolderHierarchyCache();
@@ -665,6 +670,13 @@ const getDocumentsInFolder = async (req, res, next) => {
       });
     }
 
+    // Check short-lived cache for standard folder queries
+    const cacheKey = `${folderId}:${category || ''}:${system || ''}:${search || ''}:${sortBy}:${sortOrder}:${page}:${limit}`;
+    const cachedFolderDocs = folderDocsCache.get(cacheKey);
+    if (cachedFolderDocs && Date.now() - cachedFolderDocs.timestamp < CACHE_TTL_30S) {
+      return res.status(200).json(cachedFolderDocs.data);
+    }
+
     // Recursively collect current folder and all descendant subfolders
     const folderIds = [folder._id];
     const subfolderQueue = [folder._id];
@@ -732,7 +744,7 @@ const getDocumentsInFolder = async (req, res, next) => {
       groupedByCategory[cat].push(doc);
     });
 
-    return res.status(200).json({
+    const responsePayload = {
       success: true,
       folder: {
         id: folder._id,
@@ -750,7 +762,10 @@ const getDocumentsInFolder = async (req, res, next) => {
         pages: Math.ceil(total / Number(limit)),
         limit: Number(limit),
       },
-    });
+    };
+
+    folderDocsCache.set(cacheKey, { data: responsePayload, timestamp: Date.now() });
+    return res.status(200).json(responsePayload);
   } catch (err) {
     next(err);
   }
@@ -780,24 +795,43 @@ const previewDocument = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ success: false, message: 'Document not found' });
     }
+
+    // Check fast metadata cache
+    const cachedMeta = previewMetadataCache.get(id);
+    if (cachedMeta && Date.now() - cachedMeta.timestamp < CACHE_TTL_30S) {
+      logAudit({
+        action: 'DOCUMENT_PREVIEW',
+        user: req.user,
+        targetType: 'DOCUMENT',
+        targetId: id,
+        targetName: cachedMeta.targetName,
+        details: cachedMeta.details,
+        req,
+      }).catch(() => {});
+      return res.status(200).json(cachedMeta.payload);
+    }
+
     const document = await Document.findById(id);
     if (!document || document.isArchived) {
       return res.status(404).json({ success: false, message: 'Document not found' });
     }
+
+    const auditTargetName = `${document.title} (${document.originalFileName})`;
+    const auditDetails = { format: document.fileExtension, mimeType: document.mimeType };
 
     await logAudit({
       action: 'DOCUMENT_PREVIEW',
       user: req.user,
       targetType: 'DOCUMENT',
       targetId: document._id,
-      targetName: `${document.title} (${document.originalFileName})`,
-      details: { format: document.fileExtension, mimeType: document.mimeType },
+      targetName: auditTargetName,
+      details: auditDetails,
       req,
     });
 
     const resolvedMime = resolveMimeType(document.fileExtension, document.mimeType);
 
-    return res.status(200).json({
+    const payload = {
       success: true,
       previewUrl: document.secureUrl || `/api/documents/${document._id}/stream`,
       streamUrl: `/api/documents/${document._id}/stream`,
@@ -815,7 +849,16 @@ const previewDocument = async (req, res, next) => {
         documentCode: document.documentCode,
         category: document.category,
       },
+    };
+
+    previewMetadataCache.set(id, {
+      payload,
+      targetName: auditTargetName,
+      details: auditDetails,
+      timestamp: Date.now(),
     });
+
+    return res.status(200).json(payload);
   } catch (err) {
     next(err);
   }

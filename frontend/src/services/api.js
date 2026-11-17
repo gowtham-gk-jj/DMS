@@ -96,6 +96,9 @@ api.interceptors.response.use(
         localStorage.removeItem('dms_token');
         localStorage.removeItem('dms_user');
         responseCache.clear();
+        try {
+          import('./pdfCacheService').then((m) => m.clearUserCache?.()).catch(() => {});
+        } catch {}
         window.location.replace('/login');
       }
     }

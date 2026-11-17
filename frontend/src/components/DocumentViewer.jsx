@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const PdfViewer = lazy(() => import('./viewer/PdfViewer'));
 const DocxViewer = lazy(() => import('./viewer/DocxViewer'));
@@ -29,6 +30,7 @@ const ImageViewer = lazy(() => import('./viewer/ImageViewer'));
 
 export default function DocumentViewer({ document: doc, userPermissions = {}, onClose }) {
   const { isDark } = useTheme();
+  const { user } = useAuth();
   const modalRef = useRef(null);
 
   // Viewer display state
@@ -84,6 +86,17 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
+
+  // Record user's recently viewed document ID to feed Priority 4 preloading
+  useEffect(() => {
+    if (!doc?._id || !user?._id) return;
+    try {
+      const key = `dms_recent_views_${user._id}`;
+      const saved = JSON.parse(localStorage.getItem(key) || '[]');
+      const updated = [doc._id, ...saved.filter((id) => id !== doc._id)].slice(0, 15);
+      localStorage.setItem(key, JSON.stringify(updated));
+    } catch {}
+  }, [doc?._id, user?._id]);
 
   // Fetch document stream using authenticated Axios instance
   const fetchDocument = useCallback(() => {
@@ -545,6 +558,10 @@ export default function DocumentViewer({ document: doc, userPermissions = {}, on
                     url={pdfStreamUrl}
                     token={token}
                     data={documentBuffer}
+                    docId={doc?._id}
+                    version={doc?.updatedAt || doc?.version || 'v1'}
+                    fileSize={doc?.fileSize}
+                    documentTitle={doc?.title}
                     zoom={zoom}
                     rotation={rotation}
                     targetPage={targetPage}

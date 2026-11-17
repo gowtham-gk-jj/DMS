@@ -3,6 +3,8 @@ import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 import { recordPdfPageRenderTime } from '../../utils/performanceMonitor';
+import pdfCacheService from '../../services/pdfCacheService';
+import DmsPdfDataRangeTransport from '../../services/pdfRangeTransport';
 
 const PDFJS_VERSION = pdfjsLib.version || '6.5.438';
 const fallbackWorkerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/build/pdf.worker.min.mjs`;
@@ -31,6 +33,10 @@ export default function PdfViewer({
   url = null,
   token = null,
   data = null,
+  docId = null,
+  version = 'v1',
+  fileSize = null,
+  documentTitle = null,
   onErrorFallback = null,
   zoom = 100,
   rotation = 0,
@@ -78,6 +84,7 @@ export default function PdfViewer({
   const internalPageRef = useRef(1);
   const isProgrammaticScrollRef = useRef(false);
   const prevScrollRatioRef = useRef(0);
+  const rangeTransportRef = useRef(null);
 
   // ResizeObserver with 8px threshold to prevent scrollbar flicker loops
   useEffect(() => {
@@ -289,25 +296,7 @@ export default function PdfViewer({
 
     const initPdf = async () => {
       try {
-        if (url) {
-          const params = {
-            url,
-            rangeChunkSize: 65536,
-            disableAutoFetch: true,
-            disableStream: false,
-            withCredentials: true,
-            wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
-            cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
-            cMapPacked: true,
-            standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
-          };
-          if (token) {
-            params.httpHeaders = {
-              Authorization: `Bearer ${token}`,
-            };
-          }
-          loadingTask = pdfjsLib.getDocument(params);
-        } else {
+        if (data) {
           let pdfData = data;
           if (data instanceof Blob) {
             pdfData = await data.arrayBuffer();
@@ -328,6 +317,73 @@ export default function PdfViewer({
             cMapPacked: true,
             standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
           });
+        } else if (docId) {
+          const safeVer = version || 'v1';
+
+          // 1. Instant Preview: Check if complete document is already cached in IndexedDB
+          const cachedFull = await pdfCacheService.getCompleteBuffer(docId, safeVer).catch(() => null);
+          if (cachedFull && active) {
+            const typedArray = new Uint8Array(cachedFull.slice(0));
+            loadingTask = pdfjsLib.getDocument({
+              data: typedArray,
+              wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
+              cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+              cMapPacked: true,
+              standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+            });
+          } else {
+            // 2. Instant First Page: Check if initial byte range (bytes 0-65535) is pre-cached
+            const cachedRange = await pdfCacheService.getByteRange(docId, safeVer, 0, 65535).catch(() => null);
+
+            if (cachedRange && url && active) {
+              const totalLen = Number(fileSize) || cachedRange.byteLength || 1048576;
+              const transport = new DmsPdfDataRangeTransport(
+                totalLen,
+                new Uint8Array(cachedRange),
+                docId,
+                safeVer,
+                url,
+                token
+              );
+              rangeTransportRef.current = transport;
+
+              loadingTask = pdfjsLib.getDocument({
+                range: transport,
+                rangeChunkSize: 65536,
+                disableAutoFetch: true,
+                disableStream: false,
+                wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
+                cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+                cMapPacked: true,
+                standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+              });
+            }
+          }
+        }
+
+        // 3. Fallback: If not loaded from cache, use standard HTTP Range streaming via URL
+        if (!loadingTask && url && active) {
+          const params = {
+            url,
+            rangeChunkSize: 65536,
+            disableAutoFetch: true,
+            disableStream: false,
+            withCredentials: true,
+            wasmUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/wasm/`,
+            cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+            cMapPacked: true,
+            standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+          };
+          if (token) {
+            params.httpHeaders = {
+              Authorization: `Bearer ${token}`,
+            };
+          }
+          loadingTask = pdfjsLib.getDocument(params);
+        }
+
+        if (!loadingTask) {
+          throw new Error('No valid PDF stream source or cached data available.');
         }
 
         const doc = await loadingTask.promise;
@@ -382,6 +438,13 @@ export default function PdfViewer({
 
     return () => {
       active = false;
+      // Abort range transport if active
+      if (rangeTransportRef.current) {
+        try {
+          rangeTransportRef.current.abort();
+        } catch {}
+        rangeTransportRef.current = null;
+      }
       // Cancel all in-flight render tasks
       Object.keys(renderTasksRef.current).forEach((p) => {
         try {
@@ -406,7 +469,7 @@ export default function PdfViewer({
         return null;
       });
     };
-  }, [url, token, data, onErrorFallback, onTotalPages, enqueuePage]);
+  }, [url, token, data, docId, version, fileSize, onErrorFallback, onTotalPages, enqueuePage]);
 
   // When zoom or rotation changes: cancel running tasks and re-render visible pages without shifting scroll
   useEffect(() => {

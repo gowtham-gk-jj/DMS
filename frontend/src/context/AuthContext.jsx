@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../services/api';
+import api, { clearApiCache } from '../services/api';
+import backgroundPreloadService from '../services/backgroundPreloadService';
+import pdfCacheService from '../services/pdfCacheService';
 
 const AuthContext = createContext(null);
 
@@ -36,12 +38,21 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await api.get('/auth/me', { skipCache: true });
         if (res.data?.success && isMounted) {
-          setUser(res.data.user);
-          localStorage.setItem('dms_user', JSON.stringify(res.data.user));
+          const verifiedUser = res.data.user;
+          setUser(verifiedUser);
+          localStorage.setItem('dms_user', JSON.stringify(verifiedUser));
+
+          // Start background preload if user is approved or admin
+          if (verifiedUser.status === 'APPROVED' || verifiedUser.role === 'ADMIN') {
+            backgroundPreloadService.start(verifiedUser, currentToken);
+          }
         }
       } catch (err) {
         console.error('Session validation error:', err);
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          backgroundPreloadService.stop();
+          pdfCacheService.clearUserCache().catch(() => {});
+          clearApiCache();
           if (isMounted) {
             setUser(null);
             setToken(null);
@@ -68,6 +79,10 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     localStorage.setItem('dms_token', token);
     localStorage.setItem('dms_user', JSON.stringify(userData));
+
+    if (userData?.status === 'APPROVED' || userData?.role === 'ADMIN') {
+      backgroundPreloadService.start(userData, token);
+    }
   };
 
   const loginWithGoogle = async (credential) => {
@@ -116,6 +131,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      backgroundPreloadService.stop();
+      pdfCacheService.clearUserCache().catch(() => {});
+      clearApiCache();
       await api.post('/auth/logout');
     } catch {
       // Ignore

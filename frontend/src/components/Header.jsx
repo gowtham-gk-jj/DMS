@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home, Menu, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import GlobalSearch from './GlobalSearch';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import backgroundPreloadService, { PRELOAD_STATE } from '../services/backgroundPreloadService';
 
 export default function Header({
   breadcrumbs = [],
@@ -16,6 +17,15 @@ export default function Header({
   const { user, isAdmin } = useAuth();
   const { isDark } = useTheme();
   const location = useLocation();
+
+  const [preloadStatus, setPreloadStatus] = useState({ state: PRELOAD_STATE.IDLE, message: '' });
+
+  useEffect(() => {
+    const unsubscribe = backgroundPreloadService.subscribe((state, message) => {
+      setPreloadStatus({ state, message });
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <header className="h-14 border-b border-[var(--border-color)] px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-40 select-none bg-[var(--bg-header)] text-[var(--text-primary)] transition-colors duration-150">
@@ -96,6 +106,25 @@ export default function Header({
       <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 text-xs">
         {/* Theme Toggle Button (Light / Dark) */}
         <ThemeToggle />
+
+        {/* Workspace Preload Status Pill */}
+        {preloadStatus.message && (
+          <div
+            className="hidden lg:flex items-center space-x-1.5 px-2.5 py-1 text-[11px] border rounded-md font-mono bg-[var(--bg-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] transition-all animate-fadeIn"
+            title={preloadStatus.message}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                preloadStatus.state === PRELOAD_STATE.PREPARING
+                  ? 'bg-amber-400 animate-pulse'
+                  : preloadStatus.state === PRELOAD_STATE.OFFLINE
+                  ? 'bg-red-400'
+                  : 'bg-emerald-400'
+              }`}
+            />
+            <span className="truncate max-w-[140px]">{preloadStatus.message}</span>
+          </div>
+        )}
 
         {/* System Status Pill (Desktop only) */}
         <div className="hidden xl:flex items-center space-x-1.5 px-2.5 py-1 text-[11px] border rounded-md font-mono bg-[var(--bg-elevated)] border-[var(--border-color)] text-[var(--text-secondary)]">
