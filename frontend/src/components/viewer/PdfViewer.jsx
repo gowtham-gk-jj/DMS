@@ -132,8 +132,21 @@ export default function PdfViewer({
   const renderPage = useCallback(
     async (pageNum) => {
       const doc = pdfDocRef.current;
-      const canvas = canvasRefs.current[pageNum];
-      if (!doc || !canvas) return;
+      if (!doc) return;
+
+      let canvas = canvasRefs.current[pageNum];
+      if (!canvas) {
+        // Poll briefly for React canvas ref attachment in DOM
+        for (let i = 0; i < 10; i++) {
+          await new Promise((r) => setTimeout(r, 40));
+          canvas = canvasRefs.current[pageNum];
+          if (canvas) break;
+        }
+      }
+
+      if (!canvas) {
+        throw new Error(`Canvas element for page ${pageNum} not mounted in DOM.`);
+      }
 
       // Cancel previous task for this page if running
       if (renderTasksRef.current[pageNum]) {
@@ -236,6 +249,11 @@ export default function PdfViewer({
         if (err?.name === 'RenderingCancelledException') {
           return; // Intentionally canceled
         }
+        if (err?.message?.includes('not mounted in DOM')) {
+          pageStatusRef.current[nextPg] = PAGE_STATUS.QUEUED;
+          setPageStatuses((prev) => ({ ...prev, [nextPg]: PAGE_STATUS.QUEUED }));
+          return;
+        }
         console.error(`[PDF Render Error] Page ${nextPg}:`, err);
         pageStatusRef.current[nextPg] = PAGE_STATUS.ERROR;
         setPageErrors((prev) => ({ ...prev, [nextPg]: err.message || 'Render failed' }));
@@ -335,8 +353,8 @@ export default function PdfViewer({
             // 2. Instant First Page: Check if initial byte range (bytes 0-65535) is pre-cached
             const cachedRange = await pdfCacheService.getByteRange(docId, safeVer, 0, 65535).catch(() => null);
 
-            if (cachedRange && url && active) {
-              const totalLen = Number(fileSize) || cachedRange.byteLength || 1048576;
+            if (cachedRange && url && active && Number(fileSize) > 0) {
+              const totalLen = Number(fileSize);
               const transport = new DmsPdfDataRangeTransport(
                 totalLen,
                 new Uint8Array(cachedRange),
@@ -697,7 +715,12 @@ export default function PdfViewer({
             >
               {/* HTML5 Canvas element: hidden until render completes */}
               <canvas
-                ref={(el) => (canvasRefs.current[pageNum] = el)}
+                ref={(el) => {
+                  canvasRefs.current[pageNum] = el;
+                  if (el && pageStatusRef.current[pageNum] === PAGE_STATUS.QUEUED) {
+                    processQueue();
+                  }
+                }}
                 className={`block max-w-full ${!isRendered ? 'hidden' : ''}`}
               />
 

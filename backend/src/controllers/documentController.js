@@ -404,57 +404,59 @@ const getSimodriveCatalogueDocs = async () => {
   }
   const rawCatalogue = JSON.parse(fs.readFileSync(simodriveJsonPath, 'utf8'));
 
-  // Scope strictly to the official DOConCD_SINUMERIK_SIMODRIVE folder tree
+  // Scope: pre-fetch active documents in MongoDB (SIMODRIVE folder tree and shared Siemens folders)
   const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
-  const simRoot = await Folder.findOne({
-    $or: [{ _id: SIMODRIVE_ROOT_ID }, { name: 'DOConCD_SINUMERIK_SIMODRIVE' }],
-    isArchived: false,
-  });
-
-  let folderFilter = {};
-  if (simRoot) {
-    const simFolders = await Folder.find({
-      $or: [
-        { _id: simRoot._id },
-        { parentFolderId: simRoot._id },
-        { path: new RegExp('^' + simRoot.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) },
-      ],
-      isArchived: false,
-    }).select('_id').lean();
-    folderFilter = { folderId: { $in: simFolders.map((f) => f._id) } };
-  }
-
-  // Pre-fetch all active SIMODRIVE documents in MongoDB
-  const allDocs = await Document.find({ ...folderFilter, isArchived: false })
-    .select('_id title originalFileName fileName orderNumber secureUrl fileSize mimeType fileExtension storageProvider folderId availabilityStatus system softwareVersion edition category')
+  const allDocs = await Document.find({ isArchived: false })
+    .select('_id title originalFileName fileName orderNumber secureUrl fileSize mimeType fileExtension storageProvider folderId availabilityStatus system softwareVersion edition category updatedAt')
     .lean();
 
-  const fnMap = new Map();
-  const orderMap = new Map();
-
-  for (const d of allDocs) {
-    if (d.fileName) {
-      fnMap.set(d.fileName.trim().toLowerCase(), d);
-    }
-    if (d.originalFileName) {
-      const base = d.originalFileName.replace(/\.[^/.]+$/, '').trim().toLowerCase();
-      if (!fnMap.has(base)) {
-        fnMap.set(base, d);
-      }
-    }
-    if (d.orderNumber && d.orderNumber.trim()) {
-      orderMap.set(d.orderNumber.trim().toLowerCase(), d);
-    }
-  }
+  const normalizeFn = (s) => (s || '').toLowerCase().replace(/\.[^/.]+$/, '').replace(/[_\-\s]/g, '').trim();
+  const normalizeOrder = (s) => (s || '').toLowerCase().replace(/[\s\-_]/g, '').trim();
 
   const result = rawCatalogue.map((catEntry) => {
-    const fn = (catEntry.fileName || '').trim().toLowerCase();
-    const order = (catEntry.orderNumber || '').trim().toLowerCase();
+    const rawFn = (catEntry.fileName || '').trim().toLowerCase();
+    const normFn = normalizeFn(catEntry.fileName);
+    const normOrd = normalizeOrder(catEntry.orderNumber);
 
-    // Match priority: fileName -> orderNumber
-    let matchedDoc = fnMap.get(fn) || (order ? orderMap.get(order) : null);
+    // Exact fileName candidates
+    const exactMatches = allDocs.filter((d) => {
+      const dfn = (d.fileName || '').trim().toLowerCase();
+      const dofn = (d.originalFileName || '').trim().toLowerCase();
+      const base = dofn.replace(/\.[^/.]+$/, '').trim();
+      return dfn === rawFn || dofn === `${rawFn}.pdf` || base === rawFn;
+    });
 
-    const isAvailable = Boolean(matchedDoc && matchedDoc.secureUrl);
+    // Order number candidates
+    const orderMatches = normOrd && normOrd !== '—'
+      ? allDocs.filter((d) => normalizeOrder(d.orderNumber) === normOrd)
+      : [];
+
+    let matchedDoc = null;
+
+    // Matching Priority:
+    // 1. Exact fileName match within SIMODRIVE root directory
+    const simDirExact = exactMatches.find((d) => String(d.folderId) === SIMODRIVE_ROOT_ID);
+    if (simDirExact) {
+      matchedDoc = simDirExact;
+    } else if (exactMatches.length === 1) {
+      matchedDoc = exactMatches[0];
+    } else if (exactMatches.length > 1) {
+      const withOrder = exactMatches.find((d) => normalizeOrder(d.orderNumber) === normOrd);
+      matchedDoc = withOrder || exactMatches[0];
+    } else if (orderMatches.length > 0) {
+      matchedDoc = orderMatches[0];
+    } else {
+      // Fallback: Normalized filename (stripping underscores, hyphens, spaces)
+      const normMatch = allDocs.find((d) => {
+        const dNorm = normalizeFn(d.fileName || d.originalFileName);
+        return dNorm === normFn;
+      });
+      if (normMatch) {
+        matchedDoc = normMatch;
+      }
+    }
+
+    const isAvailable = Boolean(matchedDoc && (matchedDoc.secureUrl || matchedDoc.availabilityStatus === 'AVAILABLE'));
 
     return {
       _id: matchedDoc ? matchedDoc._id : `missing_${catEntry.fileName}`,
@@ -471,13 +473,14 @@ const getSimodriveCatalogueDocs = async () => {
       status: isAvailable ? 'Available' : 'Missing',
       availabilityStatus: isAvailable ? 'AVAILABLE' : 'FILE_NOT_FOUND',
       secureUrl: matchedDoc ? matchedDoc.secureUrl : null,
-      originalFileName: matchedDoc ? matchedDoc.originalFileName : `${catEntry.fileName}.pdf`,
+      originalFileName: matchedDoc ? (matchedDoc.originalFileName || `${catEntry.fileName}.pdf`) : `${catEntry.fileName}.pdf`,
       fileSize: matchedDoc ? matchedDoc.fileSize : 0,
       mimeType: matchedDoc ? (matchedDoc.mimeType || 'application/pdf') : 'application/pdf',
       fileExtension: matchedDoc ? (matchedDoc.fileExtension || 'pdf') : 'pdf',
-      storageProvider: matchedDoc ? matchedDoc.storageProvider : 'CLOUDINARY',
+      storageProvider: matchedDoc ? (matchedDoc.storageProvider || 'CLOUDINARY') : 'CLOUDINARY',
       isCatalogueRecord: true,
       matchedDocId: matchedDoc ? matchedDoc._id : null,
+      updatedAt: matchedDoc ? matchedDoc.updatedAt : undefined,
     };
   });
 

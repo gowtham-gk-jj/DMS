@@ -8,7 +8,7 @@ import pdfCacheService from './pdfCacheService';
 
 export class DmsPdfDataRangeTransport extends pdfjsLib.PDFDataRangeTransport {
   constructor(length, initialData, docId, version, streamUrl, token) {
-    super(length, initialData, false);
+    super(length, initialData, true);
     this.docId = docId;
     this.version = version || 'v1';
     this.streamUrl = streamUrl;

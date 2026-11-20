@@ -1,123 +1,85 @@
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+dotenv.config({ path: './backend/.env' });
+import mongoose from 'mongoose';
 import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
-async function verifyAll() {
+async function testReconciliation() {
   await mongoose.connect(process.env.MONGODB_URI);
-  console.log('Connected to MongoDB Atlas\n');
-
-  const Folder = mongoose.model('Folder', new mongoose.Schema({}, { strict: false }));
   const Document = mongoose.model('Document', new mongoose.Schema({}, { strict: false }));
 
-  const allActiveFolders = await Folder.find({ isArchived: false }).select('_id parentFolderId name path').lean();
-  const allActiveDocs = await Document.find({ isArchived: false }).lean();
+  const simodriveJsonPath = path.resolve('backend/data/simodrive_catalogue_extracted.json');
+  const rawCatalogue = JSON.parse(fs.readFileSync(simodriveJsonPath, 'utf8'));
 
-  const docCountMap = new Map();
-  allActiveDocs.forEach((d) => {
-    if (d.folderId) {
-      const fid = String(d.folderId);
-      docCountMap.set(fid, (docCountMap.get(fid) || 0) + 1);
-    }
-  });
+  const SIMODRIVE_ROOT_ID = '6af9d05ba1a8b3b2f4ddf68b';
+  const allDocs = await Document.find({ isArchived: false })
+    .select('_id title originalFileName fileName orderNumber secureUrl fileSize mimeType fileExtension storageProvider folderId availabilityStatus system softwareVersion edition category updatedAt')
+    .lean();
 
-  const childrenMap = new Map();
-  allActiveFolders.forEach((f) => {
-    const pid = f.parentFolderId ? String(f.parentFolderId) : 'root';
-    if (!childrenMap.has(pid)) childrenMap.set(pid, []);
-    childrenMap.get(pid).push(f);
-  });
+  const normalizeFn = (s) => (s || '').toLowerCase().replace(/\.[^/.]+$/, '').replace(/[_\-\s]/g, '').trim();
+  const normalizeOrder = (s) => (s || '').toLowerCase().replace(/[\s\-_]/g, '').trim();
 
-  const getDescendantDocCount = (folderId) => {
-    let total = docCountMap.get(String(folderId)) || 0;
-    const children = childrenMap.get(String(folderId)) || [];
-    for (const child of children) {
-      total += getDescendantDocCount(child._id);
-    }
-    return total;
-  };
+  let availableCount = 0;
+  let missingCount = 0;
+  const missingEntries = [];
 
-  const getDescendantFolderCount = (folderId) => {
-    const children = childrenMap.get(String(folderId)) || [];
-    let total = children.length;
-    for (const child of children) {
-      total += getDescendantFolderCount(child._id);
-    }
-    return total;
-  };
+  for (const catEntry of rawCatalogue) {
+    const rawFn = (catEntry.fileName || '').trim().toLowerCase();
+    const normFn = normalizeFn(catEntry.fileName);
+    const normOrd = normalizeOrder(catEntry.orderNumber);
 
-  const roots = allActiveFolders.filter((f) => !f.parentFolderId);
-  console.log('=== 1. COMPREHENSIVE REPOSITORY RECONCILIATION TABLE ===\n');
+    const exactMatches = allDocs.filter((d) => {
+      const dfn = (d.fileName || '').trim().toLowerCase();
+      const dofn = (d.originalFileName || '').trim().toLowerCase();
+      const base = dofn.replace(/\.[^/.]+$/, '').trim();
+      return dfn === rawFn || dofn === `${rawFn}.pdf` || base === rawFn;
+    });
 
-  const reconciliationRows = [];
+    const orderMatches = normOrd && normOrd !== '—'
+      ? allDocs.filter((d) => normalizeOrder(d.orderNumber) === normOrd)
+      : [];
 
-  for (const root of roots) {
-    const directDocs = docCountMap.get(String(root._id)) || 0;
-    const totalDocs = getDescendantDocCount(root._id);
-    const directSubfolders = (childrenMap.get(String(root._id)) || []).length;
-    const totalSubfolders = getDescendantFolderCount(root._id);
-
-    // Collect all descendant folder IDs
-    const queue = [root._id];
-    const descendantFolderIds = [root._id];
-    while (queue.length > 0) {
-      const cur = queue.shift();
-      const kids = childrenMap.get(String(cur)) || [];
-      for (const k of kids) {
-        descendantFolderIds.push(k._id);
-        queue.push(k._id);
+    let matchedDoc = null;
+    const simDirExact = exactMatches.find((d) => String(d.folderId) === SIMODRIVE_ROOT_ID);
+    if (simDirExact) {
+      matchedDoc = simDirExact;
+    } else if (exactMatches.length === 1) {
+      matchedDoc = exactMatches[0];
+    } else if (exactMatches.length > 1) {
+      const withOrder = exactMatches.find((d) => normalizeOrder(d.orderNumber) === normOrd);
+      matchedDoc = withOrder || exactMatches[0];
+    } else if (orderMatches.length > 0) {
+      matchedDoc = orderMatches[0];
+    } else {
+      const normMatch = allDocs.find((d) => {
+        const dNorm = normalizeFn(d.fileName || d.originalFileName);
+        return dNorm === normFn;
+      });
+      if (normMatch) {
+        matchedDoc = normMatch;
       }
     }
 
-    const docsInTree = allActiveDocs.filter((d) =>
-      descendantFolderIds.some((fid) => String(fid) === String(d.folderId))
-    );
-    const uniqueDocIds = new Set(docsInTree.map((d) => String(d._id)));
-    const previewableDocs = docsInTree.filter((d) => d.availabilityStatus !== 'UNAVAILABLE');
+    const isAvailable = Boolean(matchedDoc && (matchedDoc.secureUrl || matchedDoc.availabilityStatus === 'AVAILABLE'));
 
-    reconciliationRows.push({
-      repository: root.name,
-      rootFolderId: String(root._id),
-      directSubfolders,
-      totalSubfolders,
-      directDocuments: directDocs,
-      totalDescendantDocuments: totalDocs,
-      uniqueDocumentIds: uniqueDocIds.size,
-      previewableDocuments: previewableDocs.length,
-    });
+    if (isAvailable) {
+      availableCount++;
+    } else {
+      missingCount++;
+      missingEntries.push(catEntry);
+    }
   }
 
-  console.table(reconciliationRows);
+  console.log(`Reconciliation results:`);
+  console.log(`- Total Official Catalogue Records: ${rawCatalogue.length}`);
+  console.log(`- Available: ${availableCount}`);
+  console.log(`- Missing: ${missingCount}`);
 
-  // 2. Deep Dive into DOConCD SINUMERIK - SINAMICS 09/2011 English
-  console.log('\n=== 2. SIEMENS OFFICIAL CATALOGUE DEEP DIVE ===');
-  const doconcdRoot = roots.find((r) => r.name === 'DOConCD SINUMERIK - SINAMICS 09/2011 English');
-  if (doconcdRoot) {
-    const directChildren = childrenMap.get(String(doconcdRoot._id)) || [];
-    console.log(`Direct Subcategories under "${doconcdRoot.name}": ${directChildren.length}`);
-
-    directChildren.forEach((child, idx) => {
-      const childDirectDocs = docCountMap.get(String(child._id)) || 0;
-      const childTotalDocs = getDescendantDocCount(child._id);
-      const grandKids = (childrenMap.get(String(child._id)) || []).length;
-      console.log(
-        `  ${idx + 1}. [${child.name}] -> Direct Docs: ${childDirectDocs}, Total Docs: ${childTotalDocs}, Subcategories: ${grandKids}`
-      );
-    });
-
-    const catalogue = JSON.parse(
-      fs.readFileSync(path.resolve(__dirname, '../data/catalogue_matched.json'), 'utf8')
-    );
-    console.log(`\nOfficial Catalogue Entries from PDF: ${catalogue.length}`);
-    console.log(`Total Documents Ingested in Library Tree: ${reconciliationRows.find((r) => r.repository === doconcdRoot.name).totalDescendantDocuments}`);
+  if (missingCount > 0) {
+    console.log('Missing entries:', missingEntries);
   }
 
   await mongoose.disconnect();
 }
 
-verifyAll().catch(console.error);
+testReconciliation().catch(console.error);
